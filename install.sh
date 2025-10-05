@@ -45,6 +45,8 @@ chmod +x ~/.scripts/commit.sh
 chmod +x ~/.scripts/lazy_grep.sh
 chmod +x ~/.scripts/update_vim_plugins.sh
 chmod +x ~/.scripts/kill_process.sh
+chmod +x ~/.scripts/tmux_save_session.sh
+chmod +x ~/.scripts/tmux_restore_session.sh
 
 echo "=> Setting up Zsh..."
 mv ~/kawaiDotfiles/zsh/.zshrc ~/

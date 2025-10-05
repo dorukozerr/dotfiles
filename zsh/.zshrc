@@ -19,6 +19,8 @@ alias lg="~/.scripts/lazy_grep.sh"
 alias uvp="~/.scripts/update_vim_plugins.sh"
 alias kp="~/.scripts/kill_process.sh"
 alias far="~/.scripts/find_and_replace.sh"
+alias tss="~/.scripts/tmux_save_session.sh"
+alias trs="~/.scripts/tmux_restore_session.sh"
 
 setopt SHARE_HISTORY
 setopt INC_APPEND_HISTORY
@@ -26,6 +28,13 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 export HISTSIZE=50000
 export SAVEHIST=50000
+
+if [ -f "$HOME/.config/tmux/session" ] && [ -z "$TMUX" ] && [ -z "$TMUX_RESTORED" ]; then
+    if ! tmux list-sessions &>/dev/null; then
+        export TMUX_RESTORED=1
+        trs
+    fi
+fi
 
 function startup_sequence() {
   messages=(
