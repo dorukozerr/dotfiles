@@ -1,0 +1,6 @@
+{
+  "Lua.workspace.library": [
+    "/Users/qweqwe/.hammerspoon/Spoons/EmmyLua.spoon/annotations"
+  ],
+  "Lua.diagnostics.unusedLocalExclude": ["_*"]
+}
