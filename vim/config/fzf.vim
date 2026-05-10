@@ -8,21 +8,6 @@ endif
 
 let g:fzf_vim = {}
 let g:fzf_vim.preview_window = ['right:50%:wrap', 'ctrl-/']
-let g:fzf_colors = {
-      \ 'fg':      ['fg', 'Type'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Statement'],
-      \ 'fg+':     ['fg', 'Statement'],
-      \ 'bg+':     ['bg', 'Normal'],
-      \ 'hl+':     ['fg', 'String'],
-      \ 'info':    ['fg', 'Comment'],
-      \ 'border':  ['fg', 'FZFBorder'],
-      \ 'prompt':  ['fg', 'Statement'],
-      \ 'pointer': ['fg', 'Identifier'],
-      \ 'marker':  ['fg', 'String'],
-      \ 'spinner': ['fg', 'Comment'],
-      \ 'header':  ['fg', 'Comment']
-      \ }
 
 command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>,

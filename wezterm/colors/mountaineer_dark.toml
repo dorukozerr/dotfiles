@@ -1,0 +1,30 @@
+# mountaineer-grey
+[colors]
+foreground = "#f0f0f0"
+background = "#191919"
+cursor_bg = "#f0f0f0"
+cursor_border = "#f0f0f0"
+cursor_fg = "#191919"
+selection_bg = "#2f4243"
+selection_fg = "#f0f0f0"
+
+ansi = [
+  "#191919",
+  "#AC8A8C",
+  "#8AAC8B",
+  "#ACA98A",
+  "#8F8AAC",
+  "#AC8AAC",
+  "#8AABAC",
+  "#f0f0f0"
+]
+brights = [
+  "#363636",
+  "#AC8A8C",
+  "#8AAC8B",
+  "#AC9D8A",
+  "#8F8AAC",
+  "#AC8AAC",
+  "#8AABAC",
+  "#f0f0f0"
+]

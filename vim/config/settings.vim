@@ -4,7 +4,6 @@ scriptencoding utf-8
 filetype plugin indent on
 syntax enable
 
-" set background=dark
 set termguicolors
 set updatetime=300
 set signcolumn=yes
@@ -26,13 +25,11 @@ set foldlevelstart=99
 set title
 set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}
 set t_BE=
+set autoread
 
-colorscheme base16-black-metal-venom
+colorscheme mountaineer-grey
+" colorscheme base16-black-metal-venom
+" colorscheme base16-grayscale-dark
+" colorscheme habamax
 hi Normal guibg=NONE ctermbg=NONE
-" colorscheme candle-grey-transparent
-
-" autocmd BufWritePre * :%s/\s\+$//e
-
-if has('mac')
-  let g:fugitive_pty_debug_override = 0
-endif
+hi EndOfBuffer guibg=NONE ctermbg=NONE
