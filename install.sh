@@ -12,7 +12,6 @@ set -e
 BACKUP_DIR="$HOME/dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 DOTFILES_DIR="$HOME/kawaiDotfiles"
 
-# too late for chezmoi
 detach_submodule() {
   mkdir -p "$(dirname "$2")"
   mv "$DOTFILES_DIR/$1" "$2"
@@ -24,8 +23,8 @@ detach_submodule() {
 main() {
   [ -d "$DOTFILES_DIR" ] && rm -rf "$DOTFILES_DIR"
 
-  git clone --depth 1 git@github.com:dorukozerr/dotfiles.git "$DOTFILES_DIR"
-  git -C "$DOTFILES_DIR" submodule update --init --remote
+  git clone git@github.com:dorukozerr/dotfiles.git "$DOTFILES_DIR" --depth 1
+  git -C "$DOTFILES_DIR" submodule update --init --depth 1
 
   mkdir -p "$BACKUP_DIR"
 
@@ -35,7 +34,7 @@ main() {
     "$HOME/.config/zsh/zsh.d" "$HOME/.config/zsh/plugins" \
     "$HOME/.gitconfig" "$HOME/.vim" "$HOME/.vimrc" \
     "$HOME/.config/tmux" "$HOME/.config/wezterm" \
-    "$HOME/.config/htop" 
+    "$HOME/.config/htop" "$HOME/.scripts"; \
   do
     [ -e "$file" ] && mv "$file" "$BACKUP_DIR/"
   done
@@ -68,7 +67,7 @@ main() {
   mv "$DOTFILES_DIR/vim/colors" "$DOTFILES_DIR/vim/coc-settings.json" "$DOTFILES_DIR/vim/vimrc" "$DOTFILES_DIR/vim/config" "$HOME/.vim/"
   mv "$DOTFILES_DIR/vim/mountaineer_grey.vim" "$HOME/.vim/pack/plugins/start/vim-airline-themes/autoload/airline/themes/"
 
-  yes | vim -c "CocInstall -sync coc-vimlsp coc-sh coc-tsserver coc-go coc-html coc-css @yaegassy/coc-tailwindcss3 coc-json coc-yaml coc-prettier coc-eslint coc-dotenv coc-sql coc-lua coc-pyright coc-oxc coc-toml coc-svg coc-zshell" -c "qall!"
+  yes | vim -c "CocInstall -sync coc-vimlsp coc-sh coc-tsserver coc-go coc-html coc-css @yaegassy/coc-tailwindcss3 coc-json coc-yaml coc-prettier coc-eslint coc-dotenv coc-sql coc-lua coc-toml coc-svg coc-zshell coc-oxc coc-pyright" -c "qall!"
 
   rm -f "$HOME/.vim/temp.vimrc" && rm -rf "$DOTFILES_DIR" && cd
 

@@ -97,6 +97,9 @@ nnoremap <leader>ms :ManSearch <C-r><right>
 " Clear/Reset file
 nnoremap <leader>cfe :call CleanFileLineEndings()<CR>
 
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
 " https://github.com/neoclide/coc.nvim?tab=readme-ov-file#example-vim-configuration
 "
 " Use tab for trigger completion with characters ahead and navigate

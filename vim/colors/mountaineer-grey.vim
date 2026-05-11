@@ -1,3 +1,6 @@
+" Original Source: https://github.com/rafi/awesome-vim-colorschemes/blob/master/colors/mountaineer-grey.vim 
+" Updated some highlight groups to increase contrast
+
 " Initialization: {{{
 highlight clear
 if exists('syntax_on')
@@ -517,6 +520,7 @@ highlight! link javascriptOpSymbols Orange
 highlight! link javascriptIdentifierName Blue
 highlight! link javascriptVariable Orange
 highlight! link javascriptObjectLabel Cyan
+highlight! link javascriptObjectLiteral Cyan
 highlight! link javascriptObjectLabelColon Grey
 highlight! link javascriptPropertyNameString Cyan
 highlight! link javascriptFuncArg Blue
@@ -678,9 +682,10 @@ highlight! link typescriptEndColons Fg
 highlight! link typescriptMember Cyan
 highlight! link typescriptMemberOptionality Orange
 highlight! link typescriptObjectLabel Cyan
+highlight! link typescriptObjectLiteral Cyan
 highlight! link typescriptArrowFunc Purple
 highlight! link typescriptAbstract Orange
-highlight! link typescriptObjectColon Grey
+highlight! link typescriptObjectColon Cyan
 highlight! link typescriptTypeAnnotation Grey
 highlight! link typescriptAssign Orange
 highlight! link typescriptBinaryOp Orange
@@ -1340,7 +1345,9 @@ highlight! link cmakeKWwrite_file Cyan
 " }}}
 " Json: {{{
 highlight! link jsonKeyword Orange
-highlight! link jsonQuote Grey
+highlight! link jsonQuote Cyan
+highlight! link jsonFold Cyan
+highlight! link jsonKeywordMatch Cyan
 highlight! link jsonBraces Fg
 " }}}
 " Yaml: {{{

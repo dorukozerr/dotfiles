@@ -2,7 +2,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
 
-export TERM="wezterm"
+# export TERM="wezterm"
 export EDITOR="vi"
 export BAT_THEME="ansi"
 export BUN_INSTALL="$HOME/.bun"

@@ -74,3 +74,6 @@
 [submodule "vim/pack/plugins/start/tsc-watcher-vim"]
 	path = vim/pack/plugins/start/tsc-watcher-vim
 	url = ssh://git@codeberg.org/doruk/tsc-watcher-vim.git
+[submodule "vim/pack/plugins/start/vim-easy-align"]
+	path = vim/pack/plugins/start/vim-easy-align
+	url = git@github.com:junegunn/vim-easy-align.git

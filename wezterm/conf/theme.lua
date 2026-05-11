@@ -13,11 +13,11 @@ function M.apply(config)
 
   if ok and scheme then
     config.window_background_gradient = {
-      orientation = { Radial = { cx = 0.5, cy = 0.5, radius = 1.25 } },
+      orientation = { Radial = { cx = 0.8, cy = 0.8, radius = 1.5 } },
       colors = {
-        scheme.ansi[1],
-        scheme.background,
-        tostring(wezterm.color.parse(scheme.background):darken(0.25)),
+        tostring(wezterm.color.parse(scheme.ansi[3]):darken(0.98)),
+        tostring(wezterm.color.parse(scheme.ansi[5]):darken(0.88)),
+        tostring(wezterm.color.parse(scheme.ansi[7]):darken(1)),
       },
       interpolation = "CatmullRom",
       blend = "LinearRgb",

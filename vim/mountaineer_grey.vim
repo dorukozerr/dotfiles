@@ -3,8 +3,8 @@
 " Original theme: https://github.com/rafi/awesome-vim-colorschemes/blob/master/colors/mountaineer-grey.vim
 
 let g:airline#themes#mountaineer_grey#palette = {}
-let s:gui00 = "#191919"
-let s:gui01 = "#363636"
+let s:gui00 = "#050506"
+let s:gui01 = "#050506"
 let s:gui02 = "#2f4243"
 let s:gui03 = "#585858"
 let s:gui04 = "#b8b8b8"
