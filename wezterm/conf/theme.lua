@@ -15,9 +15,9 @@ function M.apply(config)
     config.window_background_gradient = {
       orientation = { Radial = { cx = 0.8, cy = 0.8, radius = 1.5 } },
       colors = {
-        tostring(wezterm.color.parse(scheme.ansi[3]):darken(0.98)),
-        tostring(wezterm.color.parse(scheme.ansi[5]):darken(0.88)),
-        tostring(wezterm.color.parse(scheme.ansi[7]):darken(1)),
+        tostring(wezterm.color.parse(scheme.ansi[3]):darken(0.88)),
+        tostring(wezterm.color.parse(scheme.ansi[5]):darken(0.78)),
+        tostring(wezterm.color.parse(scheme.ansi[7]):darken(0.9)),
       },
       interpolation = "CatmullRom",
       blend = "LinearRgb",

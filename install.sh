@@ -11,6 +11,11 @@ set -e
 
 BACKUP_DIR="$HOME/dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 DOTFILES_DIR="$HOME/kawaiDotfiles"
+PLUGINS_ROOT_PATHS=( 
+  $HOME/.config/tmux/plugins
+  $HOME/.config/zsh/plugins
+  $HOME/.vim/pack/plugins/start
+)
 
 detach_submodule() {
   mkdir -p "$(dirname "$2")"
@@ -18,6 +23,17 @@ detach_submodule() {
   rm "$2/.git"
   mv "$DOTFILES_DIR/.git/modules/$1" "$2/.git"
   git config --file "$2/.git/config" --unset core.worktree
+}
+
+finalize_plugins() {
+  for ROOT_DIR in ${PLUGINS_ROOT_PATHS[@]}; do
+    for PLUGIN in $(\ls -d "$ROOT_DIR/"*); do
+      git -C $PLUGIN switch - 2>&1 &
+    done
+  done
+  wait
+  COC="$HOME/.vim/pack/plugins/start/coc.nvim"
+  bun install --cwd $COC && bun run --cwd $COC build
 }
 
 main() {
@@ -70,6 +86,8 @@ main() {
   yes | vim -c "CocInstall -sync coc-vimlsp coc-sh coc-tsserver coc-go coc-html coc-css @yaegassy/coc-tailwindcss3 coc-json coc-yaml coc-prettier coc-eslint coc-dotenv coc-sql coc-lua coc-toml coc-svg coc-zshell coc-oxc coc-pyright" -c "qall!"
 
   rm -f "$HOME/.vim/temp.vimrc" && rm -rf "$DOTFILES_DIR" && cd
+
+  finalize_plugins
 
   echo "done"
 }

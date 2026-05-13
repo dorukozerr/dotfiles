@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+plugin_paths=( 
+  $HOME/.config/tmux/plugins
+  $HOME/.config/zsh/plugins
+  $HOME/.vim/pack/plugins/start
+)
+
+update_plugins() {
+  for root_dir in ${plugin_paths[@]}; do
+    for plugin in $(\ls -d "$root_dir/"*); do
+      git -C $plugin pull 2>&1 &
+    done
+  done
+  wait
+  COC="$HOME/.vim/pack/plugins/start/coc.nvim"
+  bun install --cwd $COC && bun run --cwd $COC build
+  echo "done"
+}
+
+update_plugins
