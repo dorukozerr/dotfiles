@@ -13,8 +13,6 @@ update_plugins() {
     done
   done
   wait
-  COC="$HOME/.vim/pack/plugins/start/coc.nvim"
-  bun install --cwd $COC && bun run --cwd $COC build
   echo "done"
 }
 
