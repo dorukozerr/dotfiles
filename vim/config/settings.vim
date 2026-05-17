@@ -1,5 +1,7 @@
 runtime! ftplugin/man.vim
+
 packadd! matchit
+
 scriptencoding utf-8
 filetype plugin indent on
 syntax enable
@@ -27,9 +29,4 @@ set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}
 set t_BE=
 set autoread
 
-colorscheme mountaineer-grey
-" colorscheme base16-black-metal-venom
-" colorscheme base16-grayscale-dark
-" colorscheme habamax
-hi Normal guibg=NONE ctermbg=NONE
-hi EndOfBuffer guibg=NONE ctermbg=NONE
+colorscheme mountaineer

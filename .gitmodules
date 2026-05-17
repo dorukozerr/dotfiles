@@ -76,3 +76,9 @@
 [submodule "zsh/plugins/zsh-vi-mode"]
 	path = zsh/plugins/zsh-vi-mode
 	url = git@github.com:jeffreytse/zsh-vi-mode.git
+[submodule "vim/pack/plugins/start/awesome-vim-colorschemes"]
+	path = vim/pack/plugins/start/awesome-vim-colorschemes
+	url = git@github.com:rafi/awesome-vim-colorschemes.git
+[submodule "vim/pack/plugins/start/lsp"]
+	path = vim/pack/plugins/start/lsp
+	url = https://github.com/yegappan/lsp

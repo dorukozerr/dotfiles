@@ -10,6 +10,10 @@ if [ -d "$HOME/.local/share/zsh-comp" ]; then
     fpath=("$HOME/.local/share/zsh-comp" $fpath)
 fi
 
+if [ -d "$HOME/.bun" ]; then
+    fpath=("$HOME/.bun" $fpath)
+fi
+
 autoload -Uz compinit
 
 for dump in ~/.zcompdump(N.mh+24); do

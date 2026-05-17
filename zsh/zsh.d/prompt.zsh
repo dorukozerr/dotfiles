@@ -1,1 +1,1 @@
-PROMPT='%2~ %# '
+PROMPT='%F{red}%2~ %# %f'

@@ -32,8 +32,6 @@ finalize_plugins() {
     done
   done
   wait
-  COC="$HOME/.vim/pack/plugins/start/coc.nvim"
-  bun install --cwd $COC && bun run --cwd $COC build
 }
 
 main() {
@@ -77,13 +75,11 @@ main() {
 
   mv "$DOTFILES_DIR/scripts/"* "$HOME/.local/bin"
   mv "$DOTFILES_DIR/git/.gitconfig" "$DOTFILES_DIR/zsh/.zshenv" "$HOME/"
-  mv "$DOTFILES_DIR/zsh/.zshrc" "$DOTFILES_DIR/zsh/.zprofile" "$DOTFILES_DIR/zsh/zsh.d" "$HOME/.config/zsh/"
+  mv "$DOTFILES_DIR/zsh/.zshrc" "$DOTFILES_DIR/zsh/zsh.d" "$HOME/.config/zsh/"
   mv "$DOTFILES_DIR/wezterm" "$DOTFILES_DIR/htop" "$HOME/.config/"
   mv "$DOTFILES_DIR/tmux/snapshot.conf" "$DOTFILES_DIR/tmux/tmux.conf" "$DOTFILES_DIR/tmux/tmux-nerd-font-window-name.yml" "$HOME/.config/tmux/"
-  mv "$DOTFILES_DIR/vim/colors" "$DOTFILES_DIR/vim/coc-settings.json" "$DOTFILES_DIR/vim/vimrc" "$DOTFILES_DIR/vim/config" "$HOME/.vim/"
+  mv "$DOTFILES_DIR/vim/colors" "$DOTFILES_DIR/vim/vimrc" "$DOTFILES_DIR/vim/config" "$HOME/.vim/"
   mv "$DOTFILES_DIR/vim/mountaineer_grey.vim" "$HOME/.vim/pack/plugins/start/vim-airline-themes/autoload/airline/themes/"
-
-  yes | vim -c "CocInstall -sync coc-vimlsp coc-sh coc-tsserver coc-go coc-html coc-css @yaegassy/coc-tailwindcss3 coc-json coc-yaml coc-prettier coc-eslint coc-dotenv coc-sql coc-lua coc-toml coc-svg coc-zshell coc-oxc coc-pyright" -c "qall!"
 
   rm -f "$HOME/.vim/temp.vimrc" && rm -rf "$DOTFILES_DIR" && cd
 
