@@ -1,6 +1,8 @@
-let g:sneak#label = 1
-let g:sneak#s_next = 1
-let g:sneak#prompt = '󰮇 '
+vim9script
+
+g:sneak#label = 1
+g:sneak#s_next = 1
+g:sneak#prompt = '󰮇 '
 
 map s <Plug>Sneak_s
 map S <Plug>Sneak_S

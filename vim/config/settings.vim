@@ -1,3 +1,5 @@
+vim9script
+
 runtime! ftplugin/man.vim
 
 packadd! matchit
@@ -30,3 +32,5 @@ set t_BE=
 set autoread
 
 colorscheme mountaineer
+hi Normal guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE

@@ -1,13 +1,15 @@
+vim9script
+
 set rtp+=/opt/homebrew/opt/fzf
 
 if exists('$TMUX')
-  let g:fzf_layout = { 'tmux': '100%,100%' }
+  g:fzf_layout = {tmux: '100%,100%'}
 else
-  let g:fzf_layout = { 'window': { 'width': 1, 'height': 1 } }
+  g:fzf_layout = {window: {width: 1, height: 1}}
 endif
 
-let g:fzf_vim = {}
-let g:fzf_vim.preview_window = ['right:50%:wrap', 'ctrl-/']
+g:fzf_vim = {}
+g:fzf_vim.preview_window = ['right:50%:wrap', 'ctrl-/']
 
 command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>,

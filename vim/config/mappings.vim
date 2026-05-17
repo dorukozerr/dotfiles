@@ -1,8 +1,10 @@
-" reset leader key
-let mapleader = "\<Space>"
+vim9script
 
-" gotta develop that muscle memory, one way or another Note after months of
-" enabling this mappings, it was the best decision in my life, no joke
+# reset leader key
+g:mapleader = "\<Space>"
+
+# gotta develop that muscle memory, one way or another Note after months of
+# enabling this mappings, it was the best decision in my life, no joke
 noremap <up> :echoerr "Senpai, use k instead"<CR>
 noremap <down> :echoerr "Senpai, use j instead"<CR>
 noremap <left> :echoerr "Senpai, use h instead"<CR>
@@ -15,18 +17,18 @@ inoremap <right> <NOP>
 nnoremap j gj
 nnoremap k gk
 
-" fugitive
+# fugitive
 nnoremap <Leader>gs :G status<CR>
 nnoremap <Leader>ga :G add .<CR>
 nnoremap <Leader>gc :vertical G commit<CR>
 nnoremap <Leader>gp :G push<CR>
 nnoremap <Leader>gd :vertical G diff<CR>
-nnoremap <Leader>gr :call GitRestoreCurrent()<CR>
+nnoremap <Leader>gr <Cmd>call GitRestoreCurrent()<CR>
 
-" open netrw
+# open netrw
 nnoremap <Leader>t :Explore<CR>
 
-" kisuke
+# kisuke
 nnoremap <Leader>ko :KisukeOpen<CR>
 nnoremap <Leader>krs :KisukeResumeLastSession<CR>
 nnoremap <Leader>km :KisukeMarkFocusedFile<CR>
@@ -38,7 +40,7 @@ nnoremap <Leader>krp :KisukeRestart<CR>
 nnoremap <Leader>kns :KisukeNextSession<CR>
 nnoremap <Leader>kps :KisukePreviousSession<CR>
 
-" fzf
+# fzf
 nnoremap <Leader>p :Files<CR>
 nnoremap <Leader>f :RG<CR>
 nnoremap <Leader>bb :Buffers<CR>
@@ -47,55 +49,55 @@ inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 nnoremap <Leader>gpa :GitStage<CR>
 nnoremap <Leader>c :Commands<CR>
 
-" buffers
+# buffers
 nnoremap <Leader>bn :bn<CR>
 nnoremap <Leader>bp :bp<CR>
-nnoremap <Leader>bt :call BufferToggle()<CR>
+nnoremap <Leader>bt <Cmd>call BufferToggle()<CR>
 nnoremap <leader>bda :%bdelete<Bar>edit #<Bar>normal`"<CR>
-nnoremap <Leader>bdc :call BufferDeleteCurrent()<CR>
+nnoremap <Leader>bdc <Cmd>call BufferDeleteCurrent()<CR>
 
-" window splits
+# window splits
 nnoremap <Leader>vs :vsplit<CR>
 
-" increase/decrease pane width and height
+# increase/decrease pane width and height
 nnoremap <Leader>ipw :vertical resize +10<CR>
 nnoremap <Leader>dpw :vertical resize -10<CR>
 nnoremap <Leader>iph :resize +10<CR>
 nnoremap <Leader>dph :resize -10<CR>
 
-" run precommit script
+# run precommit script
 nnoremap <leader>rp :Precommit<CR>
 
-" save file
+# save file
 nnoremap <leader>s :w<CR>
 
-" Replace the world under cursor globally inside the buffer
+# Replace the world under cursor globally inside the buffer
 nnoremap <leader>wr :%s/\<<C-r><C-w>\>//g<left><left>
 
-" Replace the selected content in visual mode globally inside the buffer
+# Replace the selected content in visual mode globally inside the buffer
 vnoremap <leader>pr y:%s/\V<C-r>=escape(@", '/\')<CR>//g<Left><Left>
 
-" Replace the selected content in visual mode globally inside the buffer also
-" enter selected content into new replace value field
+# Replace the selected content in visual mode globally inside the buffer also
+# enter selected content into new replace value field
 vnoremap <leader>pa y:%s/\V<C-r>=escape(@", '/\')<CR>/<C-r>=escape(@", '/\&~')<CR>/g<Left><Left>
 
-" Auto-center screen after search navigation
+# Auto-center screen after search navigation
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
 
-" Copying and yank improvements, yank registers into system clipboard and `gp`
-" mappings do paste from system clipboard
+# Copying and yank improvements, yank registers into system clipboard and `gp`
+# mappings do paste from system clipboard
 nnoremap y "+y
 vnoremap y "+y
 nnoremap Y "+Y
 nnoremap gp i<C-r><C-o>+<Esc>
 vnoremap gp "_c<C-r><C-o>+<Esc>
 
-" Man pages search
+# Man pages search
 nnoremap <leader>ms :ManSearch <C-r><right>
 
-" Clear/Reset file
-nnoremap <leader>cfe :call CleanFileLineEndings()<CR>
+# Clear/Reset file
+nnoremap <leader>cfe <Cmd>call CleanFileLineEndings()<CR>
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
+# Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)

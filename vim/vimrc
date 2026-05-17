@@ -1,22 +1,24 @@
-let g:config_dir = '~/.vim/config/'
+vim9script
 
-let g:config_files = [
-      \ 'custom.vim',
-      \ 'fzf.vim',
-      \ 'mappings.vim',
-      \ 'settings.vim',
-      \ 'airline.vim',
-      \ 'fastfold.vim',
-      \ 'sneak.vim',
-      \ 'lsp.vim',
-      \ ]
+var config_dir = '~/.vim/config/'
 
-for config_file in g:config_files
-  let full_path = expand(g:config_dir . config_file)
+var config_files = [
+  'custom.vim',
+  'fzf.vim',
+  'mappings.vim',
+  'settings.vim',
+  'airline.vim',
+  'fastfold.vim',
+  'sneak.vim',
+  'lsp.vim',
+]
+
+for config_file in config_files
+  var full_path = expand(config_dir .. config_file)
 
   if filereadable(full_path)
-    execute 'source ' . full_path
+    execute 'source ' .. full_path
   else
-    echo "Warning: Configuration file " . full_path . " not found"
+    echo 'Warning: Configuration file ' .. full_path .. ' not found'
   endif
 endfor
