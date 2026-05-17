@@ -14,4 +14,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 [ -s "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh" ] && source "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh"
 [ -f ~/.cargo/env ] && source ~/.cargo/env
-[ -f "$HOME/.vite-plus/env" ] && source "$HOME/.vite-plus/env"
+[ -f ~/.vite-plus/env ] && source ~/.vite-plus/env
