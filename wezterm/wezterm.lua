@@ -17,10 +17,12 @@ config.native_macos_fullscreen_mode = true
 config.window_background_opacity = 1
 config.macos_window_background_blur = 0
 
-config.color_scheme = 'Black Metal (Burzum) (base16)'
--- config.window_background_opacity = 0.8
--- config.macos_window_background_blur = 50
-
+-- config.color_scheme = 'Black Metal (Burzum) (base16)'
+config.color_scheme = 'Ashes (dark) (terminal.sexy)'
+-- config.color_scheme = 'Solarized Light (Gogh)'
+config.window_background_opacity = 0.925
+config.macos_window_background_blur = 10
+--
 config.keys = {
   { key = "v",     mods = "CMD",       action = wezterm.action.PasteFrom "Clipboard" },
   { key = "c",     mods = "CMD",       action = wezterm.action.CopyTo "Clipboard" },

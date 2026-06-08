@@ -1,7 +1,7 @@
 " let g:airline_theme='base16_black_metal_venom'
-" let g:airline_theme='base16_ashes'
+let g:airline_theme='base16_ashes'
 " let g:airline_theme='base16_grayscale_dark'
-let g:airline_theme='mountaineer_grey'
+" let g:airline_theme='mountaineer_grey'
 
 let g:airline_left_sep=''
 let g:airline_right_sep=''

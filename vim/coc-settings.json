@@ -22,5 +22,16 @@
   "typescript.format.enable": false,
   "prettier.enable": false,
   "coc.preferences.formatOnSave": true,
-  "typescript.updateImportsOnFileMove.enabled": "always"
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "snippets.trace": "error",
+  "snippet.highlight": true,
+  "snippets.ultisnips.trace": true,
+  "snippets.extends": {
+    "typescriptreact": [
+      "typescript"
+    ],
+    "javascriptreact": [
+      "javascript"
+    ]
+  }
 }
