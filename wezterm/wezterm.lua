@@ -3,13 +3,13 @@ local config = wezterm.config_builder()
 
 config.font = wezterm.font("IosevkaTerm NF")
 -- config.font = wezterm.font("CaskaydiaCove Nerd Font")
-config.font_size = 24.0
+config.font_size = 18.0
 config.allow_square_glyphs_to_overflow_width = "Always"
 config.harfbuzz_features = { "calt=1", "clig=1", "liga=1" }
 config.underline_thickness = 1
 config.underline_position = -2
 
-config.window_padding = { left = 12, right = 12, top = 16, bottom = 0 }
+config.window_padding = { left = 8, right = 8, top = 10, bottom = 5 }
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.window_close_confirmation = "NeverPrompt"
@@ -20,6 +20,7 @@ config.macos_window_background_blur = 0
 -- config.color_scheme = 'Black Metal (Burzum) (base16)'
 config.color_scheme = 'Ashes (dark) (terminal.sexy)'
 -- config.color_scheme = 'Solarized Light (Gogh)'
+-- config.color_scheme = 'Solarized Dark (Gogh)'
 config.window_background_opacity = 0.925
 config.macos_window_background_blur = 10
 --

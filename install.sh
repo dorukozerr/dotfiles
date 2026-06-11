@@ -70,12 +70,12 @@ main() {
     done
   done
 
-  chmod +x "$DOTFILES_DIR/scripts/"*
+  chmod +x "$DOTFILES_DIR/scripts/bin/"*
 
   mkdir -p "$HOME/.local/bin/"
   mkdir -p "$HOME/.config/zsh/"
 
-  mv "$DOTFILES_DIR/scripts/"* "$HOME/.local/bin"
+  mv "$DOTFILES_DIR/scripts/bin/"* "$HOME/.local/bin"
   mv "$DOTFILES_DIR/git/.gitconfig" "$DOTFILES_DIR/zsh/.zshenv" "$HOME/"
   mv "$DOTFILES_DIR/zsh/.zshrc" "$DOTFILES_DIR/zsh/zsh.d" "$HOME/.config/zsh/"
   mv "$DOTFILES_DIR/wezterm" "$DOTFILES_DIR/htop" "$HOME/.config/"

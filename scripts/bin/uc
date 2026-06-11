@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Doruk Özer <dorukozer@protonmail.com>
+
+set -e
+
+updateConfig() {
+  dotfiles="$HOME/repos/dotfiles/"
+  pairs=(
+    "git:$HOME/.gitconfig"
+    "zsh:$HOME/.config/zsh/.zshrc,$HOME/.config/zsh/zsh.d"
+    "vim:$HOME/.vim/vimrc,$HOME/.vim/config,$HOME/.vim/colors"
+    "wezterm:$HOME/.config/wezterm/wezterm.lua"
+    "tmux:$HOME/.config/tmux/tmux.conf,$HOME/.config/tmux/snapshot.conf,$HOME/.config/tmux/tmux-nerd-font-window-name.yml",
+    "scripts:$HOME/.local/bin"
+  )
+  for pair in ${pairs[@]}; do
+    type="${pair%%:*}"; paths="${pair##*:}"
+    IFS="," read -ra files <<< "$paths"
+    for file in "${files[@]}"; do
+      cp -rv "$file" "$dotfiles/$type"
+    done
+  done
+}
+
+updateConfig
