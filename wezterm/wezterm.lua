@@ -17,8 +17,8 @@ config.native_macos_fullscreen_mode = true
 config.window_background_opacity = 1
 config.macos_window_background_blur = 0
 
--- config.color_scheme = 'Black Metal (Burzum) (base16)'
-config.color_scheme = 'Ashes (dark) (terminal.sexy)'
+config.color_scheme = 'Black Metal (Burzum) (base16)'
+-- config.color_scheme = 'Ashes (dark) (terminal.sexy)'
 -- config.color_scheme = 'Solarized Light (Gogh)'
 -- config.color_scheme = 'Solarized Dark (Gogh)'
 config.window_background_opacity = 0.925
