@@ -3,7 +3,7 @@ local config = wezterm.config_builder()
 
 config.font = wezterm.font("IosevkaTerm NF")
 -- config.font = wezterm.font("CaskaydiaCove Nerd Font")
-config.font_size = 18.0
+config.font_size = 20
 config.allow_square_glyphs_to_overflow_width = "Always"
 config.harfbuzz_features = { "calt=1", "clig=1", "liga=1" }
 config.underline_thickness = 1
@@ -17,10 +17,10 @@ config.native_macos_fullscreen_mode = true
 config.window_background_opacity = 1
 config.macos_window_background_blur = 0
 
-config.color_scheme = 'Black Metal (Burzum) (base16)'
+-- config.color_scheme = 'Black Metal (Venom) (base16)'
 -- config.color_scheme = 'Ashes (dark) (terminal.sexy)'
 -- config.color_scheme = 'Solarized Light (Gogh)'
--- config.color_scheme = 'Solarized Dark (Gogh)'
+config.color_scheme = 'Solarized Dark (Gogh)'
 config.window_background_opacity = 0.925
 config.macos_window_background_blur = 10
 --

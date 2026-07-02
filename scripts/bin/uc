@@ -4,7 +4,7 @@
 set -e
 
 updateConfig() {
-  dotfiles="$HOME/repos/dotfiles/"
+  dotfiles="$HOME/repos/personal/dotfiles/"
   pairs=(
     "git:$HOME/.gitconfig"
     "zsh:$HOME/.config/zsh/.zshrc,$HOME/.config/zsh/zsh.d"

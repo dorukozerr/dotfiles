@@ -27,8 +27,9 @@ set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}
 set t_BE=
 set autoread
 
-colorscheme mountaineer
+set background=dark
+" colorscheme mountaineer
 " colorscheme habamax
-" colorscheme base16-solarized-light
+colorscheme solarized8_high
 " hi Normal guibg=NONE ctermbg=NONE
 " hi EndOfBuffer guibg=NONE ctermbg=NONE
