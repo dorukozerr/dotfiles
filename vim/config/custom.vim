@@ -128,6 +128,22 @@ command! -nargs=1 Lorem call GenerateLoremIpsum(<args>)
 let g:window_zoomed = 0
 let g:window_layout = {}
 
+func! SmartBufNav(direction)
+  let listed = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+  if len(listed) <= 1 | return | endif
+  let cur_idx = index(listed, bufnr('%'))
+  if cur_idx == -1 | return | endif
+  let next_idx = (cur_idx + a:direction + len(listed)) % len(listed)
+  let target_buf = listed[next_idx]
+  for w in range(1, winnr('$'))
+    if winbufnr(w) == target_buf
+      execute w . 'wincmd w'
+      return
+    endif
+  endfor
+  execute 'buffer ' . target_buf
+endfunc
+
 func! BufferToggle()
   if g:window_zoomed == 0
     let g:window_layout = {

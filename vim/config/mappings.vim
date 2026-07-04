@@ -57,11 +57,16 @@ nnoremap <Leader>bdc :call BufferDeleteCurrent()<CR>
 " window splits
 nnoremap <Leader>vs :vsplit<CR>
 
-" increase/decrease pane width and height
-nnoremap <Leader>ipw :vertical resize +10<CR>
-nnoremap <Leader>dpw :vertical resize -10<CR>
-nnoremap <Leader>iph :resize +10<CR>
-nnoremap <Leader>dph :resize -10<CR>
+" navigate buffers with Ctrl+Left/Right; jumps to the window already showing
+" that buffer if one exists, otherwise opens it in the current split
+nnoremap <C-Left>  :call SmartBufNav(-1)<CR>
+nnoremap <C-Right> :call SmartBufNav(1)<CR>
+
+" grow/shrink current split with Cmd+arrow
+nnoremap <D-Right> :vertical resize +10<CR>
+nnoremap <D-Left>  :vertical resize -10<CR>
+nnoremap <D-Up>    :resize +10<CR>
+nnoremap <D-Down>  :resize -10<CR>
 
 " run precommit script
 nnoremap <leader>rp :Precommit<CR>
