@@ -11,6 +11,10 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/homebrew/opt/ffmpeg-full/bin:$PATH"
+
+export LDFLAGS="-L/opt/homebrew/opt/ffmpeg-full/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/ffmpeg-full/include"
 
 [ -s "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh" ] && source "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh"
 [ -f ~/.cargo/env ] && source ~/.cargo/env
