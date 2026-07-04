@@ -30,6 +30,7 @@ set autoread
 set background=dark
 " colorscheme mountaineer
 " colorscheme habamax
-colorscheme solarized8_high
+" colorscheme solarized8_high
+colorscheme base16-black-metal-venom
 " hi Normal guibg=NONE ctermbg=NONE
 " hi EndOfBuffer guibg=NONE ctermbg=NONE
