@@ -1,4 +1,4 @@
-typeset -ga ZVM_DISABLED_KEYS=("viins ^R" "viins ^T" )
+typeset -ga ZVM_DISABLED_KEYS=("viins ^R" "viins ^T" "viins ^Y" )
 
 functions[_zvm_bindkey_orig]=$functions[zvm_bindkey]
 zvm_bindkey() {

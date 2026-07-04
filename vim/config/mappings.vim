@@ -24,7 +24,7 @@ nnoremap <Leader>gd :vertical G diff<CR>
 nnoremap <Leader>gr :call GitRestoreCurrent()<CR>
 
 " open netrw
-nnoremap <Leader>t :Explore<CR>
+nnoremap <Leader>t :Explore %:p:h<CR>
 
 " kisuke
 nnoremap <Leader>ko :KisukeOpen<CR>
