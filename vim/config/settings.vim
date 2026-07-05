@@ -26,6 +26,9 @@ set title
 set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}
 set t_BE=
 set autoread
+set clipboard=unnamedplus
+
+autocmd FocusGained,BufEnter * checktime
 
 set background=dark
 " colorscheme mountaineer

@@ -1,12 +1,11 @@
 func! CocCopyDefinition() abort
-  let hover_result = CocActionAsync('doHover')
+  call CocActionAsync('doHover', function('s:CocCopyDefinitionCb'))
+endfunc
 
-  sleep 100m
-
+func! s:CocCopyDefinitionCb(...) abort
   let float_wins = coc#float#get_float_win_list()
   if empty(float_wins)
     echoerr "You must be joking..."
-
     return
   endif
 
@@ -15,10 +14,7 @@ func! CocCopyDefinition() abort
   let hover_content = join(hover_lines, "\n")
 
   let @" = hover_content
-
-  if has('clipboard')
-    let @+ = hover_content
-  endif
+  let @+ = hover_content
 
   call coc#float#close_all()
 
@@ -81,8 +77,6 @@ augroup GitStatsUpdate
   autocmd!
   autocmd BufWritePost * let g:git_stats = GitStats()
   autocmd VimEnter * let g:git_stats = GitStats()
-  autocmd BufEnter * let g:git_stats = GitStats()
-  autocmd BufLeave * let g:git_stats = GitStats()
 augroup END
 
 func! GenerateLoremIpsum(count)

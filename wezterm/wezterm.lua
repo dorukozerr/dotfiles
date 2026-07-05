@@ -23,6 +23,7 @@ config.macos_window_background_blur = 0
 config.color_scheme = 'Solarized Dark (Gogh)'
 config.window_background_opacity = 0.925
 config.macos_window_background_blur = 10
+
 --
 config.keys = {
   { key = "v",     mods = "CMD",       action = wezterm.action.PasteFrom "Clipboard" },

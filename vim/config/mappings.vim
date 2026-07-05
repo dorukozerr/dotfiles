@@ -88,11 +88,7 @@ vnoremap <leader>pa y:%s/\V<C-r>=escape(@", '/\')<CR>/<C-r>=escape(@", '/\&~')<C
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
 
-" Copying and yank improvements, yank registers into system clipboard and `gp`
-" mappings do paste from system clipboard
-nnoremap y "+y
-vnoremap y "+y
-nnoremap Y "+Y
+" gp pastes without moving cursor to end (insert-literal from clipboard)
 nnoremap gp i<C-r><C-o>+<Esc>
 vnoremap gp "_c<C-r><C-o>+<Esc>
 
