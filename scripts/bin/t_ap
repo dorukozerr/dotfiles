@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+#
+# tmux airline patch
+#
+# this is AI generated but to be honest its not about who wrote the code at
+# this point, its more about how to speedrun becoming ultimate questionable
+# life choices sommelier.
+#
+# Extract vim-airline section colors from vim's live highlight groups
+# (airline_a / airline_b / airline_c) and emit the snapshot.conf theme tokens.
+# example snapsot.conf
+# https://github.com/dorukozerr/dotfiles/blob/main/tmux/snapshot.conf
+# snapshot.conf or the config file pointed from this script should have some
+# start, end markers for this script to work
+#
+#   t_ap              print tokens for the current airline theme
+#   t_ap <theme>      print tokens for a specific airline theme
+#   t_ap [theme] -w   update snapshot.conf in place + reload tmux
+
+set -euo pipefail
+
+CONF="$HOME/.config/tmux/snapshot.conf"
+
+theme="" write=0
+for a in "$@"; do
+  case "$a" in
+    -w|--write) write=1 ;;
+    -*) echo "usage: $(basename "$0") [theme] [-w]" >&2; exit 1 ;;
+    *) theme="$a" ;;
+  esac
+done
+
+out="$(mktemp)" vs="$(mktemp)"
+trap 'rm -f "$out" "$vs"' EXIT
+
+cat > "$vs" <<'VIM'
+set nomore
+silent! call airline#init#bootstrap()
+if !empty(get(g:, 'theme_arg', ''))
+  silent! call airline#switch_theme(g:theme_arg)
+else
+  silent! call airline#load_theme()
+endif
+silent! call airline#highlighter#highlight(['normal'])
+function! s:Hex(color) abort
+  " highlight groups may hold X11 color names (gray30); resolve via v:colornames
+  return a:color =~? '^#' ? a:color : get(v:colornames, tolower(a:color), a:color)
+endfunction
+function! s:Col(group) abort
+  let id = synIDtrans(hlID(a:group))
+  return [s:Hex(synIDattr(id, 'fg#', 'gui')), s:Hex(synIDattr(id, 'bg#', 'gui'))]
+endfunction
+let s:lines = []
+for s:g in ['airline_a', 'airline_b', 'airline_c', 'airline_c_inactive']
+  if hlexists(s:g)
+    let [s:fg, s:bg] = s:Col(s:g)
+    call add(s:lines, s:g . ' ' . s:fg . ' ' . s:bg)
+  endif
+endfor
+call writefile(s:lines, $OUT_FILE)
+qa!
+VIM
+
+OUT_FILE="$out" vim -es ${theme:+-c "let g:theme_arg='$theme'"} -S "$vs" </dev/null >/dev/null 2>&1 || true
+
+get() { awk -v g="$1" -v f="$2" '$1 == g { print $(f + 1) }' "$out"; }
+
+A_FG="$(get airline_a 1)"; A_BG="$(get airline_a 2)"
+B_FG="$(get airline_b 1)"; B_BG="$(get airline_b 2)"
+C_FG="$(get airline_c 1)"; C_BG="$(get airline_c 2)"
+IA_FG="$(get airline_c_inactive 1)"; IA_FG="${IA_FG:-$C_FG}"
+
+if [[ ! "$A_BG" =~ ^# || ! "$B_BG" =~ ^# || ! "$C_BG" =~ ^# ]]; then
+  echo "error: could not read airline highlight groups (got: $(cat "$out"))" >&2
+  exit 1
+fi
+
+block="$(cat <<EOF
+%hidden BG="$C_BG"          # airline_c bg / background
+%hidden BG_ALT="$C_BG"      # status fill            (airline_c bg)
+%hidden SEL="$B_BG"         # mid panel / section B  (airline_b bg)
+%hidden FG_DIM="$IA_FG"      # inactive text          (airline_c_inactive fg)
+%hidden FG="$B_FG"          # section text           (airline_b fg)
+
+# ---- airline section roles ----
+# Section A = mode/title (highlighted), B = middle, C = outer status fill.
+%hidden A_FG="$A_FG"
+%hidden A_BG="$A_BG"
+%hidden B_FG="\${FG}"
+%hidden B_BG="\${SEL}"
+%hidden C_FG="\${FG_DIM}"
+%hidden C_BG="\${BG_ALT}"
+EOF
+)"
+
+if [[ "$write" -eq 0 ]]; then
+  printf '%s\n' "$block"
+  exit 0
+fi
+
+# BSD awk rejects multiline -v strings; splice the file around the markers.
+{
+  awk '/^# >>> theme tokens/ { exit } { print }' "$CONF"
+  printf '# >>> theme tokens (airline: %s) >>>\n%s\n' "${theme:-current}" "$block"
+  awk '/^# <<< theme tokens/,0' "$CONF"
+} > "$CONF.tmp" && mv "$CONF.tmp" "$CONF"
+
+if tmux info >/dev/null 2>&1; then
+  tmux source-file "$CONF"
+  echo "updated $CONF and reloaded tmux (theme: ${theme:-current})"
+else
+  echo "updated $CONF (theme: ${theme:-current})"
+fi

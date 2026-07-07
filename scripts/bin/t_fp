@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# original author: https://github.com/raine/tmux-file-picker/blob/main/tmux-file-picker 
+# some sections and options of original script are extracted, slightly modificated
+
 set -euo pipefail
 
 tmux_file_picker() {

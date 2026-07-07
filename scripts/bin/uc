@@ -8,7 +8,7 @@ updateConfig() {
   pairs=(
     "git:$HOME/.gitconfig"
     "zsh:$HOME/.config/zsh/.zshrc,$HOME/.config/zsh/zsh.d"
-    "vim:$HOME/.vim/vimrc,$HOME/.vim/config,$HOME/.vim/colors"
+    "vim:$HOME/.vim/vimrc,$HOME/.vim/config,$HOME/.vim/coc-settings.json"
     "wezterm:$HOME/.config/wezterm/wezterm.lua"
     "tmux:$HOME/.config/tmux/tmux.conf,$HOME/.config/tmux/snapshot.conf,$HOME/.config/tmux/tmux-nerd-font-window-name.yml",
     "scripts:$HOME/.local/bin"

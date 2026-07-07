@@ -1,9 +1,9 @@
 set rtp+=/opt/homebrew/opt/fzf
 
 if exists('$TMUX')
-  let g:fzf_layout = { 'tmux': '100%,100%' }
+  let g:fzf_layout = { 'tmux': '70%,85%' }
 else
-  let g:fzf_layout = { 'window': { 'width': 1, 'height': 1 } }
+  let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.85 } }
 endif
 
 let g:fzf_vim = {}
@@ -28,15 +28,3 @@ command! -bang -range=% -nargs=* Commits
       \   extend(fzf#vim#with_preview({ "placeholder": "" }), {
       \     'options': get(fzf#vim#with_preview({ "placeholder": "" }), 'options', [])
       \   }), <bang>0)
-
-command! -bang GitStage
-      \ call fzf#run(fzf#wrap({
-      \   'source': '{ git diff --name-only; git ls-files --others --exclude-standard; } | sort -u',
-      \   'options': [
-      \     '--multi',
-      \     '--preview', 'git diff --color=always -- {} 2>/dev/null || bat --color=always {}',
-      \     '--bind', 'ctrl-a:select-all',
-      \     '--header', 'TAB: select | CTRL-A: all | ENTER: stage'
-      \   ],
-      \   'sink*': function('GitPartialAdd')
-      \ }, <bang>0))

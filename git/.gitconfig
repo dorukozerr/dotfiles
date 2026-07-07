@@ -1,19 +1,21 @@
 [user]
-	name = Doruk Özer
-	email = dorukozer@protonmail.com
-	signingkey = /Users/suqoi/.ssh/id_ed25519.pub
+  name = Doruk Özer
+  email = dorukozer@protonmail.com
+  signingkey = /Users/suqoi/.ssh/id_yamete.pub
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 [push]
-	autoSetupRemote = true
+  autoSetupRemote = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [pull]
   rebase = true
+[commit]
+  gpgSign = true
 [gpg]
-	format = ssh
+  format = ssh

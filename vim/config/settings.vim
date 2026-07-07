@@ -31,9 +31,6 @@ set clipboard=unnamedplus
 autocmd FocusGained,BufEnter * checktime
 
 set background=dark
-" colorscheme mountaineer
-" colorscheme habamax
-colorscheme solarized8_high
-" colorscheme base16-black-metal-venom
+colorscheme habamax
 " hi Normal guibg=NONE ctermbg=NONE
 " hi EndOfBuffer guibg=NONE ctermbg=NONE

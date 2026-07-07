@@ -20,6 +20,7 @@
   "oxc.oxfmt.enable": true,
   "javascript.format.enable": false,
   "typescript.format.enable": false,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "prettier.enable": false,
   "coc.preferences.formatOnSave": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
@@ -33,5 +34,6 @@
     "javascriptreact": [
       "javascript"
     ]
-  }
+  },
+  "snippets.ultisnips.pythonPrompt": false
 }

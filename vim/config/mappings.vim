@@ -88,6 +88,11 @@ vnoremap <leader>pa y:%s/\V<C-r>=escape(@", '/\')<CR>/<C-r>=escape(@", '/\&~')<C
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
 
+" clipboard_provider on macOS doesn't sync pure yanks via unnamedplus
+nnoremap y "+y
+vnoremap y "+y
+nnoremap Y "+Y
+
 " gp pastes without moving cursor to end (insert-literal from clipboard)
 nnoremap gp i<C-r><C-o>+<Esc>
 vnoremap gp "_c<C-r><C-o>+<Esc>

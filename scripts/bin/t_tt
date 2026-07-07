@@ -1,0 +1,178 @@
+#!/usr/bin/env bash
+
+# Tmux Time Tracker
+#
+# Someone wasted time to track how much time will be wasted and what will be
+# the falsifiable reasons of shipping nothing just for the people who wants to
+# track how much time they waste, and record their overtinking process and why
+# nothing is being shipped.
+#
+# cli: t_tt {start [type]|stop|cancel|status|is_running|log|toggle}
+#
+# tmux integration exampels
+#
+# script can be used only with spamming keymapping below.
+#
+# ```
+# bind-key C-t run-shell "t_tt toggle"
+# ```
+#
+# For showing the timer duration in status bar same script can be used to get
+# elapsed time
+#
+# ```
+# set -g status-right "#(t_tt status)"
+# ```
+
+TIMER_FILE="/tmp/tmux_timer_${USER}"
+TYPE_FILE="/tmp/tmux_timer_type_${USER}"
+LOG_DIR="$HOME/.sandbox/tmux-logs"
+TEMP_NOTE="/tmp/tmux_timer_note_${USER}.md"
+
+# Predefined log types - selected on start, log file becomes <type>.md
+TYPES=(work personal random void)
+
+timer_start() {
+  # Start timer - save current timestamp and log type (uppercased)
+  log_type=$(echo "${1:-log}" | tr '[:lower:]' '[:upper:]')
+  echo "$log_type" > "$TYPE_FILE"
+  date +%s > "$TIMER_FILE"
+  tmux display-message "Timer started! [$log_type]"
+}
+
+timer_stop() {
+  # Stop timer and return duration
+  if [ -f "$TIMER_FILE" ]; then
+    start_time=$(cat "$TIMER_FILE")
+    end_time=$(date +%s)
+    duration=$((end_time - start_time))
+    rm -f "$TIMER_FILE"
+    echo "$duration"
+  else
+    echo "0"
+  fi
+}
+
+timer_cancel() {
+  # Cancel timer without logging
+  rm -f "$TIMER_FILE" "$TYPE_FILE"
+}
+
+timer_status() {
+  # Show current timer status or default message
+  if [ -f "$TIMER_FILE" ]; then
+    start_time=$(cat "$TIMER_FILE")
+    current_time=$(date +%s)
+    elapsed=$((current_time - start_time))
+
+    # Format as HH:MM:SS
+    hours=$((elapsed / 3600))
+    mins=$(((elapsed % 3600) / 60))
+    secs=$((elapsed % 60))
+
+    log_type=$(cat "$TYPE_FILE" 2>/dev/null || echo "log")
+    printf "[%s] %02d:%02d:%02d" "$log_type" "$hours" "$mins" "$secs"
+  else
+    echo "wecowd senpai"
+  fi
+}
+
+timer_is_running() {
+  # Check if timer is running (returns 0 if yes, 1 if no)
+  [ -f "$TIMER_FILE" ]
+}
+
+timer_log() {
+  # Log file reflects the type selected on start, one file per day
+  log_type=$(cat "$TYPE_FILE" 2>/dev/null || echo "log")
+  log_file="$LOG_DIR/$(date +%Y-%m-%d)_${log_type}.md"
+
+  # Ensure directory exists
+  mkdir -p "$LOG_DIR"
+
+  # Get duration from timer
+  duration=$(timer_stop)
+
+  if [ "$duration" = "0" ]; then
+    tmux display-message "No active timer!"
+    exit 1
+  fi
+
+  # Format duration as HH:MM:SS
+  hours=$((duration / 3600))
+  mins=$(((duration % 3600) / 60))
+  secs=$((duration % 60))
+  duration_formatted=$(printf "%02d:%02d:%02d" "$hours" "$mins" "$secs")
+
+  # Create pre-filled template for note
+  cat > "$TEMP_NOTE" << 'EOF'
+<!-- Edit below. Save and quit to log (:wq), quit without saving to cancel (:q!) -->
+**TASK_NAME**
+
+* NOTE1
+EOF
+  template_body=$(grep -v "^<!--" "$TEMP_NOTE")
+
+  # Open vim in tmux popup, cursor on the task name line
+  tmux display-popup -E -w 80% -h 80% -d "#{pane_current_path}" \
+    "vim -c '2' '$TEMP_NOTE'"
+
+  # Check if user saved the file with actual edits
+  if [ -f "$TEMP_NOTE" ]; then
+    content=$(grep -v "^<!--" "$TEMP_NOTE")
+
+    if [ -n "$(echo "$content" | grep -v '^[[:space:]]*$')" ] && [ "$content" != "$template_body" ]; then
+      # Append to log file as written
+      {
+        echo "---"
+        echo ""
+        echo "## $(date '+%Y-%m-%d %H:%M:%S')"
+        echo ""
+        echo "**Duration:** $duration_formatted"
+        echo ""
+        echo "$content"
+        echo ""
+      } >> "$log_file"
+
+      tmux display-message "Logged to $(basename "$log_file")! Duration: $duration_formatted"
+    else
+      tmux display-message "Cancelled - no content"
+    fi
+
+    rm -f "$TEMP_NOTE" "$TYPE_FILE"
+  else
+    tmux display-message "Cancelled"
+  fi
+}
+
+timer_toggle() {
+  if timer_is_running; then
+    # Timer is running - open log popup
+    timer_log
+  else
+    # No timer - pick a log type first, then start
+    menu_args=()
+    i=1
+    for t in "${TYPES[@]}"; do
+      menu_args+=("$t" "$i" "run-shell 't_tt start $t'")
+      i=$((i + 1))
+    done
+    tmux display-menu -T " Log type " "${menu_args[@]}"
+  fi
+}
+
+cmd="${1:-status}"
+
+case "$cmd" in
+  start)      timer_start "$2" ;;
+  stop)       timer_stop ;;
+  cancel)     timer_cancel ;;
+  status)     timer_status ;;
+  is_running) timer_is_running ;;
+  log)        timer_log ;;
+  toggle)     timer_toggle ;;
+  *)
+    echo "Usage: t_tt {start [type]|stop|cancel|status|is_running|log|toggle}" >&2
+    exit 1
+    ;;
+esac
