@@ -1,2 +1,4 @@
 icons:
   bun: ''
+  multi-pane-icon: "" # show when window has multiple panes (blank by default)
+

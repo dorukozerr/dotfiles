@@ -29,6 +29,7 @@ finalize_plugins() {
   for ROOT_DIR in ${PLUGINS_ROOT_PATHS[@]}; do
     for PLUGIN in $(\ls -d "$ROOT_DIR/"*); do
       git -C $PLUGIN switch - 2>&1 &
+      # git -C $PLUGIN fetch --unshallow 
     done
   done
   wait

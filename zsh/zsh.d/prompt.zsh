@@ -1,1 +1,1 @@
-PROMPT='%F{red}%2~ %# %f'
+PROMPT='%F{red}%2~ %(1j.[%j] .)%# %f'
