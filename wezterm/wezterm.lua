@@ -2,7 +2,6 @@ local wezterm = require "wezterm"
 local config = wezterm.config_builder()
 
 config.font = wezterm.font("IosevkaTerm NF")
--- config.font = wezterm.font("0xProto Nerd Font Mono")
 config.adjust_window_size_when_changing_font_size = false
 config.font_size = 20
 config.allow_square_glyphs_to_overflow_width = "Always"
@@ -19,13 +18,7 @@ config.native_macos_fullscreen_mode = true
 config.window_background_opacity = 1
 config.macos_window_background_blur = 0
 
--- config.color_scheme = 'Solarized Dark Higher Contrast'
--- config.color_scheme = 'Solarized Light (Gogh)'
--- config.color_scheme = 'Sequoia Moonlight'
-config.color_scheme = 'Grayscale Dark (base16)'
--- config.color_scheme = 'Black Metal (Venom) (base16)'
--- config.color_scheme = 'Solarized Light (Gogh)'
--- config.color_scheme = 'Gruvbox dark, pale (base16)'
+config.color_scheme = 'Solarized Dark Higher Contrast'
 
 config.macos_window_background_blur = 10
 
