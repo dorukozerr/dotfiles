@@ -1,195 +1,143 @@
-" " I wish I could understand and write something like this myself...
-" " Original author https://github.com/arp242/startscreen.vim
-" 
-" scriptencoding utf-8
-" 
-" if exists('g:loaded_startscreen') | finish | endif
-" 
-" let g:loaded_startscreen = 1
-" let s:save_cpo = &cpo
-" 
-" set cpo&vim
-" 
-" fun! startscreen#fortune()
-" 	let l:fortune = systemlist('fortune')
-" 
-" 	call append('0', ['', ''] + map(l:fortune, '"        " . v:val'))
-" 
-" 	:1
-" 
-" 	redraw!
-" 
-" 	nnoremap <buffer> <silent> <Return> :enew<CR>:call startscreen#start()<CR>
-" endfun
-" 
-" if !exists('g:Startscreen_function')
-" 	let g:Startscreen_function = function('startscreen#fortune')
-" endif
-" 
-" fun! startscreen#start()
-" 	if argc() || line2byte('$') != -1 || v:progname !~? '^[-gmnq]\=vim\=x\=\%[\.exe]$' || &insertmode
-" 		return
-" 	endif
-" 
-" 	enew
-" 
-" 	setlocal
-" 				\ bufhidden=wipe
-" 				\ buftype=nofile
-" 				\ nobuflisted
-" 				\ nocursorcolumn
-" 				\ nocursorline
-" 				\ nolist
-" 				\ nonumber
-" 				\ noswapfile
-" 				\ norelativenumber
-" 
-" 	call g:Startscreen_function()
-" 
-" 	setlocal nomodifiable nomodified
-" 
-" 	nnoremap <buffer><silent> e :enew<CR>
-" 	nnoremap <buffer><silent> i :enew <bar> startinsert<CR>
-" 	nnoremap <buffer><silent> o :enew <bar> startinsert<CR><CR>
-" 	nnoremap <buffer><silent> p :enew<CR>p
-" 	nnoremap <buffer><silent> P :enew<CR>P
-" endfun
-" 
-" augroup startscreen
-" 	autocmd!
-" 	autocmd VimEnter * call startscreen#start()
-" augroup end
-" 
-" let &cpo = s:save_cpo
-" 
-" unlet s:save_cpo
-
+vim9script
 scriptencoding utf-8
 
 if exists('g:loaded_startscreen') | finish | endif
+g:loaded_startscreen = 1
 
-let g:loaded_startscreen = 1
-let s:save_cpo = &cpo
-
-set cpo&vim
-
-let s:ascii_art = [
-      \ '  ▄████  ██▓▄▄▄█████▓     ▄████  █    ██ ▓█████▄ ',
-      \ ' ██▒ ▀█▒▓██▒▓  ██▒ ▓▒    ██▒ ▀█▒ ██  ▓██▒▒██▀ ██▌',
-      \ '▒██░▄▄▄░▒██▒▒ ▓██░ ▒░   ▒██░▄▄▄░▓██  ▒██░░██   █▌',
-      \ '░▓█  ██▓░██░░ ▓██▓ ░    ░▓█  ██▓▓▓█  ░██░░▓█▄   ▌',
-      \ '░▒▓███▀▒░██░  ▒██▒ ░    ░▒▓███▀▒▒▒█████▓ ░▒████▓ ',
-      \ ' ░▒   ▒ ░▓    ▒ ░░       ░▒   ▒ ░▒▓▒ ▒ ▒  ▒▒▓  ▒ ',
-      \ '  ░   ░  ▒ ░    ░         ░   ░ ░░▒░ ░ ░  ░ ▒  ▒ ',
-      \ '░ ░   ░  ▒ ░  ░         ░ ░   ░  ░░░ ░ ░  ░ ░  ░ ',
-      \ '      ░  ░                    ░    ░        ░    ',
-      \ '                                          ░      ',
-      \ ]
-
-let s:humiliation_messages = [
-      \ "Another day of pretending you know what you're doing?",
-      \ "Even rubber duck debugging gave up on you.",
-      \ "Your code has more bugs than features, impressive really.",
-      \ "Your function names are as meaningful as your life choices.",
-      \ "Your variable names suggest you've given up on communication.",
-      \ "Your git history looks like a toddler's art project.",
-      \ ]
-
-fun! startscreen#center_text(text, width)
-  let l:padding = (a:width - strwidth(a:text)) / 2
-
-  return repeat(' ', l:padding) . a:text
-endfun
-
-fun! startscreen#custom_art()
-  let l:win_width = winwidth(0)
-  let l:win_height = winheight(0)
-
-  let l:was_modifiable = &l:modifiable
-  setlocal modifiable
-
-  %delete _
-
-  let l:art_height = len(s:ascii_art)
-  let l:total_content_height = l:art_height + 4
-  let l:top_padding = max([0, (l:win_height - l:total_content_height) / 2])
-
-  call append(0, repeat([''], l:top_padding))
-
-  let l:art_start = line('$') + 1
-
-  for line in s:ascii_art
-    call append(line('$'), startscreen#center_text(line, l:win_width))
-  endfor
-
-  let l:art_end = line('$')
-
-  call append(line('$'), ['', ''])
-  let l:message_index = localtime() % len(s:humiliation_messages)
-  let l:message = s:humiliation_messages[l:message_index]
-  let l:message_line = line('$') + 1
-
-  call append(line('$'), startscreen#center_text(l:message, l:win_width))
-  call append(line('$'), '')
-
-  :1
-
-  if !l:was_modifiable
-    setlocal nomodifiable
+highlight default link StartScreenArt Statement
+highlight default link StartScreenMsg Comment
+for t in ['Art', 'Msg']
+  if prop_type_get('StartScreen' .. t) == {}
+    prop_type_add('StartScreen' .. t, {highlight: 'StartScreen' .. t})
   endif
+endfor
 
-  redraw!
+const s_chars = split('!<>-_\/[]{}—=+*^?#$%&abcdefghijklmnopqrstuvwxyz01', '\zs')
+const s_speed = 1.4   # characters revealed per frame
+const s_hold = 110    # frames a finished message lingers before rotating
+const s_msgs = [
+  "Another day of pretending you know what you're doing?",
+  "Even rubber duck debugging gave up on you.",
+  "Your code has more bugs than features, impressive really.",
+  "Your function names are as meaningful as your life choices.",
+  "Your variable names suggest you've given up on communication.",
+  "Your git history looks like a toddler's art project.",
+  "The compiler warnings are just cries for help at this point.",
+  "You've reinvented the wheel, but square this time.",
+  "Your tests pass because you don't to write them.",
+  "TODO: learn to code. Dated three years ago.",
+  "Merge conflicts fear no one, least of all you.",
+  "Semicolons weep quietly wherever you go.",
+  "You debug by adding print statements and prayer.",
+  "Refactoring, or as you call it, breaking what worked.",
+]
+const s_art = [
+  '  ▄████  ██▓▄▄▄█████▓     ▄████  █    ██ ▓█████▄ ',
+  ' ██▒ ▀█▒▓██▒▓  ██▒ ▓▒    ██▒ ▀█▒ ██  ▓██▒▒██▀ ██▌',
+  '▒██░▄▄▄░▒██▒▒ ▓██░ ▒░   ▒██░▄▄▄░▓██  ▒██░░██   █▌',
+  '░▓█  ██▓░██░░ ▓██▓ ░    ░▓█  ██▓▓▓█  ░██░░▓█▄   ▌',
+  '░▒▓███▀▒░██░  ▒██▒ ░    ░▒▓███▀▒▒▒█████▓ ░▒████▓ ',
+  ' ░▒   ▒ ░▓    ▒ ░░       ░▒   ▒ ░▒▓▒ ▒ ▒  ▒▒▓  ▒ ',
+  '  ░   ░  ▒ ░    ░         ░   ░ ░░▒░ ░ ░  ░ ▒  ▒ ',
+  '░ ░   ░  ▒ ░  ░         ░ ░   ░  ░░░ ░ ░  ░ ░  ░ ',
+  '      ░  ░                    ░    ░        ░    ',
+  '                                          ░      ',
+]
 
-  nnoremap <buffer> <silent> <Return> :enew<CR>:call startscreen#start()<CR>
-  nnoremap <buffer> <silent> r :call startscreen#refresh()<CR>
-endfun
+var s_state: dict<any> = {}
+var s_timer = -1
 
-fun! startscreen#refresh()
-  call startscreen#custom_art()
-endfun
+def Center(text: string, width: number): string
+  return repeat(' ', max([0, (width - strwidth(text)) / 2])) .. text
+enddef
 
-if !exists('g:Startscreen_function')
-  let g:Startscreen_function = function('startscreen#custom_art')
-endif
+def Paint(lnum: number, type: string)
+  const n = len(getline(lnum))
+  if n > 0 | prop_add(lnum, 1, {length: n, type: type}) | endif
+enddef
 
-fun! startscreen#start()
-  if argc() || line2byte('$') != -1 || v:progname !~? '^[-gmnq]\=vim\=x\=\%[\.exe]$' || &insertmode
+def Stop()
+  if s_timer != -1 | timer_stop(s_timer) | s_timer = -1 | endif
+enddef
+
+# Reveal the current message one scramble frame at a time, hold, then rotate.
+def Step(_: number)
+  if empty(s_state) || bufnr('%') != s_state.buf || &buftype != 'nofile'
+    Stop()
     return
   endif
+  s_state.frame += 1
+  const chars: list<string> = s_state.chars
+  const reveal = s_state.frame * s_speed
+  if reveal > len(chars) + s_hold
+    s_state.index = (s_state.index + 1) % len(s_msgs)
+    s_state.chars = split(s_msgs[s_state.index], '\zs')
+    s_state.frame = 0
+    return
+  endif
+  var display = ''
+  var i = 0
+  for c in chars
+    display ..= (i < reveal || c == ' ') ? c : s_chars[rand() % len(s_chars)]
+    i += 1
+  endfor
+  const modifiable = &l:modifiable
+  setlocal modifiable
+  setline(s_state.lnum, Center(display, s_state.width))
+  prop_remove({type: 'StartScreenMsg', all: true}, s_state.lnum)
+  Paint(s_state.lnum, 'StartScreenMsg')
+  if !modifiable | setlocal nomodifiable | endif
+  redraw
+enddef
 
+def Cycle(buf: number, lnum: number, width: number)
+  Stop()
+  const index = localtime() % len(s_msgs)
+  s_state = {buf: buf, lnum: lnum, width: width,
+    \ index: index, chars: split(s_msgs[index], '\zs'), frame: 0}
+  Step(0)
+  s_timer = timer_start(45, Step, {repeat: -1})
+enddef
+
+def g:StartScreenRender()
+  Stop()
+  const width = winwidth(0)
+  const modifiable = &l:modifiable
+  setlocal modifiable
+  silent :% delete _
+  prop_clear(1, line('$'))
+  append(0, repeat([''], max([0, (winheight(0) - len(s_art) - 6) / 2])))
+  for art in s_art
+    append(line('$'), Center(art, width))
+    Paint(line('$'), 'StartScreenArt')
+  endfor
+  append(line('$'), ['', '', '', ''])
+  const msg_line = line('$') - 1
+  cursor(1, 1)
+  if !modifiable | setlocal nomodifiable | endif
+  redraw!
+  Cycle(bufnr('%'), msg_line, width)
+  nnoremap <buffer> <silent> <Return> <Cmd>enew<Bar>call g:StartScreenStart()<CR>
+  nnoremap <buffer> <silent> r        <Cmd>call g:StartScreenRender()<CR>
+enddef
+
+def g:StartScreenStart()
+  if argc() || line2byte('$') != -1
+      || v:progname !~? '^[-gmnq]\=vim\=x\=\%[\.exe]$' || &insertmode
+    return
+  endif
   enew
-
-  setlocal
-        \ bufhidden=wipe
-        \ buftype=nofile
-        \ nobuflisted
-        \ nocursorcolumn
-        \ nocursorline
-        \ nolist
-        \ nonumber
-        \ noswapfile
-        \ norelativenumber
-
-  call g:Startscreen_function()
-
+  setlocal bufhidden=wipe buftype=nofile nobuflisted nocursorcolumn
+    \ nocursorline nolist nonumber noswapfile norelativenumber
+  g:StartScreenRender()
   setlocal nomodifiable nomodified
-
-  nnoremap <buffer><silent> e :enew<CR>
-  nnoremap <buffer><silent> i :enew <bar> startinsert<CR>
-  nnoremap <buffer><silent> o :enew <bar> startinsert<CR><CR>
-  nnoremap <buffer><silent> p :enew<CR>p
-  nnoremap <buffer><silent> P :enew<CR>P
-  nnoremap <buffer><silent> r :call startscreen#refresh()<CR>
-endfun
+  nnoremap <buffer> <silent> e <Cmd>enew<CR>
+  nnoremap <buffer> <silent> r <Cmd>call g:StartScreenRender()<CR>
+enddef
 
 augroup startscreen
   autocmd!
-  autocmd VimEnter * call startscreen#start()
-  autocmd VimResized * if &buftype ==# 'nofile' | call startscreen#custom_art() | endif
-  autocmd WinEnter * if &buftype ==# 'nofile' && expand('%') == '' | call startscreen#custom_art() | endif
-augroup end
-
-let &cpo = s:save_cpo
-
-unlet s:save_cpo
-
+  autocmd VimEnter * call g:StartScreenStart()
+  autocmd VimResized * if &buftype ==# 'nofile' | call g:StartScreenRender() | endif
+  autocmd WinEnter * if &buftype ==# 'nofile' && expand('%') == '' | call g:StartScreenRender() | endif
+augroup END
