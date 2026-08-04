@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+#
+# gbs.sh — fzf browser over `git branch -a`
+#
+#   tab    mark branches to update
+#   enter  fast-forward every marked branch, then switch to the branch
+#          under the cursor
+#
+# Mark nothing and hit enter: that single branch is updated and checked out.
+#
+# Answering "can I pull without switching to that branch?" — yes:
+#
+#   git fetch origin <remote-branch>:<local-branch>
+#
+# writes the local ref directly. Without --force git refuses anything that
+# isn't a fast-forward, so a diverged branch is reported and left alone.
+# The one exception is the branch you're currently on — git won't let a
+# refspec overwrite the checked-out ref — so that one gets a plain fetch
+# followed by `git merge --ff-only`, i.e. an actual pull.
+#
+# Written for macOS' bash 3.2, so no associative arrays or mapfile.
+
+set -eo pipefail
+
+command -v fzf >/dev/null || { echo "gbs: fzf not found" >&2; exit 1; }
+git rev-parse --git-dir >/dev/null 2>&1 || { echo "gbs: not a git repository" >&2; exit 1; }
+
+TAB=$'\t'
+CURRENT=$(git symbolic-ref --quiet --short HEAD || true)
+
+# ---------------------------------------------------------------- selection --
+
+# `git branch -a` minus the "* " marker and the "origin/HEAD -> origin/main" line.
+# fzf strips the colors back out before expanding {} and {+}, so the placeholders
+# still hold clean branch names.
+list_branches() {
+  git branch -a --color=always \
+    | sed 's/^[* ] //' \
+    | grep -v ' -> '
+}
+
+# {}  branch under the cursor      -> checkout target
+# {+} marked branches, or the cursor item when nothing is marked -> pull targets
+SELECTION=$(
+  list_branches | fzf \
+    --ansi \
+    --multi \
+    --reverse \
+    --height=80% \
+    --border \
+    --prompt='branch> ' \
+    --header='tab: mark to pull   enter: pull marked, switch to cursor' \
+    --preview='git log --oneline --graph --decorate --color=always -30 {} --' \
+    --preview-window='right,55%,border-left' \
+    --bind='enter:become(printf "CHECKOUT\t%s\n" {}; printf "PULL\t%s\n" {+})'
+) || exit 0
+
+[ -n "$SELECTION" ] || exit 0
+
+CHECKOUT=""
+PULL=""
+while IFS="$TAB" read -r kind ref; do
+  [ -n "$ref" ] || continue
+  case "$kind" in
+    CHECKOUT) CHECKOUT=$ref ;;
+    PULL)     PULL=$PULL$ref$'\n' ;;
+  esac
+done <<<"$SELECTION"
+
+# ------------------------------------------------------------------ pulling --
+
+# Map a listed entry to "<remote>\t<fetch refspec>", plus a note on whether it
+# is the branch we're standing on. Prints nothing when there's nothing to do.
+#
+#   remotes/origin/foo, local foo exists  -> origin  foo:foo
+#   remotes/origin/foo, no local foo      -> origin  foo        (tracking ref only)
+#   foo with upstream origin/foo          -> origin  foo:foo
+#   the current branch                    -> origin  foo        (merged separately)
+resolve() {
+  entry=$1
+
+  case "$entry" in
+    remotes/*)
+      stripped=${entry#remotes/}
+      remote=${stripped%%/*}
+      rbranch=${stripped#*/}
+      local_branch=$rbranch
+      if ! git show-ref --verify --quiet "refs/heads/$local_branch"; then
+        # Nothing local to fast-forward; just refresh refs/remotes/$remote/$rbranch.
+        printf '%s\t%s\n' "$remote" "$rbranch"
+        return
+      fi
+      ;;
+    *)
+      local_branch=$entry
+      upstream=$(git rev-parse --abbrev-ref --symbolic-full-name "$local_branch@{upstream}" 2>/dev/null || true)
+      if [ -z "$upstream" ]; then
+        echo "gbs: $local_branch has no upstream, skipping" >&2
+        return
+      fi
+      remote=${upstream%%/*}
+      rbranch=${upstream#*/}
+      ;;
+  esac
+
+  if [ "$local_branch" = "$CURRENT" ]; then
+    # Can't write the checked-out ref via refspec; fetch now, merge below.
+    CURRENT_REMOTE=$remote
+    printf '%s\t%s\n' "$remote" "$rbranch"
+  else
+    printf '%s\t%s\n' "$remote" "$rbranch:$local_branch"
+  fi
+}
+
+CURRENT_REMOTE=""
+PULLING_CURRENT=no
+SPECS=""
+
+while IFS= read -r entry; do
+  [ -n "$entry" ] || continue
+  [ "$entry" = "$CURRENT" ] && PULLING_CURRENT=yes
+  case "$entry" in remotes/*/"$CURRENT") PULLING_CURRENT=yes ;; esac
+  line=$(resolve "$entry")
+  [ -n "$line" ] || continue
+  SPECS=$SPECS$line$'\n'
+done <<<"$PULL"
+
+REJECTED=no
+
+if [ -n "$SPECS" ]; then
+  # One network round trip per remote rather than one per branch.
+  for remote in $(printf '%s' "$SPECS" | cut -f1 | sort -u); do
+    refspecs=$(printf '%s' "$SPECS" | awk -F"$TAB" -v r="$remote" '$1==r {print $2}' | sort -u)
+    [ -n "$refspecs" ] || continue
+
+    echo "==> git fetch $remote $(echo "$refspecs" | tr '\n' ' ')"
+    # A non-fast-forward refspec makes fetch exit non-zero while the other
+    # refspecs still land, so don't let set -e abort the run.
+    if ! echo "$refspecs" | xargs git fetch "$remote"; then
+      REJECTED=yes
+    fi
+  done
+fi
+
+if [ "$PULLING_CURRENT" = yes ] && [ -n "$CURRENT_REMOTE" ]; then
+  echo "==> git merge --ff-only on $CURRENT (checked out, needs a real pull)"
+  git merge --ff-only '@{upstream}' || { echo "gbs: $CURRENT could not fast-forward" >&2; REJECTED=yes; }
+fi
+
+# ----------------------------------------------------------------- checkout --
+
+if [ -n "$CHECKOUT" ]; then
+  target=$CHECKOUT
+  case "$target" in
+    remotes/*)
+      # `git switch foo` DWIMs a tracking branch when only origin/foo exists.
+      stripped=${target#remotes/}
+      target=${stripped#*/}
+      ;;
+  esac
+  if [ "$target" = "$CURRENT" ]; then
+    echo "==> already on $target"
+  else
+    echo "==> git switch $target"
+    git switch "$target"
+  fi
+fi
+
+if [ "$REJECTED" = yes ]; then
+  echo "gbs: some branches were not fast-forwardable — see output above" >&2
+  exit 1
+fi

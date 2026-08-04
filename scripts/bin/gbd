@@ -1,0 +1,226 @@
+#!/usr/bin/env bash
+#
+# gbd.sh — fzf branch deleter, the destructive sibling of gbs.sh
+#
+#   tab    mark branches to delete
+#   enter  walk the marked branches one by one, asking to confirm each
+#
+# Every branch gets its own prompt and nothing is deleted until you literally
+# type "delete". Answers per prompt:
+#
+#   delete   remove every target listed for that branch
+#   local    remove only the local ref
+#   remote   remove only the remote ref
+#   anything else (or empty)  skip the branch
+#
+# Local and remote are treated as two views of one branch: marking `foo` also
+# targets `origin/foo` when it exists, and marking `remotes/origin/foo` also
+# targets the local `foo`. The prompt always spells out exactly which refs are
+# about to go, so what you confirm is what you get.
+#
+# Unmerged local branches make `git branch -d` refuse; that gets a second
+# prompt asking for "force" before `git branch -D` runs. Remote deletion is
+# `git push <remote> --delete <branch>`, which also drops the tracking ref.
+#
+# Written for macOS' bash 3.2, so no associative arrays or mapfile.
+
+set -eo pipefail
+
+command -v fzf >/dev/null || { echo "gbd: fzf not found" >&2; exit 1; }
+git rev-parse --git-dir >/dev/null 2>&1 || { echo "gbd: not a git repository" >&2; exit 1; }
+
+TAB=$'\t'
+CURRENT=$(git symbolic-ref --quiet --short HEAD || true)
+
+# ---------------------------------------------------------------- selection --
+
+# `git branch -a` minus the "* " marker and the "origin/HEAD -> origin/main" line.
+# fzf strips the colors back out before expanding {+}, so the placeholder still
+# holds clean branch names.
+list_branches() {
+  git branch -a --color=always \
+    | sed 's/^[* ] //' \
+    | grep -v ' -> '
+}
+
+SELECTION=$(
+  list_branches | fzf \
+    --ansi \
+    --multi \
+    --reverse \
+    --height=80% \
+    --border \
+    --prompt='delete> ' \
+    --header='tab: mark to delete   enter: confirm each one by one' \
+    --preview='git log --oneline --graph --decorate --color=always -30 {} --' \
+    --preview-window='right,55%,border-left' \
+    --bind='enter:become(printf "%s\n" {+})'
+) || exit 0
+
+[ -n "$SELECTION" ] || exit 0
+
+# ------------------------------------------------------------------ targets --
+
+# Collapse the selection into one entry per branch name, remembering which
+# side(s) were asked for. NAMES keeps selection order; WANT_* are newline
+# delimited sets of "<name>" / "<remote>\t<name>".
+NAMES=""
+WANT_LOCAL=""
+WANT_REMOTE=""
+
+has_line() {
+  printf '%s' "$2" | grep -qxF "$1"
+}
+
+# Remote a local branch belongs to: its upstream if configured, else origin
+# when refs/remotes/origin/<name> exists. Prints nothing when there is none.
+remote_for_local() {
+  name=$1
+  upstream=$(git rev-parse --abbrev-ref --symbolic-full-name "$name@{upstream}" 2>/dev/null || true)
+  if [ -n "$upstream" ]; then
+    remote=${upstream%%/*}
+    rbranch=${upstream#*/}
+    if git show-ref --verify --quiet "refs/remotes/$remote/$rbranch"; then
+      printf '%s\t%s\n' "$remote" "$rbranch"
+      return
+    fi
+  fi
+  if git show-ref --verify --quiet "refs/remotes/origin/$name"; then
+    printf '%s\t%s\n' origin "$name"
+  fi
+}
+
+add_name() {
+  has_line "$1" "$NAMES" || NAMES=$NAMES$1$'\n'
+}
+
+while IFS= read -r entry; do
+  [ -n "$entry" ] || continue
+
+  case "$entry" in
+    remotes/*)
+      stripped=${entry#remotes/}
+      remote=${stripped%%/*}
+      rbranch=${stripped#*/}
+
+      add_name "$rbranch"
+      has_line "$remote$TAB$rbranch" "$WANT_REMOTE" \
+        || WANT_REMOTE=$WANT_REMOTE$remote$TAB$rbranch$'\n'
+
+      # The local counterpart, if there is one, is the same branch.
+      if git show-ref --verify --quiet "refs/heads/$rbranch"; then
+        has_line "$rbranch" "$WANT_LOCAL" || WANT_LOCAL=$WANT_LOCAL$rbranch$'\n'
+      fi
+      ;;
+    *)
+      add_name "$entry"
+      has_line "$entry" "$WANT_LOCAL" || WANT_LOCAL=$WANT_LOCAL$entry$'\n'
+
+      pair=$(remote_for_local "$entry")
+      if [ -n "$pair" ]; then
+        has_line "$pair" "$WANT_REMOTE" || WANT_REMOTE=$WANT_REMOTE$pair$'\n'
+      fi
+      ;;
+  esac
+done <<<"$SELECTION"
+
+# ----------------------------------------------------------------- deleting --
+
+DELETED=0
+SKIPPED=0
+FAILED=0
+
+# fzf became the shell's stdin, so read the answers straight from the terminal.
+ask() {
+  printf '%s' "$1" >&2
+  IFS= read -r REPLY_LINE </dev/tty || REPLY_LINE=""
+}
+
+delete_local() {
+  name=$1
+  if [ "$name" = "$CURRENT" ]; then
+    echo "gbd: $name is checked out, git will not delete it — skipping the local ref" >&2
+    SKIPPED=$((SKIPPED + 1))
+    return
+  fi
+
+  echo "==> git branch -d $name"
+  if git branch -d "$name"; then
+    DELETED=$((DELETED + 1))
+    return
+  fi
+
+  ask "  $name is not fully merged — type \"force\" for git branch -D: "
+  if [ "$REPLY_LINE" = force ]; then
+    echo "==> git branch -D $name"
+    if git branch -D "$name"; then
+      DELETED=$((DELETED + 1))
+    else
+      FAILED=$((FAILED + 1))
+    fi
+  else
+    echo "  skipped $name (local)"
+    SKIPPED=$((SKIPPED + 1))
+  fi
+}
+
+delete_remote() {
+  remote=$1
+  rbranch=$2
+  echo "==> git push $remote --delete $rbranch"
+  if git push "$remote" --delete "$rbranch"; then
+    DELETED=$((DELETED + 1))
+  else
+    FAILED=$((FAILED + 1))
+  fi
+}
+
+while IFS= read -r name; do
+  [ -n "$name" ] || continue
+
+  local_target=no
+  has_line "$name" "$WANT_LOCAL" && local_target=yes
+
+  # At most one remote per name here; the selection can't produce two.
+  remote_line=$(printf '%s' "$WANT_REMOTE" | awk -F"$TAB" -v n="$name" '$2==n {print; exit}')
+  remote_target=no
+  [ -n "$remote_line" ] && remote_target=yes
+
+  [ "$local_target" = yes ] || [ "$remote_target" = yes ] || continue
+
+  echo
+  echo "branch: $name"
+  [ "$local_target" = yes ] && echo "  local   $name"
+  if [ "$remote_target" = yes ]; then
+    remote=${remote_line%%$TAB*}
+    rbranch=${remote_line#*$TAB}
+    echo "  remote  $remote/$rbranch"
+  fi
+
+  if [ "$local_target" = yes ] && [ "$remote_target" = yes ]; then
+    ask '  type "delete" to remove both, or "local" / "remote": '
+  else
+    ask '  type "delete" to confirm: '
+  fi
+
+  do_local=no
+  do_remote=no
+  case "$REPLY_LINE" in
+    delete) do_local=$local_target; do_remote=$remote_target ;;
+    local)  do_local=$local_target ;;
+    remote) do_remote=$remote_target ;;
+  esac
+
+  if [ "$do_local" = no ] && [ "$do_remote" = no ]; then
+    echo "  skipped $name"
+    SKIPPED=$((SKIPPED + 1))
+    continue
+  fi
+
+  [ "$do_local" = yes ] && delete_local "$name"
+  [ "$do_remote" = yes ] && delete_remote "$remote" "$rbranch"
+done <<<"$NAMES"
+
+echo
+echo "gbd: $DELETED deleted, $SKIPPED skipped, $FAILED failed"
+[ "$FAILED" -eq 0 ] || exit 1

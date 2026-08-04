@@ -18,6 +18,9 @@
     "highlight": "CocFloating"
   },
   "oxc.oxfmt.enable": true,
+  "oxc.oxlint.enable": true,
+  "oxc.oxfmt.binPath": "/Users/suqoi/.vite-plus/bin/oxfmt",
+  "oxc.oxlint.binPath": "/Users/suqoi/.vite-plus/bin/oxlint",
   "javascript.format.enable": false,
   "typescript.format.enable": false,
   "typescript.preferences.importModuleSpecifier": "non-relative",
@@ -28,12 +31,12 @@
   "snippet.highlight": true,
   "snippets.ultisnips.trace": true,
   "snippets.extends": {
-    "typescriptreact": [
-      "typescript"
-    ],
-    "javascriptreact": [
-      "javascript"
-    ]
+    "typescriptreact": ["typescript"],
+    "javascriptreact": ["javascript"]
   },
-  "snippets.ultisnips.pythonPrompt": false
+  "snippets.ultisnips.pythonPrompt": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "always"
+  },
+  "tailwindCSS.lint.suggestCanonicalClasses": "error"
 }
