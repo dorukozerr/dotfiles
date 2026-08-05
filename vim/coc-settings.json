@@ -35,8 +35,6 @@
     "javascriptreact": ["javascript"]
   },
   "snippets.ultisnips.pythonPrompt": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "always"
-  },
-  "tailwindCSS.lint.suggestCanonicalClasses": "error"
+  "editor.codeActionsOnSave": { "source.fixAll.oxc": "always" },
+  "tailwindCSS.custom.serverPath": "/opt/homebrew/bin/tailwindcss-language-server"
 }
