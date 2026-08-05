@@ -19,3 +19,7 @@
   gpgSign = true
 [gpg]
   format = ssh
+[rerere]
+	enabled = true
+[remote]
+	pushDefault = origin
