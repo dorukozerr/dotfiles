@@ -6,6 +6,7 @@ export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu
 export EDITOR="vi"
 export BAT_THEME="ansi"
 export BUN_INSTALL="$HOME/.bun"
+export CLAUDE_CONFIG_DIR="$HOME/.config/claude" 
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export PATH="$HOME/bin:$PATH"
@@ -19,3 +20,4 @@ export CPPFLAGS="-I/opt/homebrew/opt/ffmpeg-full/include"
 [ -s "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh" ] && source "${ASDF_DATA_DIR:-$HOME/.asdf}/asdf.sh"
 [ -f ~/.cargo/env ] && source ~/.cargo/env
 [ -f ~/.vite-plus/env ] && source ~/.vite-plus/env
+[ -f ~/.work/.work.zsh ] && source ~/.work/.work.zsh

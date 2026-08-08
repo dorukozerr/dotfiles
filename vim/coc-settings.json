@@ -36,5 +36,6 @@
   },
   "snippets.ultisnips.pythonPrompt": false,
   "editor.codeActionsOnSave": { "source.fixAll.oxc": "always" },
-  "tailwindCSS.custom.serverPath": "/opt/homebrew/bin/tailwindcss-language-server"
+  "tailwindCSS.custom.serverPath": "/opt/homebrew/bin/tailwindcss-language-server",
+  "css.lint.unknownAtRules": "ignore"
 }
