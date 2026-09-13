@@ -1,5 +1,5 @@
 icons:
   bun: ""
-  multi-pane-icon: "" # show when window has multiple panes (blank by default)
+  multi-pane-icon: ""
   claude: ""
   opencode: "󰖌"
