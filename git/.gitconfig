@@ -12,7 +12,7 @@
 [init]
   defaultBranch = main
 [alias]
-  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lg = log --graph --oneline --branches --remotes
 [pull]
   rebase = true
 [commit]
@@ -23,3 +23,10 @@
 	enabled = true
 [remote]
 	pushDefault = origin
+[merge]
+	conflictStyle = zdiff3
+	tool = vimdiff
+[log]
+	abbrevCommit = true
+[diff]
+	tool = vimdiff

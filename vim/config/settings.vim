@@ -1,6 +1,8 @@
 runtime! ftplugin/man.vim
 packadd! matchit
+
 scriptencoding utf-8
+
 filetype plugin indent on
 syntax enable
 
@@ -27,11 +29,28 @@ set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}
 set t_BE=
 set autoread
 set clipboard=unnamedplus
+" set diffopt+=internal,algorithm:patience,indent-heuristic
+
+let g:coc_node_path = "/Users/suqoi/.vite-plus/bin/node"
 
 autocmd FocusGained,BufEnter * checktime
 
 set background=dark
-colorscheme base24-solarized-dark-higher-contrast
+" colorscheme base24-solarized-dark-higher-contrast
+colorscheme elflord
 
-" hi Normal guibg=NONE ctermbg=NONE
-" hi EndOfBuffer guibg=NONE ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE
+
+function! s:InlayHintColors() abort
+  highlight CocInlayHint          guifg=#3a3f4b guibg=NONE gui=italic ctermfg=238 cterm=italic
+  highlight CocInlayHintType      guifg=#3a3f4b guibg=NONE gui=italic ctermfg=238 cterm=italic
+  highlight CocInlayHintParameter guifg=#32363f guibg=NONE gui=italic ctermfg=237 cterm=italic
+endfunction
+
+augroup InlayHintColors
+  autocmd!
+  autocmd ColorScheme * call s:InlayHintColors()
+augroup END
+
+call s:InlayHintColors()

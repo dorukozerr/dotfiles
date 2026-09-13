@@ -1,12 +1,16 @@
 " reset leader key
 let mapleader = "\<Space>"
 
+set ttimeout
+set ttimeoutlen=10
+
 " gotta develop that muscle memory, one way or another Note after months of
 " enabling this mappings, it was the best decision in my life, no joke
 noremap <up> :echoerr "Senpai, use k instead"<CR>
 noremap <down> :echoerr "Senpai, use j instead"<CR>
 noremap <left> :echoerr "Senpai, use h instead"<CR>
 noremap <right> :echoerr "Senpai, use l instead"<CR>
+
 inoremap <up> <NOP>
 inoremap <down> <NOP>
 inoremap <left> <NOP>
@@ -47,42 +51,46 @@ inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 nnoremap <Leader>gpa :GitStage<CR>
 nnoremap <Leader>c :Commands<CR>
 
-" buffers
-nnoremap <Leader>bn :bn<CR>
-nnoremap <Leader>bp :bp<CR>
-nnoremap <Leader>bt :call BufferToggle()<CR>
-nnoremap <leader>bda :%bdelete<Bar>edit #<Bar>normal`"<CR>
-nnoremap <Leader>bdc :call BufferDeleteCurrent()<CR>
+" thank you AI
+execute "set <M-s>=\<Esc>s"
+execute "set <M-v>=\<Esc>v"
+execute "set <M-h>=\<Esc>h"
+execute "set <M-j>=\<Esc>j"
+execute "set <M-k>=\<Esc>k"
+execute "set <M-l>=\<Esc>l"
+execute "set <M-n>=\<Esc>n"
+execute "set <M-p>=\<Esc>p"
+execute "set <M-q>=\<Esc>q"
+execute "set <M-z>=\<Esc>z"
+execute "set <M-,>=\<Esc>,"
+execute "set <M-.>=\<Esc>."
+execute "set <M-g>=\<Esc>g"
 
-" window splits
-nnoremap <Leader>vs :vsplit<CR>
+nnoremap <silent> <M-s> :split<CR>
+nnoremap <silent> <M-v> :vsplit<CR>
 
-" navigate buffers with Ctrl+Left/Right; jumps to the window already showing
-" that buffer if one exists, otherwise opens it in the current split
-nnoremap <C-Left>  :call SmartBufNav(-1)<CR>
-nnoremap <C-Right> :call SmartBufNav(1)<CR>
+nnoremap <expr> <M-h> winnr('h') == winnr() ? "999\<C-w>l" : "\<C-w>h"
+nnoremap <expr> <M-l> winnr('l') == winnr() ? "999\<C-w>h" : "\<C-w>l"
+nnoremap <expr> <M-j> winnr('j') == winnr() ? "999\<C-w>k" : "\<C-w>j"
+nnoremap <expr> <M-k> winnr('k') == winnr() ? "999\<C-w>j" : "\<C-w>k"
 
-" grow/shrink current split with Cmd+arrow
-nnoremap <D-Right> :vertical resize +10<CR>
-nnoremap <D-Left>  :vertical resize -10<CR>
-nnoremap <D-Up>    :resize +10<CR>
-nnoremap <D-Down>  :resize -10<CR>
+nnoremap <silent> <M-n> :bnext<CR>
+nnoremap <silent> <M-p> :bprevious<CR>
+nnoremap <silent> <M-q> :call BufferDeleteCurrent()<CR>
+nnoremap <silent> <M-z> :call BufferToggle()<CR>
 
-" run precommit script
-nnoremap <leader>rp :Precommit<CR>
+nnoremap <silent> <M-Left>  :call ResizeH('left', '5')<CR>
+nnoremap <silent> <M-Right> :call ResizeH('right', '5')<CR>
+nnoremap <silent> <M-Up>    :call ResizeV('up', '5')<CR>
+nnoremap <silent> <M-Down>  :call ResizeV('down', '5')<CR>
+
+nnoremap <silent> <M-,> :tabprevious<CR>
+nnoremap <silent> <M-.> :tabnext<CR>
+
+nnoremap <silent> <M-g> :G<CR>
 
 " save file
 nnoremap <leader>s :w<CR>
-
-" Replace the world under cursor globally inside the buffer
-nnoremap <leader>wr :%s/\<<C-r><C-w>\>//g<left><left>
-
-" Replace the selected content in visual mode globally inside the buffer
-vnoremap <leader>pr y:%s/\V<C-r>=escape(@", '/\')<CR>//g<Left><Left>
-
-" Replace the selected content in visual mode globally inside the buffer also
-" enter selected content into new replace value field
-vnoremap <leader>pa y:%s/\V<C-r>=escape(@", '/\')<CR>/<C-r>=escape(@", '/\&~')<CR>/g<Left><Left>
 
 " Auto-center screen after search navigation
 nnoremap <silent> n nzz
@@ -97,10 +105,8 @@ nnoremap Y "+Y
 nnoremap gp i<C-r><C-o>+<Esc>
 vnoremap gp "_c<C-r><C-o>+<Esc>
 
-" Man pages search
-nnoremap <leader>ms :ManSearch <C-r><right>
-
-" Clear/Reset file
+" This one is really weird, I'm not saying something but I'm paranoid person
+" this was SUS - Clear/Reset file
 nnoremap <leader>cfe :call CleanFileLineEndings()<CR>
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)

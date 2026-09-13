@@ -122,22 +122,6 @@ command! -nargs=1 Lorem call GenerateLoremIpsum(<args>)
 let g:window_zoomed = 0
 let g:window_layout = {}
 
-func! SmartBufNav(direction)
-  let listed = filter(range(1, bufnr('$')), 'buflisted(v:val)')
-  if len(listed) <= 1 | return | endif
-  let cur_idx = index(listed, bufnr('%'))
-  if cur_idx == -1 | return | endif
-  let next_idx = (cur_idx + a:direction + len(listed)) % len(listed)
-  let target_buf = listed[next_idx]
-  for w in range(1, winnr('$'))
-    if winbufnr(w) == target_buf
-      execute w . 'wincmd w'
-      return
-    endif
-  endfor
-  execute 'buffer ' . target_buf
-endfunc
-
 func! BufferToggle()
   if g:window_zoomed == 0
     let g:window_layout = {
@@ -157,24 +141,49 @@ func! BufferToggle()
   endif
 endfunc
 
-func! BufferDeleteCurrent()
-  if len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) <= 1
-    echo "Cannot delete the last buffer"
-
+func! BufferDeleteCurrent() abort
+  if &filetype ==# 'netrw' && winnr('$') == 1 && tabpagenr('$') == 1
     return
   endif
 
-  let l:current_buf = bufnr('%')
+  let l:buf = bufnr('%')
+  let l:shown = len(filter(getwininfo(), 'v:val.bufnr == ' . l:buf))
 
-  if bufnr('#') != -1 && buflisted(bufnr('#'))
-    buffer #
-  elseif exists(':bprevious')
-    bprevious
-  else
-    bnext
+  if l:shown > 1
+    close
+    return
   endif
 
-  execute 'bdelete ' . l:current_buf
+  let l:listed = buflisted(l:buf)
+
+  let l:force = ''
+  if l:listed && getbufvar(l:buf, '&modified')
+    if confirm("Unsaved changes. Discard?", "&Yes\n&No", 2, "W") != 1
+      return
+    endif
+    let l:force = '!'
+  endif
+
+  if winnr('$') == 1 && tabpagenr('$') == 1
+    if len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) <= 1
+      if confirm("Quit Vim?", "&Yes\n&No", 1, "Q") == 1
+        execute 'qall' . l:force
+      endif
+      return
+    endif
+    if l:listed
+      silent! execute 'bdelete' . l:force . ' ' . l:buf
+    else
+      bprevious
+    endif
+    return
+  endif
+
+  close
+
+  if bufexists(l:buf) && buflisted(l:buf)
+    silent! execute 'bdelete' . l:force . ' ' . l:buf
+  endif
 endfunc
 
 func! GoImportsOnSave()
@@ -208,47 +217,10 @@ func! SearchManPages(name) abort
 endfunc
 command! -nargs=1 ManSearch call SearchManPages(<q-args>)
 
-func! OpenSelectedManPage() abort
-  let current_line = getline('.')
-
-  if empty(trim(current_line)) || current_line =~ '^Press Enter'
-    return
-  endif
-
-  let pattern = '^\(\S\+\)(\(\d\+\))'
-  let matches = matchlist(current_line, pattern)
-
-  if empty(matches)
-    echom 'Cannot parse this line - expected format: command(section)'
-
-    return
-  endif
-
-  let command_name = matches[1]
-  let section_number = matches[2]
-
-  " Save the search results buffer number
-  let search_buf = bufnr('%')
-
-  if !empty(section_number)
-    execute 'vert Man ' . section_number . ' ' . command_name
-  else
-    execute 'vert Man ' . command_name
-  endif
-
-  " Close the search results buffer after the man page opens
-  if bufexists(search_buf)
-    execute 'bwipeout! ' . search_buf
-  endif
-endfunc
-augroup ManSearchResults
-  autocmd!
-  autocmd FileType man
-        \ if &buftype == 'nofile' && bufname('%') == '' |
-        \   nnoremap <buffer> <CR> :call OpenSelectedManPage()<CR> |
-        \ endif
-augroup END
-
+" Can someone explain to me why my TS files gave error and didn't get linted +
+" formatted and why I ended up getting this function from AI and wtf does this
+" mean?? I experienced lint + format errors from some time to time and I had
+" to run this function to make them work on that file. IDK
 func! CleanFileLineEndings()
   edit ++enc=utf-8
 
@@ -320,3 +292,23 @@ func! s:AirlineThemes(bang)
 endfunc
 
 command! -bang AirlineThemes call s:AirlineThemes(<bang>0)
+
+func! ResizeH(direction, amount) abort
+  let l:at_right_edge = (winnr() == winnr('l'))
+
+  if a:direction ==# 'left'
+    execute 'vertical resize ' . (l:at_right_edge ? '+' . a:amount : '-' . a:amount)
+  else
+    execute 'vertical resize ' . (l:at_right_edge ? '-' . a:amount : '+' . a:amount)
+  endif
+endfunc
+
+func! ResizeV(direction, amount) abort
+  let l:at_bottom_edge = (winnr() == winnr('j'))
+
+  if a:direction ==# 'up'
+    execute 'resize ' . (l:at_bottom_edge ? '+' . a:amount : '-' . a:amount)
+  else
+    execute 'resize ' . (l:at_bottom_edge ? '-' . a:amount : '+' . a:amount)
+  endif
+endfunc

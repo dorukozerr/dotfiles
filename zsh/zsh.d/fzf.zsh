@@ -1,7 +1,7 @@
 export FZF_DEFAULT_OPTS="
   ${FZF_LAYOUT}
   --style=minimal
-  --color=base16
+  --color=dark
   --layout=default
   --prompt='󰡭  '
   --pointer=' '

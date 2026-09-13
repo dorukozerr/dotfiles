@@ -14,6 +14,8 @@ if [ -d "$HOME/.bun" ]; then
     fpath=("$HOME/.bun" $fpath)
 fi
 
+fpath=(/Users/suqoi/.docker/completions $fpath)
+
 autoload -Uz compinit
 
 for dump in ~/.zcompdump(N.mh+24); do

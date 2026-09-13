@@ -83,3 +83,9 @@ command! -nargs=0 Format :call CocActionAsync('format')
 
 " Copy type definition
 nnoremap <Leader>ccd :call CocCopyDefinition()<CR>
+
+" coc-rust-analyzer
+nnoremap <leader>rti <Cmd>CocCommand document.toggleInlayHint<CR>
+nnoremap <leader>rem <Cmd>CocCommand rust-analyzer.expandMacro<CR>
+nnoremap <leader>rod <Cmd>CocCommand rust-analyzer.openDocs<CR>
+nnoremap <leader>rvml <Cmd>CocCommand rust-analyzer.viewMemoryLayout<CR>

@@ -6,13 +6,19 @@ export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu
 export EDITOR="vi"
 export BAT_THEME="ansi"
 export BUN_INSTALL="$HOME/.bun"
-export CLAUDE_CONFIG_DIR="$HOME/.config/claude" 
+# export PNPM_HOME="/Users/suqoi/Library/pnpm"
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/ffmpeg-full/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# case ":$PATH:" in
+#   *":$PNPM_HOME/bin:"*) ;;
+#   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+# esac
 
 export LDFLAGS="-L/opt/homebrew/opt/ffmpeg-full/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/ffmpeg-full/include"
@@ -21,3 +27,4 @@ export CPPFLAGS="-I/opt/homebrew/opt/ffmpeg-full/include"
 [ -f ~/.cargo/env ] && source ~/.cargo/env
 [ -f ~/.vite-plus/env ] && source ~/.vite-plus/env
 [ -f ~/.work/.work.zsh ] && source ~/.work/.work.zsh
+[ -f ~/.cargo/env ] && source ~/.cargo/env

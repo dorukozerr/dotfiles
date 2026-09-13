@@ -50,7 +50,7 @@ tmux_file_picker() {
 
 	local at_prefix_mode=false
 
-	if pgrep -P "$pane_pid" -f ".*claude.*|node.*gemini|codex" >/dev/null; then
+	if pgrep -P "$pane_pid" -f ".*claude.*|node.*gemini|codex.*|opencode" >/dev/null; then
 		at_prefix_mode=true
 	fi
 

@@ -3,13 +3,13 @@ let g:config_dir = '~/.vim/config/'
 let g:config_files = [
       \ 'custom.vim',
       \ 'fzf.vim',
-      \ 'mappings.vim',
       \ 'settings.vim',
       \ 'airline.vim',
       \ 'fastfold.vim',
       \ 'sneak.vim',
       \ 'coc.vim',
       \ 'startscreen.vim',
+      \ 'mappings.vim',
       \ ]
 
 for config_file in g:config_files

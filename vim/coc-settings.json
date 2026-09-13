@@ -26,6 +26,7 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "prettier.enable": false,
   "coc.preferences.formatOnSave": true,
+  "[sql]": { "coc.preferences.formatOnSave": false },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "snippets.trace": "error",
   "snippet.highlight": true,
@@ -37,5 +38,23 @@
   "snippets.ultisnips.pythonPrompt": false,
   "editor.codeActionsOnSave": { "source.fixAll.oxc": "always" },
   "tailwindCSS.custom.serverPath": "/opt/homebrew/bin/tailwindcss-language-server",
-  "css.lint.unknownAtRules": "ignore"
+  "css.lint.unknownAtRules": "ignore",
+
+  // coc-rust-analyzer
+  // "rust-analyzer.inlayHints.chainingHints.enable": false,
+  // "rust-analyzer.inlayHints.closingBraceHints.enable": false,
+  // "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.inlayHints.bindingModeHints.enable": true,
+  "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "always",
+  "rust-analyzer.inlayHints.maxLength": 40,
+  "rust-analyzer.check.overrideCommand": ["clippy"],
+  "rust-analyzer.diagnostics.styleLints.enable": true,
+  "rust-analyzer.hover.memoryLayout.niches": true,
+  "rust-analyzer.hover.show.enumVariants": 10,
+  "rust-analyzer.hover.show.fields": 10,
+  "rust-analyzer.cargo.targetDir": true,
+  "rust-analyzer.restartServerOnConfigChange": true,
+  "[rust]": {
+    "diagnostic.showRelatedInformation": false
+  }
 }
