@@ -20,14 +20,14 @@ config.mux_enable_ssh_agent = true
 
 -- config.color_scheme = 'Kanagawa Dragon (Gogh)'
 -- config.color_scheme = 'Frontend Delight (Gogh)'
--- config.background = {
---   {
---     source = { File = '/Users/suqoi/Pictures/background/asa.png' },
---     opacity = 0.8,
---     hsb = { brightness = 0.065, },
---   },
--- }
--- config.macos_window_background_blur = 50
+config.background = {
+  {
+    source = { File = '/Users/suqoi/Pictures/background/asa.png' },
+    opacity = 0.8,
+    hsb = { brightness = 0.025, },
+  },
+}
+config.macos_window_background_blur = 50
 
 config.keys = {
   { key = 'v',     mods = 'CMD',            action = wezterm.action.PasteFrom 'Clipboard' },
