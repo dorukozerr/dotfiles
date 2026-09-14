@@ -166,9 +166,7 @@ func! BufferDeleteCurrent() abort
 
   if winnr('$') == 1 && tabpagenr('$') == 1
     if len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) <= 1
-      if confirm("Quit Vim?", "&Yes\n&No", 1, "Q") == 1
         execute 'qall' . l:force
-      endif
       return
     endif
     if l:listed

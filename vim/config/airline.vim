@@ -1,6 +1,6 @@
-let g:airline_theme='base16_black_metal_venom'
+" let g:airline_theme='base16_black_metal_venom'
 " let g:airline_theme='base16_solarized'
-" let g:airline_theme='base16_grayscale'
+let g:airline_theme='base16_grayscale'
 
 let g:airline_left_sep=''
 let g:airline_right_sep=''
