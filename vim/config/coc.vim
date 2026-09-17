@@ -84,8 +84,27 @@ command! -nargs=0 Format :call CocActionAsync('format')
 " Copy type definition
 nnoremap <Leader>ccd :call CocCopyDefinition()<CR>
 
-" coc-rust-analyzer
-nnoremap <leader>rti <Cmd>CocCommand document.toggleInlayHint<CR>
-nnoremap <leader>rem <Cmd>CocCommand rust-analyzer.expandMacro<CR>
-nnoremap <leader>rod <Cmd>CocCommand rust-analyzer.openDocs<CR>
-nnoremap <leader>rvml <Cmd>CocCommand rust-analyzer.viewMemoryLayout<CR>
+augroup rust_maps
+  autocmd!
+  autocmd FileType rust nnoremap <buffer> <leader>rm: CocCommand rust-analyzer.expandMacro<CR>
+  autocmd FileType rust nnoremap <buffer> <leader>rd: CocCommand rust-analyzer.openDocs<CR>
+  autocmd FileType rust nnoremap <buffer> <leader>rp: CocCommand rust-analyzer.parentModule<CR>
+  autocmd FileType rust nnoremap <buffer> <leader>rr: CocCommand rust-analyzer.run<CR>
+  autocmd FileType rust nnoremap <buffer> <leader>re: CocCommand rust-analyzer.explainError<CR>
+  autocmd FileType rust nnoremap <buffer> <leader>rj: CocCommand rust-analyzer.joinLines<CR>
+  autocmd FileType rust nnoremap <buffer> <leader>rh: CocCommand document.toggleInlayHint<CR>
+  autocmd FileType rust xnoremap <buffer> <leader>rj: <C-u>CocCommand rust-analyzer.joinLines<CR>
+augroup END
+
+func! s:InlayHintColors() abort
+  highlight CocInlayHint          guifg=#3a3f4b guibg=NONE gui=italic ctermfg=238 cterm=italic
+  highlight CocInlayHintType      guifg=#3a3f4b guibg=NONE gui=italic ctermfg=238 cterm=italic
+  highlight CocInlayHintParameter guifg=#32363f guibg=NONE gui=italic ctermfg=237 cterm=italic
+endfunc
+
+augroup InlayHintColors
+  autocmd!
+  autocmd ColorScheme * call s:InlayHintColors()
+augroup END
+
+call s:InlayHintColors()

@@ -23,11 +23,11 @@ config.mux_enable_ssh_agent = true
 config.background = {
   {
     source = { File = '/Users/suqoi/Pictures/background/asa.png' },
-    opacity = 0.8,
-    hsb = { brightness = 0.025, },
+    opacity = 0.9,
+    hsb = { brightness = 0.035, },
   },
 }
-config.macos_window_background_blur = 50
+config.macos_window_background_blur = 20
 
 config.keys = {
   { key = 'v',     mods = 'CMD',            action = wezterm.action.PasteFrom 'Clipboard' },

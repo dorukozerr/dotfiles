@@ -2,15 +2,27 @@
   "eslint.alwaysShowStatus": true,
   "eslint.useFlatConfig": true,
   "floatFactory.floatConfig": {
+    "maxWidth": 140,
+    "maxHeight": 50,
     "border": false,
-    "rounded": false,
+    "rounded": true,
+    "focusable": true,
     "borderhighlight": "CocFloatingBorder"
   },
+  "hover.floatConfig": {
+    "maxWidth": 140,
+    "maxHeight": 50,
+    "border": false,
+    "rounded": true,
+    "focusable": true,
+    "borderhighlight": "CocFloatingBorder"
+  },
+  "hover.previewMaxHeight": 30,
+  "coc.preferences.excludeImageLinksInMarkdownDocument": true,
   "suggest.floatConfig": {
     "border": false,
     "rounded": false,
-    "borderhighlight": "CocFloatingBorder",
-    "highlight": "CocFloating"
+    "borderhighlight": "CocFloatingBorder"
   },
   "tsserver.experimental.enableProjectDiagnostics": true,
   "diagnostic.floatConfig": {
@@ -40,21 +52,42 @@
   "tailwindCSS.custom.serverPath": "/opt/homebrew/bin/tailwindcss-language-server",
   "css.lint.unknownAtRules": "ignore",
 
-  // coc-rust-analyzer
-  // "rust-analyzer.inlayHints.chainingHints.enable": false,
-  // "rust-analyzer.inlayHints.closingBraceHints.enable": false,
-  // "rust-analyzer.inlayHints.parameterHints.enable": false,
+  // --- checking ---
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.check.allTargets": true,
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.cargo.targetDir": true,
+  "rust-analyzer.check.extraArgs": ["--message-format=json-diagnostic-rendered-ansi"],
+  "rust-analyzer.diagnostics.styleLints.enable": true,
+
+  // --- inlay hints ---
   "rust-analyzer.inlayHints.bindingModeHints.enable": true,
   "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "always",
+  "rust-analyzer.inlayHints.closureReturnTypeHints.enable": "with_block",
+  "rust-analyzer.inlayHints.reborrowHints.enable": "mutable",
   "rust-analyzer.inlayHints.maxLength": 40,
-  "rust-analyzer.check.overrideCommand": ["clippy"],
-  "rust-analyzer.diagnostics.styleLints.enable": true,
+
+  // --- hover ---
   "rust-analyzer.hover.memoryLayout.niches": true,
   "rust-analyzer.hover.show.enumVariants": 10,
   "rust-analyzer.hover.show.fields": 10,
-  "rust-analyzer.cargo.targetDir": true,
+
+  // --- completion / imports ---
+  "rust-analyzer.completion.fullFunctionSignatures.enable": true,
+  "rust-analyzer.imports.granularity.group": "module",
+  "rust-analyzer.imports.prefix": "crate",
+  "rust-analyzer.hover.show.traitAssocItems": 5,
+  "rust-analyzer.hover.memoryLayout.size": "both",
+
   "rust-analyzer.restartServerOnConfigChange": true,
+
   "[rust]": {
-    "diagnostic.showRelatedInformation": false
+    "diagnostic.showRelatedInformation": false,
+    "coc.preferences.formatOnSave": true
+  },
+
+  "json.schemaDownload.trustedDomains": {
+    "https://www.schemastore.org": true,
+    "https://json.schemastore.org": true
   }
 }
