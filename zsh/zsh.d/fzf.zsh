@@ -1,11 +1,11 @@
 export FZF_DEFAULT_OPTS="
   ${FZF_LAYOUT}
   --style=minimal
-  --color=dark
   --layout=default
   --prompt='󰡭  '
   --pointer=' '
   --marker=' '
+  --color='16,bg:#000000,bg+:#000000,border:#000000'
 "
 
 export FZF_CTRL_T_OPTS='--preview "bat --style=plain --color=always {}" --preview-window=right,60%,border-left'

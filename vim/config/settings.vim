@@ -1,5 +1,6 @@
 runtime! ftplugin/man.vim
 packadd! matchit
+packadd! netrw
 
 scriptencoding utf-8
 
@@ -36,11 +37,14 @@ let g:coc_node_path = "/Users/suqoi/.vite-plus/bin/node"
 autocmd FocusGained,BufEnter * checktime
 
 set background=dark
-colorscheme elflord
+" colorscheme elflord
 " colorscheme base24-solarized-dark-higher-contrast
 " colorscheme base24-wez
+" colorscheme base24-kanagawa-dragon
+" colorscheme base16-gruvbox-dark-hard
+colorscheme base16-black-metal-burzum
 
-hi Normal guibg=NONE ctermbg=NONE
-hi NonText guibg=NONE ctermbg=NONE
-hi SignColumn guibg=NONE ctermbg=NONE
-hi EndOfBuffer guibg=NONE ctermbg=NONE
+" hi Normal guibg=NONE ctermbg=NONE
+" hi NonText guibg=NONE ctermbg=NONE
+" hi SignColumn guibg=NONE ctermbg=NONE
+" hi EndOfBuffer guibg=NONE ctermbg=NONE

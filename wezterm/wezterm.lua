@@ -15,19 +15,21 @@ config.window_decorations = 'RESIZE'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_close_confirmation = 'NeverPrompt'
 config.native_macos_fullscreen_mode = true
-config.mux_enable_ssh_agent = true
 -- config.use_dead_keys = false
-
+-- config.color_scheme = 'Solarized Dark Higher Contrast (Gogh)'
+config.color_scheme = 'Black Metal (Burzum) (base16)'
 -- config.color_scheme = 'Kanagawa Dragon (Gogh)'
 -- config.color_scheme = 'Frontend Delight (Gogh)'
-config.background = {
-  {
-    source = { File = '/Users/suqoi/Pictures/background/asa.png' },
-    opacity = 0.9,
-    hsb = { brightness = 0.035, },
-  },
-}
-config.macos_window_background_blur = 20
+-- config.background = {
+--   {
+--     source = { File = '/Users/suqoi/Pictures/background/asa.png' },
+--     opacity = 1,
+--     hsb = { brightness = 0.035, },
+--   }
+-- }
+
+-- config.window_background_opacity = 0.9
+-- config.macos_window_background_blur = 25
 
 config.keys = {
   { key = 'v',     mods = 'CMD',            action = wezterm.action.PasteFrom 'Clipboard' },

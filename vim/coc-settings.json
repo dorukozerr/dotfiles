@@ -85,7 +85,7 @@
     "diagnostic.showRelatedInformation": false,
     "coc.preferences.formatOnSave": true
   },
-
+  "rust-analyzer.disableProgressNotifications": true,
   "json.schemaDownload.trustedDomains": {
     "https://www.schemastore.org": true,
     "https://json.schemastore.org": true

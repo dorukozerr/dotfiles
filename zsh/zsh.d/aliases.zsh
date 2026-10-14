@@ -1,1 +1,1 @@
-alias ls="ls -GFlah"
+alias ls="ls -GFlah --color"

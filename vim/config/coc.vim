@@ -30,9 +30,9 @@ function! ShowDocumentation()
 endfunction
 
 " Symbol renaming
-nmap <leader>rns <Plug>(coc-rename)
-" File Rename
-nmap <leader>rnf :CocCommand workspace.renameCurrentFile<CR>
+" nmap <leader>rns <Plug>(coc-rename)
+" " File Rename
+" nmap <leader>rnf :CocCommand workspace.renameCurrentFile<CR>
 
 " Applying code actions to the selected code block
 " Example: `<leader>aap` for current paragraph
@@ -47,9 +47,9 @@ nmap <leader>as  <Plug>(coc-codeaction-source)
 nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Remap keys for applying refactor code actions
-nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
-xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
-nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+" nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+" xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+" nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language
@@ -84,17 +84,26 @@ command! -nargs=0 Format :call CocActionAsync('format')
 " Copy type definition
 nnoremap <Leader>ccd :call CocCopyDefinition()<CR>
 
-augroup rust_maps
-  autocmd!
-  autocmd FileType rust nnoremap <buffer> <leader>rm: CocCommand rust-analyzer.expandMacro<CR>
-  autocmd FileType rust nnoremap <buffer> <leader>rd: CocCommand rust-analyzer.openDocs<CR>
-  autocmd FileType rust nnoremap <buffer> <leader>rp: CocCommand rust-analyzer.parentModule<CR>
-  autocmd FileType rust nnoremap <buffer> <leader>rr: CocCommand rust-analyzer.run<CR>
-  autocmd FileType rust nnoremap <buffer> <leader>re: CocCommand rust-analyzer.explainError<CR>
-  autocmd FileType rust nnoremap <buffer> <leader>rj: CocCommand rust-analyzer.joinLines<CR>
-  autocmd FileType rust nnoremap <buffer> <leader>rh: CocCommand document.toggleInlayHint<CR>
-  autocmd FileType rust xnoremap <buffer> <leader>rj: <C-u>CocCommand rust-analyzer.joinLines<CR>
-augroup END
+nnoremap <silent><nowait><leader>rm :call CocCommand rust-analyzer.expandMacro<CR>
+nnoremap <silent><nowait><leader>rd :call CocCommand rust-analyzer.openDocs<CR>
+nnoremap <silent><nowait><leader>rp :call CocCommand rust-analyzer.parentModule<CR>
+nnoremap <silent><nowait><leader>rr :call CocCommand rust-analyzer.run<CR>
+nnoremap <silent><nowait><leader>re :call CocCommand rust-analyzer.explainError<CR>
+nnoremap <silent><nowait><leader>rj :call CocCommand rust-analyzer.joinLines<CR>
+nnoremap <silent><nowait><leader>rh :CocCommand document.toggleInlayHint<CR>
+xnoremap <silent><nowait><leader>rj :call <C-u>CocCommand rust-analyzer.joinLines<CR>
+
+" augroup rust_maps
+"   autocmd!
+"   autocmd FileType rust nnoremap <buffer> <leader>rm: CocCommand rust-analyzer.expandMacro<CR>
+"   autocmd FileType rust nnoremap <buffer> <leader>rd: CocCommand rust-analyzer.openDocs<CR>
+"   autocmd FileType rust nnoremap <buffer> <leader>rp: CocCommand rust-analyzer.parentModule<CR>
+"   autocmd FileType rust nnoremap <buffer> <leader>rr: CocCommand rust-analyzer.run<CR>
+"   autocmd FileType rust nnoremap <buffer> <leader>re: CocCommand rust-analyzer.explainError<CR>
+"   autocmd FileType rust nnoremap <buffer> <leader>rj: CocCommand rust-analyzer.joinLines<CR>
+"   autocmd FileType rust nnoremap <buffer> <leader>rh: CocCommand document.toggleInlayHint<CR>
+"   autocmd FileType rust xnoremap <buffer> <leader>rj: <C-u>CocCommand rust-analyzer.joinLines<CR>
+" augroup END
 
 func! s:InlayHintColors() abort
   highlight CocInlayHint          guifg=#3a3f4b guibg=NONE gui=italic ctermfg=238 cterm=italic

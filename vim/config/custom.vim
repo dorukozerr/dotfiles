@@ -1,3 +1,14 @@
+if v:version >= 704
+  function! s:function(name)
+    return function(a:name)
+  endfunction
+else
+  function! s:function(name)
+    " By Ingo Karkat
+    return function(substitute(a:name, '^s:', matchstr(expand('<sfile>'), '<SNR>\d\+_\zefunction$'), ''))
+  endfunction
+endif
+
 func! CocCopyDefinition() abort
   call CocActionAsync('doHover', function('s:CocCopyDefinitionCb'))
 endfunc
@@ -251,14 +262,15 @@ func! s:AirlineThemesList()
   return map(themes, 'fnamemodify(v:val, ":t:r")')
 endfunc
 
-func! s:AirlineThemesExit(code)
-  if exists('s:airline_theme_orig')
+func! s:AirlineThemesExit(fifo, original, code)
+  " echom a:code
+  if exists(a:original)
     if a:code > 0
-      execute 'AirlineTheme ' . s:airline_theme_orig
+      execute 'AirlineTheme ' . a:original
     endif
     unlet s:airline_theme_orig
   endif
-  call fzf#vim#ipc#stop()
+  call fzf#vim#ipc#stop(a:fifo)
 endfunc
 
 func! s:AirlineThemes(bang)
@@ -278,9 +290,8 @@ func! s:AirlineThemes(bang)
   if !a:bang
     let fifo = fzf#vim#ipc#start({ msg -> execute('AirlineTheme '.msg) })
     if len(fifo)
-      call extend(spec.options, ['--no-tmux', '--no-padding', '--no-margin',
-          \ '--bind', 'focus:execute-silent:echo {} > '.fifo])
-      let spec.exit = function('s:AirlineThemesExit')
+      call extend(spec.options, ['--no-tmux', '--no-padding', '--no-margin', '--bind', 'focus:execute-silent:printf ''%s\n'' {} > '.fzf#shellescape(fifo)])
+      let spec.exit = function(s:function('s:AirlineThemesExit'), [fifo, s:airline_theme_orig])
       let maxwidth = max(map(copy(themes), 'strwidth(v:val)'))
       let spec.window = { 'width': maxwidth + 8, 'height': len(themes) + 5 }
     endif

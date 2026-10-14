@@ -4,20 +4,25 @@
 set -e
 
 updateConfig() {
-  dotfiles="$HOME/repos/personal/dotfiles/"
+  dotfiles="$HOME/repos/personal/dotfiles"
   pairs=(
     "git:$HOME/.gitconfig"
-    "zsh:$HOME/.config/zsh/.zshrc,zsh:$HOME/.config/zsh/.zprofile,$HOME/.config/zsh/zsh.d"
+    "zsh:$HOME/.config/zsh/.zshrc,$HOME/.config/zsh/.zprofile,$HOME/.config/zsh/zsh.d"
     "vim:$HOME/.vim/vimrc,$HOME/.vim/config,$HOME/.vim/coc-settings.json"
     "wezterm:$HOME/.config/wezterm/wezterm.lua"
-    "tmux:$HOME/.config/tmux/tmux.conf,$HOME/.config/tmux/snapshot.conf,$HOME/.config/tmux/tmux-nerd-font-window-name.yml",
+    "tmux:$HOME/.config/tmux/tmux.conf,$HOME/.config/tmux/snapshot.conf,$HOME/.config/tmux/tmux-nerd-font-window-name.yml"
     "scripts:$HOME/.local/bin"
   )
-  for pair in ${pairs[@]}; do
-    type="${pair%%:*}"; paths="${pair##*:}"
+  for pair in "${pairs[@]}"; do
+    type="${pair%%:*}"; paths="${pair#*:}"
     IFS="," read -ra files <<< "$paths"
+    mkdir -p "$dotfiles/$type"
     for file in "${files[@]}"; do
-      cp -rv "$file" "$dotfiles/$type"
+      if [[ -L "$file" ]]; then
+        echo "skipping symlink: $file"
+        continue
+      fi
+      rsync -rv --no-links "$file" "$dotfiles/$type/"
     done
   done
 }

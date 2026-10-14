@@ -14,7 +14,13 @@ if [ -d "$HOME/.bun" ]; then
     fpath=("$HOME/.bun" $fpath)
 fi
 
-fpath=(/Users/suqoi/.docker/completions $fpath)
+if [ -d "$HOME/.rustup/toolchains/stable-aarch64-apple-darwin/share/zsh/site-functions" ]; then
+    fpath=("$HOME/.rustup/toolchains/stable-aarch64-apple-darwin/share/zsh/site-functions" $fpath)
+fi
+
+if [ -d "$HOME/.docker/completions" ]; then
+    fpath=("$HOME/.docker/completions" $fpath)
+fi
 
 autoload -Uz compinit
 
