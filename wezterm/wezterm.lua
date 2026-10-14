@@ -3,13 +3,12 @@ local config = wezterm.config_builder()
 
 config.font = wezterm.font('IosevkaTerm NF')
 config.adjust_window_size_when_changing_font_size = false
-config.font_size = 17
+config.font_size = 16
 config.allow_square_glyphs_to_overflow_width = 'Always'
 config.harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' }
 config.underline_thickness = 1
 config.underline_position = -2
 config.line_height = 1
--- config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 config.bypass_mouse_reporting_modifiers = 'SHIFT'
 
@@ -21,7 +20,7 @@ config.mouse_bindings = {
     action = wezterm.action.OpenLinkAtMouseCursor,
   },
 }
-config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
+config.window_padding = { left = 4, right = 4, top = 4, bottom = 4 }
 config.window_decorations = 'RESIZE'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_close_confirmation = 'NeverPrompt'
