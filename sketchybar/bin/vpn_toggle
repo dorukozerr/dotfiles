@@ -1,0 +1,16 @@
+#!/bin/bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"  # skhd/launchd give a minimal PATH
+# Connect/disconnect Mullvad, then let the bar re-render.
+MULLVAD=$(command -v mullvad)
+[ -z "$MULLVAD" ] && { echo "mullvad cli not found" >&2; exit 1; }
+
+if "$MULLVAD" status | head -1 | grep -q '^Connected'; then
+  "$MULLVAD" disconnect >/dev/null
+else
+  "$MULLVAD" connect >/dev/null
+fi
+
+sketchybar --trigger vpn_change 2>/dev/null
+sleep 1.5
+sketchybar --trigger vpn_change 2>/dev/null
+exit 0

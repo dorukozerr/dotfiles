@@ -1,0 +1,108 @@
+#!/bin/bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"  # skhd/launchd give a minimal PATH
+# move_to_space N — throw the focused window to Mission Control desktop N, builtins only.
+#
+# The "drag trick": grab the window's title bar with a synthetic mouse-down,
+# press the "Switch to Desktop N" shortcut (System Settings > Keyboard >
+# Mission Control, cmd+N here) so macOS carries the held window along, release.
+# If desktop N lives on another display, the window is dragged there first.
+# Display/space layout comes from sketchybar's space.N items.
+#
+# Needs Accessibility for whatever launches it, e.g. skhd. Windows without a
+# native title bar can't be grabbed.
+
+N=$1
+case "$N" in [1-9]) ;; *) echo "usage: move_to_space <1-9>" >&2; exit 1 ;; esac
+
+SPACE_JSON=$(sketchybar --query "space.$N" 2>/dev/null)
+DISPLAYS_JSON=$(sketchybar --query displays 2>/dev/null)
+[ -z "$SPACE_JSON" ] && { echo "space.$N not found in sketchybar" >&2; exit 1; }
+
+exec osascript -l JavaScript - "$N" "$SPACE_JSON" "$DISPLAYS_JSON" <<'JXA'
+ObjC.import('AppKit');
+
+// title-bar point to grab, relative to the window's top-left: just right of
+// the traffic lights, above toolbar buttons and left of Chrome-style tabs
+const GRAB_X = 72;
+const GRAB_Y = 8;
+const SWITCH_FLAGS = 0x100000; // cmd
+const KEYCODES = [18, 19, 20, 21, 23, 22, 26, 28, 25]; // ANSI key codes for 1..9
+// how long the window stays held after the switch shortcut; raise it if the
+// window gets dropped before the desktop changes
+const HOLD = 0.12;
+
+const MOUSE_DOWN = 1, MOUSE_UP = 2, MOUSE_MOVED = 5, MOUSE_DRAGGED = 6;
+
+const post = (e) => $.CGEventPost(0, e);
+
+const mouse = (type, p) => {
+  const e = $.CGEventCreateMouseEvent(null, type, p, 0);
+  $.CGEventSetFlags(e, 0);
+  post(e);
+};
+
+const key = (code, flags) => {
+  [true, false].forEach((down) => {
+    const e = $.CGEventCreateKeyboardEvent(null, code, down);
+    $.CGEventSetFlags(e, flags);
+    post(e);
+  });
+};
+
+const cursor = () => {
+  const p = $.CGEventGetLocation($.CGEventCreate(null));
+  return { x: p.x, y: p.y };
+};
+
+// CoreGraphics window list is front-to-back, so the first normal-layer window
+// of the frontmost app is the focused one; much faster than System Events
+const focusedWindowBounds = () => {
+  const pid = $.NSWorkspace.sharedWorkspace.frontmostApplication.processIdentifier;
+  const windows = ObjC.deepUnwrap(ObjC.castRefToObject($.CGWindowListCopyWindowInfo(1 | 16, 0)));
+  const win = windows.find((w) => w.kCGWindowOwnerPID === pid && w.kCGWindowLayer === 0);
+  return win && win.kCGWindowBounds;
+};
+
+const displayOf = (displays, p) =>
+  displays.find(({ frame: f }) => p.x >= f.x && p.x < f.x + f.w && p.y >= f.y && p.y < f.y + f.h);
+
+// osascript only finds the run handler as a global, so `var`, not `const`
+var run = (argv) => {
+  const n = Number(argv[0]);
+  const space = JSON.parse(argv[1]);
+  const displays = JSON.parse(argv[2]);
+
+  const mask = space.geometry.associated_display_mask;
+  const targetDisplay = displays.find((d) => mask === 2 ** d['arrangement-id']);
+
+  const bounds = focusedWindowBounds();
+  if (!bounds) return 'no focused window';
+
+  const grab = { x: bounds.X + GRAB_X, y: bounds.Y + GRAB_Y };
+  const sourceDisplay = displayOf(displays, grab);
+
+  const drop = targetDisplay && sourceDisplay && targetDisplay !== sourceDisplay
+    ? {
+        x: targetDisplay.frame.x + Math.min(grab.x - sourceDisplay.frame.x, targetDisplay.frame.w - 200),
+        y: targetDisplay.frame.y + Math.min(Math.max(grab.y - sourceDisplay.frame.y, 40), targetDisplay.frame.h - 200),
+      }
+    : { x: grab.x + 1, y: grab.y };
+
+  const original = cursor();
+
+  // every synthetic event carries explicit flags, so the hotkey's still-held
+  // modifiers don't leak in and there's no need to wait for their release
+  mouse(MOUSE_DOWN, grab);
+  delay(0.02);
+  mouse(MOUSE_DRAGGED, { x: grab.x + 1, y: grab.y });
+  if (drop.x !== grab.x + 1) mouse(MOUSE_DRAGGED, drop);
+  delay(0.02);
+
+  key(KEYCODES[n - 1], SWITCH_FLAGS);
+  delay(HOLD);
+
+  mouse(MOUSE_UP, drop);
+  mouse(MOUSE_MOVED, original);
+  return '';
+};
+JXA

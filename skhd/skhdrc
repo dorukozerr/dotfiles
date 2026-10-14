@@ -1,0 +1,13 @@
+# throw focused window to desktop N
+cmd + shift - 1 : ~/.config/sketchybar/bin/move_to_space 1
+cmd + shift - 2 : ~/.config/sketchybar/bin/move_to_space 2
+cmd + shift - 3 : ~/.config/sketchybar/bin/move_to_space 3
+cmd + shift - 4 : ~/.config/sketchybar/bin/move_to_space 4
+cmd + shift - 5 : ~/.config/sketchybar/bin/move_to_space 5
+cmd + shift - 6 : ~/.config/sketchybar/bin/move_to_space 6
+cmd + shift - 7 : ~/.config/sketchybar/bin/move_to_space 7
+cmd + shift - 8 : ~/.config/sketchybar/bin/move_to_space 8
+
+# status bar toggles
+cmd + shift - v : ~/.config/sketchybar/bin/vpn_toggle
+cmd + shift - c : ~/.config/sketchybar/bin/caffeinate_toggle

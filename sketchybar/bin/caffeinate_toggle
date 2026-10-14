@@ -1,0 +1,15 @@
+#!/bin/bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"  # skhd/launchd give a minimal PATH
+# Toggle keep-awake. Only our own `caffeinate -dimsu` is touched, never ones started by other apps.
+MATCH="caffeinate -dimsu"
+
+if pgrep -fx "$MATCH" >/dev/null; then
+  pkill -fx "$MATCH"
+else
+  nohup caffeinate -dimsu >/dev/null 2>&1 &
+  disown
+fi
+
+sleep 0.2
+sketchybar --trigger caffeinate_change 2>/dev/null
+exit 0

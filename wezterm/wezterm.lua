@@ -25,6 +25,7 @@ config.window_decorations = 'RESIZE'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_close_confirmation = 'NeverPrompt'
 config.native_macos_fullscreen_mode = true
+config.enable_kitty_keyboard = true
 -- config.use_dead_keys = false
 -- config.color_scheme = 'Solarized Dark Higher Contrast (Gogh)'
 -- config.color_scheme = 'Black Metal (Burzum) (base16)'

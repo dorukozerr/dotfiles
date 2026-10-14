@@ -7,8 +7,9 @@ updateConfig() {
   dotfiles="$HOME/repos/personal/dotfiles"
   pairs=(
     "git:$HOME/.gitconfig"
+    "skhd:$HOME/.config/skhd/skhdrc"
     "zsh:$HOME/.config/zsh/.zshrc,$HOME/.config/zsh/.zprofile,$HOME/.config/zsh/zsh.d"
-    "sketchybar:$HOME/.config/sketchybar/plugins,$HOME/.config/sketchybar/sketchybarrc"
+    "sketchybar:$HOME/.config/sketchybar/plugins,$HOME/.config/sketchybar/sketchybarrc,$HOME/.config/sketchybar/bin"
     "vim:$HOME/.vim/vimrc,$HOME/.vim/config,$HOME/.vim/coc-settings.json"
     "wezterm:$HOME/.config/wezterm/wezterm.lua"
     "tmux:$HOME/.config/tmux/tmux.conf,$HOME/.config/tmux/snapshot.conf,$HOME/.config/tmux/tmux-nerd-font-window-name.yml"

@@ -6,8 +6,8 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 
 # Menlo ships with macOS and has the ↓ ↑ ♪ glyphs.
 # Prefer i3's DejaVu Sans Mono? brew install --cask font-dejavu, then:
-FONT="DejaVu Sans Mono:Book:12.0"
-# FONT="IosevkaTerm NF:Regular:14.0"
+# FONT="DejaVu Sans Mono:Book:12.0"
+FONT="IosevkaTerm NF:Regular:14.0"
 
 # Colors (i3 defaults)
 BAR_BG=0xff000000
@@ -26,7 +26,7 @@ sketchybar --bar position=top \
                  blur_radius=0 \
                  shadow=off \
                  padding_left=4 \
-                 padding_right=0 \
+                 padding_right=16 \
                  topmost=on \
                  sticky=on
 
@@ -43,10 +43,13 @@ sketchybar --default icon.drawing=on \
 # ---------- Custom events ----------
 # macOS broadcasts this whenever the input source changes (menu, Ctrl+Space, Globe key…)
 sketchybar --add event input_change AppleSelectedInputSourcesChangedNotification
+# Fired by the scripts in bin/ after they change state
+sketchybar --add event vpn_change \
+           --add event caffeinate_change
 
 # ---------- Workspaces (left) ----------
 # Set this to the number of Mission Control desktops you use.
-SPACE_COUNT=10
+SPACE_COUNT=12
 
 for i in $(seq 1 $SPACE_COUNT); do
   sketchybar --add space space.$i left \
@@ -73,6 +76,7 @@ BLOCK_PAD=8   # space on each side of every block
 sep() {
   sketchybar --add item sep.$1 right \
              --set sep.$1 width=1 \
+                          display=active \
                           label.drawing=off \
                           background.drawing=on \
                           background.color=$SEP \
@@ -83,27 +87,48 @@ sep() {
 block() {   # block <name> [extra --set args...]
   local name=$1; shift
   sketchybar --add item "$name" right \
-             --set "$name" label.padding_left=$BLOCK_PAD \
+             --set "$name" display=active \
+                           label.padding_left=$BLOCK_PAD \
                            label.padding_right=$BLOCK_PAD \
                            "$@"
 }
 
-block clock    update_freq=1  script="$PLUGIN_DIR/clock.sh"
+block clock update_freq=1 script="$PLUGIN_DIR/clock.sh"
 sep 1
+
+# Unfocused displays only get this dim short clock; clock_idle.sh keeps its
+# display list pointed at every display except the active one.
+sketchybar --add item clock.idle right \
+           --set clock.idle label.padding_left=$BLOCK_PAD \
+                            label.padding_right=$BLOCK_PAD \
+                            label.color=0xff555555 \
+                            updates=on \
+                            update_freq=10 \
+                            script="$PLUGIN_DIR/clock_idle.sh" \
+           --subscribe clock.idle display_change system_woke
 
 block keyboard script="$PLUGIN_DIR/keyboard.sh"
 sketchybar --subscribe keyboard input_change mouse.clicked system_woke
 sep 2
 
-block volume   script="$PLUGIN_DIR/volume.sh"
+block volume script="$PLUGIN_DIR/volume.sh"
 sketchybar --subscribe volume volume_change
 sep 3
 
-block battery  update_freq=60 script="$PLUGIN_DIR/battery.sh"
+block battery update_freq=60 script="$PLUGIN_DIR/battery.sh"
 sketchybar --subscribe battery power_source_change system_woke
 sep 4
 
-block vpn      update_freq=5  script="$PLUGIN_DIR/vpn.sh"
-sketchybar --subscribe vpn mouse.clicked system_woke
+block vpn update_freq=5 script="$PLUGIN_DIR/vpn.sh"
+sketchybar --subscribe vpn mouse.clicked system_woke vpn_change
+sep 5
 
-sketchybar --update
+block caffeinate label.drawing=off \
+                 icon.font="$FONT" \
+                 icon.padding_left=$BLOCK_PAD \
+                 icon.padding_right=$BLOCK_PAD \
+                 update_freq=10 \
+                 script="$PLUGIN_DIR/caffeinate.sh"
+sketchybar --subscribe caffeinate mouse.clicked caffeinate_change
+
+sketchybar --update --hotload true 

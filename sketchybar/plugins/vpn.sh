@@ -1,5 +1,5 @@
 #!/bin/bash
-# Mullvad status via its CLI. Click the item to connect/disconnect.
+# Mullvad status via its CLI. The toggle itself lives in bin/vpn_toggle (also on click).
 # brew services runs sketchybar with a minimal PATH, so look in the usual places.
 MULLVAD=$(command -v mullvad || ls /usr/local/bin/mullvad /opt/homebrew/bin/mullvad 2>/dev/null | head -1)
 
@@ -9,12 +9,7 @@ if [ -z "$MULLVAD" ]; then
 fi
 
 if [ "$SENDER" = "mouse.clicked" ]; then
-  if "$MULLVAD" status | head -1 | grep -q '^Connected'; then
-    "$MULLVAD" disconnect >/dev/null
-  else
-    "$MULLVAD" connect >/dev/null
-  fi
-  sleep 1
+  exec "$(dirname "$0")/../bin/vpn_toggle"
 fi
 
 STATUS=$("$MULLVAD" status 2>/dev/null)
