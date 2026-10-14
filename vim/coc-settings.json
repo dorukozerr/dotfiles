@@ -80,6 +80,7 @@
   "rust-analyzer.hover.memoryLayout.size": "both",
 
   "rust-analyzer.restartServerOnConfigChange": true,
+  "inlayHint.enable": false,
 
   "[rust]": {
     "diagnostic.showRelatedInformation": false,

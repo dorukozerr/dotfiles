@@ -1,0 +1,109 @@
+#!/bin/bash
+# ~/.config/sketchybar/sketchybarrc
+# i3bar + i3status lookalike for SketchyBar
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# Menlo ships with macOS and has the ↓ ↑ ♪ glyphs.
+# Prefer i3's DejaVu Sans Mono? brew install --cask font-dejavu, then:
+FONT="DejaVu Sans Mono:Book:12.0"
+# FONT="IosevkaTerm NF:Regular:14.0"
+
+# Colors (i3 defaults)
+BAR_BG=0xff000000
+TEXT=0xffd4d4d4
+SEP=0xffd4d4d4
+
+# ---------- Bar ----------
+# height                -> external monitors
+# notch_display_height  -> MacBook (notched) display only
+sketchybar --bar position=top \
+                 height=30 \
+                 notch_display_height=48 \
+                 color=$BAR_BG \
+                 border_width=0 \
+                 corner_radius=0 \
+                 blur_radius=0 \
+                 shadow=off \
+                 padding_left=4 \
+                 padding_right=0 \
+                 topmost=on \
+                 sticky=on
+
+# ---------- Defaults ----------
+sketchybar --default icon.drawing=on \
+                     label.font="$FONT" \
+                     label.color=$TEXT \
+                     padding_left=0 \
+                     padding_right=0 \
+                     label.padding_left=0 \
+                     label.padding_right=0 \
+                     updates=when_shown
+
+# ---------- Custom events ----------
+# macOS broadcasts this whenever the input source changes (menu, Ctrl+Space, Globe key…)
+sketchybar --add event input_change AppleSelectedInputSourcesChangedNotification
+
+# ---------- Workspaces (left) ----------
+# Set this to the number of Mission Control desktops you use.
+SPACE_COUNT=10
+
+for i in $(seq 1 $SPACE_COUNT); do
+  sketchybar --add space space.$i left \
+             --set space.$i space=$i \
+                            label="$i" \
+                            label.padding_left=7 \
+                            label.padding_right=7 \
+                            label.color=0xff888888 \
+                            background.drawing=on \
+                            background.color=0xff222222 \
+                            background.border_color=0xff333333 \
+                            background.border_width=1 \
+                            background.corner_radius=0 \
+                            background.height=20 \
+                            padding_right=2 \
+                            script="$PLUGIN_DIR/space.sh"
+done
+
+# ---------- Status (right) ----------
+# Items added first appear rightmost.
+BLOCK_PAD=8   # space on each side of every block
+
+# A real 1px drawn line, so it shows no matter which font is used
+sep() {
+  sketchybar --add item sep.$1 right \
+             --set sep.$1 width=1 \
+                          label.drawing=off \
+                          background.drawing=on \
+                          background.color=$SEP \
+                          background.height=14 \
+                          background.corner_radius=0
+}
+
+block() {   # block <name> [extra --set args...]
+  local name=$1; shift
+  sketchybar --add item "$name" right \
+             --set "$name" label.padding_left=$BLOCK_PAD \
+                           label.padding_right=$BLOCK_PAD \
+                           "$@"
+}
+
+block clock    update_freq=1  script="$PLUGIN_DIR/clock.sh"
+sep 1
+
+block keyboard script="$PLUGIN_DIR/keyboard.sh"
+sketchybar --subscribe keyboard input_change mouse.clicked system_woke
+sep 2
+
+block volume   script="$PLUGIN_DIR/volume.sh"
+sketchybar --subscribe volume volume_change
+sep 3
+
+block battery  update_freq=60 script="$PLUGIN_DIR/battery.sh"
+sketchybar --subscribe battery power_source_change system_woke
+sep 4
+
+block vpn      update_freq=5  script="$PLUGIN_DIR/vpn.sh"
+sketchybar --subscribe vpn mouse.clicked system_woke
+
+sketchybar --update

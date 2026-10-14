@@ -50,7 +50,7 @@ main() {
     "$HOME/.config/zsh/.zprofile" "$HOME/.config/zsh/.zshrc" \
     "$HOME/.config/zsh/zsh.d" "$HOME/.config/zsh/plugins" \
     "$HOME/.gitconfig" "$HOME/.vim" "$HOME/.vimrc" \
-    "$HOME/.config/tmux" "$HOME/.config/wezterm" \
+    "$HOME/.config/tmux" "$HOME/.config/wezterm" "$HOME/.config/sketchybar" \
     "$HOME/.config/htop" "$HOME/.scripts"; \
   do
     [ -e "$file" ] && mv "$file" "$BACKUP_DIR/"
@@ -79,6 +79,7 @@ main() {
   mv "$DOTFILES_DIR/scripts/bin/"* "$HOME/.local/bin"
   mv "$DOTFILES_DIR/git/.gitconfig" "$DOTFILES_DIR/zsh/.zshenv" "$HOME/"
   mv "$DOTFILES_DIR/zsh/.zshrc" "$DOTFILES_DIR/zsh/.zprofile" "$DOTFILES_DIR/zsh/zsh.d" "$HOME/.config/zsh/"
+  mv "$DOTFILES_DIR/sketchybar/sketchybarrc" "$DOTFILES_DIR/sketchybar/plugins" "$HOME/.config/sketchybar/"
   mv "$DOTFILES_DIR/wezterm" "$DOTFILES_DIR/htop" "$HOME/.config/"
   mv "$DOTFILES_DIR/tmux/snapshot.conf" "$DOTFILES_DIR/tmux/tmux.conf" "$DOTFILES_DIR/tmux/tmux-nerd-font-window-name.yml" "$HOME/.config/tmux/"
   mv "$DOTFILES_DIR/vim/coc-settings.json" "$DOTFILES_DIR/vim/vimrc" "$DOTFILES_DIR/vim/config" "$HOME/.vim/"
