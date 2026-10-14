@@ -28,3 +28,5 @@ export CPPFLAGS="-I/opt/homebrew/opt/ffmpeg-full/include"
 [ -f ~/.vite-plus/env ] && source ~/.vite-plus/env
 [ -f ~/.work/.work.zsh ] && source ~/.work/.work.zsh
 [ -f ~/.cargo/env ] && source ~/.cargo/env
+
+ssh-add --apple-use-keychain /Users/suqoi/.ssh/id_yamete 2>& /dev/null

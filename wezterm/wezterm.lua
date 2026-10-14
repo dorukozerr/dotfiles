@@ -3,7 +3,7 @@ local config = wezterm.config_builder()
 
 config.font = wezterm.font('IosevkaTerm NF')
 config.adjust_window_size_when_changing_font_size = false
-config.font_size = 20
+config.font_size = 17
 config.allow_square_glyphs_to_overflow_width = 'Always'
 config.harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' }
 config.underline_thickness = 1
