@@ -51,7 +51,7 @@ main() {
     "$HOME/.config/zsh/zsh.d" "$HOME/.config/zsh/plugins" \
     "$HOME/.gitconfig" "$HOME/.vim" "$HOME/.vimrc" \
     "$HOME/.config/tmux" "$HOME/.config/wezterm" "$HOME/.config/sketchybar" \
-    "$HOME/.config/htop" "$HOME/.scripts"; \
+    "$HOME/.config/skhd" "$HOME/.config/htop" "$HOME/.scripts"; \
   do
     [ -e "$file" ] && mv "$file" "$BACKUP_DIR/"
   done
@@ -75,6 +75,8 @@ main() {
 
   mkdir -p "$HOME/.local/bin/"
   mkdir -p "$HOME/.config/zsh/"
+  mkdir -p "$HOME/.config/sketchybar/"
+  mkdir -p "$HOME/.config/skhd/"
 
   mv "$DOTFILES_DIR/scripts/bin/"* "$HOME/.local/bin"
   mv "$DOTFILES_DIR/skhd" "$HOME/.config"
