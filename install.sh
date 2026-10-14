@@ -75,14 +75,12 @@ main() {
 
   mkdir -p "$HOME/.local/bin/"
   mkdir -p "$HOME/.config/zsh/"
-  mkdir -p "$HOME/.config/sketchybar/"
-  mkdir -p "$HOME/.config/skhd/"
 
-  mv "$DOTFILES_DIR/scripts/bin/"* "$HOME/.local/bin"
-  mv "$DOTFILES_DIR/skhd" "$HOME/.config"
+  mv "$DOTFILES_DIR/scripts/bin/"* "$HOME/.local/bin/"
+  mv "$DOTFILES_DIR/skhd" "$HOME/.config/"
   mv "$DOTFILES_DIR/git/.gitconfig" "$DOTFILES_DIR/zsh/.zshenv" "$HOME/"
   mv "$DOTFILES_DIR/zsh/.zshrc" "$DOTFILES_DIR/zsh/.zprofile" "$DOTFILES_DIR/zsh/zsh.d" "$HOME/.config/zsh/"
-  mv "$DOTFILES_DIR/sketchybar/sketchybarrc" "$DOTFILES_DIR/sketchybar/plugins" "$DOTFILES_DIR/sketchybar/bin" "$HOME/.config/sketchybar/"
+  mv "$DOTFILES_DIR/sketchybar" "$HOME/.config/"
   mv "$DOTFILES_DIR/wezterm" "$DOTFILES_DIR/htop" "$HOME/.config/"
   mv "$DOTFILES_DIR/tmux/snapshot.conf" "$DOTFILES_DIR/tmux/tmux.conf" "$DOTFILES_DIR/tmux/tmux-nerd-font-window-name.yml" "$HOME/.config/tmux/"
   mv "$DOTFILES_DIR/vim/coc-settings.json" "$DOTFILES_DIR/vim/vimrc" "$DOTFILES_DIR/vim/config" "$HOME/.vim/"
@@ -92,8 +90,6 @@ main() {
   rm -f "$HOME/.vim/temp.vimrc" && rm -rf "$DOTFILES_DIR" && cd
 
   finalize_plugins
-
-  ln -sf $HOME/.config/sketchybar/bin/{move_to_space,vpn_toggle,caffeinate_toggle} $HOME/.local/bin/
 
   echo "done"
 }
