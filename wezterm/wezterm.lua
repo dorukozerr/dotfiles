@@ -9,7 +9,7 @@ config.harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' }
 config.underline_thickness = 1
 config.underline_position = -2
 config.line_height = 1
-
+config.term = "wezterm"
 config.bypass_mouse_reporting_modifiers = 'SHIFT'
 
 config.mouse_bindings = {

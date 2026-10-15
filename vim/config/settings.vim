@@ -32,8 +32,6 @@ set autoread
 set clipboard=unnamedplus
 " set diffopt+=internal,algorithm:patience,indent-heuristic
 
-let g:coc_node_path = "/Users/suqoi/.vite-plus/bin/node"
-
 autocmd FocusGained,BufEnter * checktime
 
 set background=dark

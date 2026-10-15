@@ -2,31 +2,21 @@
   name = Doruk Özer
   email = dorukozer@protonmail.com
   signingkey = /Users/suqoi/.ssh/id_yamete.pub
-[filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
 [push]
   autoSetupRemote = true
-[init]
-  defaultBranch = main
-[alias]
-	lg = log --graph --oneline --branches --remotes
 [pull]
   rebase = true
 [commit]
   gpgSign = true
+[remote]
+	pushDefault = origin
+[init]
+  defaultBranch = main
+[alias]
+	lg = log --graph --oneline --branches --remotes --all
 [gpg]
   format = ssh
 [rerere]
 	enabled = true
-[remote]
-	pushDefault = origin
-[merge]
-	conflictStyle = zdiff3
-	tool = vimdiff
 [log]
-	abbrevCommit = true
-[diff]
-	tool = vimdiff
+  abbrevCommit = true
