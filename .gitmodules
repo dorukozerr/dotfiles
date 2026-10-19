@@ -1,79 +1,77 @@
-[submodule "vim/pack/plugins/start/vim-fugitive"]
-	path = vim/pack/plugins/start/vim-fugitive
-	url = git@github.com:tpope/vim-fugitive
-[submodule "vim/pack/plugins/start/fzf.vim"]
-	path = vim/pack/plugins/start/fzf.vim
-	url = git@github.com:junegunn/fzf.vim
-[submodule "vim/pack/plugins/start/vim-airline"]
-	path = vim/pack/plugins/start/vim-airline
-	url = git@github.com:vim-airline/vim-airline
-[submodule "vim/pack/plugins/start/vim-airline-themes"]
-	path = vim/pack/plugins/start/vim-airline-themes
-	url = git@github.com:vim-airline/vim-airline-themes
-[submodule "vim/pack/plugins/start/vim-devicons"]
-	path = vim/pack/plugins/start/vim-devicons
-	url = git@github.com:ryanoasis/vim-devicons
-[submodule "vim/pack/plugins/start/kisuke.vim"]
-	path = vim/pack/plugins/start/kisuke.vim
-	url = git@github.com:dorukozerr/kisuke.vim
-[submodule "vim/pack/plugins/start/vim-jsx-pretty"]
-	path = vim/pack/plugins/start/vim-jsx-pretty
-	url = git@github.com:MaxMEllon/vim-jsx-pretty
-[submodule "vim/pack/plugins/start/FastFold"]
-	path = vim/pack/plugins/start/FastFold
-	url = git@github.com:Konfekt/FastFold
-[submodule "vim/pack/plugins/start/vim-matchit"]
-	path = vim/pack/plugins/start/vim-matchit
-	url = git@github.com:adelarsq/vim-matchit
-[submodule "vim/pack/plugins/start/vim-visual-multi"]
-	path = vim/pack/plugins/start/vim-visual-multi
-	url = git@github.com:mg979/vim-visual-multi
-[submodule "vim/pack/plugins/start/vim-sneak"]
-	path = vim/pack/plugins/start/vim-sneak
-	url = git@github.com:justinmk/vim-sneak
-[submodule "vim/pack/plugins/start/killersheep"]
-	path = vim/pack/plugins/start/killersheep
-	url = git@github.com:vim/killersheep
-[submodule "vim/pack/plugins/start/coc.nvim"]
-	path = vim/pack/plugins/start/coc.nvim
-	url = git@github.com:neoclide/coc.nvim
+[submodule "vim/dot-config/vim/pack/plugins/start/FastFold"]
+	path = vim/dot-config/vim/pack/plugins/start/FastFold
+	url = https://github.com/Konfekt/FastFold.git
+[submodule "vim/dot-config/vim/pack/plugins/start/coc.nvim"]
+	path = vim/dot-config/vim/pack/plugins/start/coc.nvim
+	url = https://github.com/neoclide/coc.nvim.git
 	branch = release
-[submodule "zsh/plugins/zsh-autopair"]
-	path = zsh/plugins/zsh-autopair
-	url = git@github.com:hlissner/zsh-autopair
-[submodule "zsh/plugins/zsh-syntax-highlighting"]
-	path = zsh/plugins/zsh-syntax-highlighting
-	url = git@github.com:zsh-users/zsh-syntax-highlighting.git
-[submodule "zsh/plugins/fzf-clipboard"]
-	path = zsh/plugins/fzf-clipboard
-	url = git@github.com:dorukozerr/fzf-clipboard.git
-[submodule "tmux/plugins/tmux-copycat"]
-	path = tmux/plugins/tmux-copycat
-	url = git@github.com:tmux-plugins/tmux-copycat.git
-[submodule "tmux/plugins/tmux-now-playing"]
-	path = tmux/plugins/tmux-now-playing
-	url = git@github.com:spywhere/tmux-now-playing.git
-[submodule "tmux/plugins/tmux-yank"]
-	path = tmux/plugins/tmux-yank
-	url = git@github.com:tmux-plugins/tmux-yank.git
-[submodule "tmux/plugins/tmux-mem-cpu-load"]
-	path = tmux/plugins/tmux-mem-cpu-load
-	url = git@github.com:thewtex/tmux-mem-cpu-load.git
-[submodule "tmux/plugins/tmux-nerd-font-window-name"]
-	path = tmux/plugins/tmux-nerd-font-window-name
-	url = git@github.com:joshmedeski/tmux-nerd-font-window-name.git
-[submodule "tmux/plugins/tmux-resurrect"]
-	path = tmux/plugins/tmux-resurrect
-	url = git@github.com:tmux-plugins/tmux-resurrect.git
-[submodule "vim/pack/plugins/start/tsc-watcher-vim"]
-	path = vim/pack/plugins/start/tsc-watcher-vim
-	url = ssh://git@codeberg.org/doruk/tsc-watcher-vim.git
-[submodule "vim/pack/plugins/start/vim-easy-align"]
-	path = vim/pack/plugins/start/vim-easy-align
-	url = git@github.com:junegunn/vim-easy-align.git
-[submodule "zsh/plugins/zsh-vi-mode"]
-	path = zsh/plugins/zsh-vi-mode
-	url = git@github.com:jeffreytse/zsh-vi-mode.git
-[submodule "vim/pack/plugins/start/tinted-vim"]
-	path = vim/pack/plugins/start/tinted-vim
-	url = https://github.com/tinted-theming/tinted-vim
+[submodule "vim/dot-config/vim/pack/plugins/start/fzf.vim"]
+	path = vim/dot-config/vim/pack/plugins/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim.git
+[submodule "vim/dot-config/vim/pack/plugins/start/killersheep"]
+	path = vim/dot-config/vim/pack/plugins/start/killersheep
+	url = https://github.com/vim/killersheep.git
+[submodule "vim/dot-config/vim/pack/plugins/start/kisuke.vim"]
+	path = vim/dot-config/vim/pack/plugins/start/kisuke.vim
+	url = https://github.com/dorukozerr/kisuke.vim.git
+	ignore = untracked
+[submodule "vim/dot-config/vim/pack/plugins/start/tsc-watcher-vim"]
+	path = vim/dot-config/vim/pack/plugins/start/tsc-watcher-vim
+	url = https://codeberg.org/doruk/tsc-watcher-vim.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-airline"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-airline-themes"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-devicons"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-devicons
+	url = https://github.com/ryanoasis/vim-devicons.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-easy-align"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-easy-align
+	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-fugitive"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-jsx-pretty"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-jsx-pretty
+	url = https://github.com/MaxMEllon/vim-jsx-pretty.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-matchit"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-matchit
+	url = https://github.com/adelarsq/vim-matchit.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-sneak"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-sneak
+	url = https://github.com/justinmk/vim-sneak.git
+[submodule "vim/dot-config/vim/pack/plugins/start/vim-visual-multi"]
+	path = vim/dot-config/vim/pack/plugins/start/vim-visual-multi
+	url = https://github.com/mg979/vim-visual-multi.git
+[submodule "zsh/dot-config/zsh/plugins/fzf-clipboard"]
+	path = zsh/dot-config/zsh/plugins/fzf-clipboard
+	url = https://github.com/dorukozerr/fzf-clipboard.git
+[submodule "zsh/dot-config/zsh/plugins/zsh-autopair"]
+	path = zsh/dot-config/zsh/plugins/zsh-autopair
+	url = https://github.com/hlissner/zsh-autopair.git
+[submodule "zsh/dot-config/zsh/plugins/zsh-autosuggestions"]
+	path = zsh/dot-config/zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "zsh/dot-config/zsh/plugins/zsh-syntax-highlighting"]
+	path = zsh/dot-config/zsh/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "zsh/dot-config/zsh/plugins/zsh-vi-mode"]
+	path = zsh/dot-config/zsh/plugins/zsh-vi-mode
+	url = https://github.com/jeffreytse/zsh-vi-mode.git
+[submodule "tmux/dot-config/tmux/plugins/tmux-copycat"]
+	path = tmux/dot-config/tmux/plugins/tmux-copycat
+	url = https://github.com/tmux-plugins/tmux-copycat.git
+[submodule "tmux/dot-config/tmux/plugins/tmux-nerd-font-window-name"]
+	path = tmux/dot-config/tmux/plugins/tmux-nerd-font-window-name
+	url = https://github.com/joshmedeski/tmux-nerd-font-window-name.git
+[submodule "tmux/dot-config/tmux/plugins/tmux-now-playing"]
+	path = tmux/dot-config/tmux/plugins/tmux-now-playing
+	url = https://github.com/spywhere/tmux-now-playing.git
+[submodule "tmux/dot-config/tmux/plugins/tmux-resurrect"]
+	path = tmux/dot-config/tmux/plugins/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect.git
+[submodule "tmux/dot-config/tmux/plugins/tmux-yank"]
+	path = tmux/dot-config/tmux/plugins/tmux-yank
+	url = https://github.com/tmux-plugins/tmux-yank.git
