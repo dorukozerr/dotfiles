@@ -1,7 +1,5 @@
 # Dotfiles
 
-My kawai setup :3
-
 ```bash
 brew install stow
 git clone --recurse-submodules --shallow-submodules \
@@ -11,10 +9,10 @@ mkdir -p ~/.config ~/.local/bin # so stow links into these instead of replacing 
 stow */
 ```
 
+https://github.com/user-attachments/assets/9a1e50a4-641a-4013-bfe3-900a2ef55d6d
+
 `.stowrc` sets `--dotfiles --target=~`. Stow aborts without touching anything
 if a file is already in the way, move it out and rerun.
-
-https://github.com/user-attachments/assets/9a1e50a4-641a-4013-bfe3-900a2ef55d6d
 
 ## Layout
 
