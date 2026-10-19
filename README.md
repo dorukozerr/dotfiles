@@ -1,7 +1,6 @@
 # Dotfiles
 
 ```bash
-brew install stow
 git clone --recurse-submodules --shallow-submodules \
   https://github.com/dorukozerr/dotfiles.git ~/Repositories/personal/dotfiles
 cd ~/Repositories/personal/dotfiles

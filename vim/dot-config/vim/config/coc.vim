@@ -10,6 +10,13 @@ let g:coc_global_extensions = [
       \ 'coc-pyright', 'coc-rust-analyzer',
       \ ]
 
+" Lua configs live in subfolders of the dotfiles repo, so the .git root would
+" win and their local .vim/coc-settings.json (e.g. wezterm types) gets ignored
+augroup CocLuaRoot
+  autocmd!
+  autocmd FileType lua let b:coc_root_patterns = ['.vim', '.luarc.json']
+augroup END
+
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <leader><CR> coc#pum#visible() ? coc#pum#confirm()

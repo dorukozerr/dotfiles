@@ -1,5 +1,3 @@
 {
-  "Lua.workspace.library": [
-    "~/.sandbox/wezterm-types"
-  ]
+  "Lua.workspace.library": ["~/.sandbox/wezterm-types"]
 }

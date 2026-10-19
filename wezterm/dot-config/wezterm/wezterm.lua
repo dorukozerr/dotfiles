@@ -11,6 +11,7 @@ config.underline_position = -2
 config.line_height = 1
 config.term = "wezterm"
 config.bypass_mouse_reporting_modifiers = 'SHIFT'
+config.mux_enable_ssh_agent = false
 
 config.mouse_bindings = {
   {
@@ -21,7 +22,7 @@ config.mouse_bindings = {
   },
 }
 -- config.window_padding = { left = 8, right = 8, top = 8, bottom = 8 }
-config.window_decorations = 'TITLE | RESIZE | MACOS_USE_BACKGROUND_COLOR_AS_TITLEBAR_COLOR'
+config.window_decorations = 'TITLE|RESIZE|MACOS_USE_BACKGROUND_COLOR_AS_TITLEBAR_COLOR'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_close_confirmation = 'NeverPrompt'
 config.native_macos_fullscreen_mode = true

@@ -92,6 +92,9 @@ source "$ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
 source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 source "$ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
 
+# https://apple.stackexchange.com/questions/48502/how-can-i-permanently-add-my-ssh-private-key-to-keychain-so-it-is-automatically
+ssh-add --apple-load-keychain -q
+
 # zprof
 # # or
 # printf 'startup: %.1fms\n' $(( (EPOCHREALTIME - _zt) * 1000 ))
