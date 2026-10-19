@@ -1,0 +1,79 @@
+{
+  // globals
+  "floatFactory.floatConfig": {
+    "border": false,
+    "rounded": true,
+    "focusable": true,
+    "borderhighlight": "CocFloatingBorder"
+  },
+  "diagnostic.floatConfig": {
+    "borderhighlight": "CocFloatingBorder",
+    "highlight": "CocFloating"
+  },
+  "hover.floatConfig": {
+    "maxWidth": 140,
+    "maxHeight": 50,
+    "border": false,
+    "rounded": true,
+    "focusable": true,
+    "borderhighlight": "CocFloatingBorder"
+  },
+  "hover.previewMaxHeight": 30,
+  "suggest.floatConfig": {
+    "border": false,
+    "rounded": false,
+    "borderhighlight": "CocFloatingBorder"
+  },
+  "coc.preferences.excludeImageLinksInMarkdownDocument": true,
+  "coc.preferences.formatOnSave": true,
+  "inlayHint.enable": false,
+
+  // JS/TS/CSS
+  "tsserver.experimental.enableProjectDiagnostics": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.format.enable": false,
+  "typescript.format.enable": false,
+  "eslint.alwaysShowStatus": true,
+  "eslint.useFlatConfig": true,
+  "prettier.enable": false,
+  "tailwindCSS.custom.serverPath": "/Users/dumdum/.local/share/vite-plus/bin/tailwindcss-language-serve",
+  "css.lint.unknownAtRules": "ignore",
+  "oxc.oxfmt.enable": true,
+  "oxc.oxlint.enable": true,
+  "editor.codeActionsOnSave": { "source.fixAll.oxc": "always" },
+  "oxc.oxfmt.binPath": "/Users/dumdum/.local/share/vite-plus/bin/oxfmt",
+  "oxc.oxlint.binPath": "/Users/dumdum/.local/share/vite-plus/bin/oxlint",
+
+  // rust-analyzer
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.check.allTargets": true,
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.cargo.targetDir": true,
+  "rust-analyzer.check.extraArgs": ["--message-format=json-diagnostic-rendered-ansi"],
+  "rust-analyzer.diagnostics.styleLints.enable": true,
+  "rust-analyzer.inlayHints.bindingModeHints.enable": true,
+  "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "always",
+  "rust-analyzer.inlayHints.closureReturnTypeHints.enable": "with_block",
+  "rust-analyzer.inlayHints.reborrowHints.enable": "mutable",
+  "rust-analyzer.inlayHints.maxLength": 40,
+  "rust-analyzer.hover.memoryLayout.niches": true,
+  "rust-analyzer.hover.show.enumVariants": 10,
+  "rust-analyzer.hover.show.fields": 10,
+  "rust-analyzer.completion.fullFunctionSignatures.enable": true,
+  "rust-analyzer.imports.granularity.group": "module",
+  "rust-analyzer.imports.prefix": "crate",
+  "rust-analyzer.hover.show.traitAssocItems": 5,
+  "rust-analyzer.hover.memoryLayout.size": "both",
+  "rust-analyzer.restartServerOnConfigChange": true,
+  "[rust]": {
+    "diagnostic.showRelatedInformation": false
+  },
+  "rust-analyzer.disableProgressNotifications": true,
+
+  // JSON autocompletions
+  "json.schemaDownload.trustedDomains": {
+    "https://www.schemastore.org": true,
+    "https://json.schemastore.org": true
+  }
+}

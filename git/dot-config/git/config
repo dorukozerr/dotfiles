@@ -1,0 +1,22 @@
+[user]
+  name = Doruk Özer
+  email = dorukozer@protonmail.com
+  signingkey = /Users/dumdum/.ssh/id_ittai.pub
+[push]
+  autoSetupRemote = true
+[pull]
+  rebase = true
+[commit]
+  gpgSign = true
+[remote]
+	pushDefault = origin
+[init]
+  defaultBranch = main
+[alias]
+	lg = log --graph --oneline --branches --remotes --all
+[gpg]
+  format = ssh
+[rerere]
+	enabled = true
+[log]
+  abbrevCommit = true
