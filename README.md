@@ -8,7 +8,7 @@ mkdir -p ~/.config ~/.local/bin # so stow links into these instead of replacing 
 stow */
 ```
 
-https://github.com/user-attachments/assets/9a1e50a4-641a-4013-bfe3-900a2ef55d6d
+https://github.com/user-attachments/assets/284b546d-adce-418b-a35c-7dc72772a7fb
 
 `.stowrc` sets `--dotfiles --target=~`. Stow aborts without touching anything
 if a file is already in the way, move it out and rerun.
