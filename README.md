@@ -2,8 +2,8 @@
 
 ```bash
 git clone --recurse-submodules --shallow-submodules \
-  https://github.com/dorukozerr/dotfiles.git ~/Repositories/personal/dotfiles
-cd ~/Repositories/personal/dotfiles
+  https://github.com/dorukozerr/dotfiles.git ~/Repositories/gh/dotfiles
+cd ~/Repositories/gh/dotfiles
 mkdir -p ~/.config ~/.local/bin # so stow links into these instead of replacing them
 stow */
 ```

@@ -11,3 +11,6 @@ cmd + shift - 8 : move_to_space 8
 # status bar toggles
 cmd + shift - v : vpn_toggle
 cmd + shift - c : caffeinate_toggle
+
+# fzf pickers, usable from any app (see fzf/lib.sh)
+cmd + shift - y : ~/.config/skhd/fzf/fzf-clipboard

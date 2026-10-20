@@ -8,7 +8,7 @@ endif
 
 let g:fzf_vim = {}
 
-let $FZF_DEFAULT_OPTS = '--color=16,bg:0,bg+:0,border:0 --border=none'
+let $FZF_DEFAULT_OPTS = '--color=16,bg:0,bg+:-0 --border=none'
 
 let g:fzf_vim.preview_window = ['right:50%:wrap', 'ctrl-/']
 

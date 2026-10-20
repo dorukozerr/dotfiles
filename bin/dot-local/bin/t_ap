@@ -16,19 +16,74 @@
 #   t_ap              print tokens for the current airline theme
 #   t_ap <theme>      print tokens for a specific airline theme
 #   t_ap [theme] -w   update snapshot.conf in place + reload tmux
+#   t_ap -a [-w]      terminal ANSI tokens instead (follows the terminal theme,
+#                     transparent status fill), no vim involved
 
 set -euo pipefail
 
 CONF="$HOME/.config/tmux/snapshot.conf"
 
-theme="" write=0
+theme="" write=0 ansi=0
 for a in "$@"; do
   case "$a" in
     -w|--write) write=1 ;;
-    -*) echo "usage: $(basename "$0") [theme] [-w]" >&2; exit 1 ;;
+    -a|--ansi) ansi=1 ;;
+    -*) echo "usage: $(basename "$0") [theme | -a] [-w]" >&2; exit 1 ;;
     *) theme="$a" ;;
   esac
 done
+
+if [[ "$ansi" -eq 1 && -n "$theme" ]]; then
+  echo "error: -a takes no airline theme" >&2
+  exit 1
+fi
+
+emit_block() {
+  printf '%-29s # %s\n' \
+    "%hidden BG=\"$1\"" "airline_c bg / background" \
+    "%hidden BG_ALT=\"$1\"" "status fill            (airline_c bg)" \
+    "%hidden SEL=\"$2\"" "mid panel / section B  (airline_b bg)" \
+    "%hidden FG_DIM=\"$3\"" "inactive text          (airline_c_inactive fg)" \
+    "%hidden FG=\"$4\"" "section text           (airline_b fg)"
+  cat <<EOF
+
+# ---- airline section roles ----
+# Section A = mode/title (highlighted), B = middle, C = outer status fill.
+%hidden A_FG="$5"
+%hidden A_BG="$6"
+%hidden B_FG="\${FG}"
+%hidden B_BG="\${SEL}"
+%hidden C_FG="\${FG_DIM}"
+%hidden C_BG="\${BG_ALT}"
+EOF
+}
+
+write_block() {
+  if [[ "$write" -eq 0 ]]; then
+    printf '%s\n' "$2"
+    exit 0
+  fi
+
+  # BSD awk rejects multiline -v strings; splice the file around the markers.
+  {
+    awk '/^# >>> theme tokens/ { exit } { print }' "$CONF"
+    printf '# >>> theme tokens (%s) >>>\n%s\n' "$1" "$2"
+    awk '/^# <<< theme tokens/,0' "$CONF"
+  } > "$CONF.tmp" && mv "$CONF.tmp" "$CONF"
+
+  if tmux info >/dev/null 2>&1; then
+    tmux source-file "$CONF"
+    echo "updated $CONF and reloaded tmux ($1)"
+  else
+    echo "updated $CONF ($1)"
+  fi
+  exit 0
+}
+
+if [[ "$ansi" -eq 1 ]]; then
+  write_block "terminal ansi" \
+    "$(emit_block default brightblack white brightwhite black blue)"
+fi
 
 out="$(mktemp)" vs="$(mktemp)"
 trap 'rm -f "$out" "$vs"' EXIT
@@ -75,39 +130,5 @@ if [[ ! "$A_BG" =~ ^# || ! "$B_BG" =~ ^# || ! "$C_BG" =~ ^# ]]; then
   exit 1
 fi
 
-block="$(cat <<EOF
-%hidden BG="$C_BG"          # airline_c bg / background
-%hidden BG_ALT="$C_BG"      # status fill            (airline_c bg)
-%hidden SEL="$B_BG"         # mid panel / section B  (airline_b bg)
-%hidden FG_DIM="$IA_FG"      # inactive text          (airline_c_inactive fg)
-%hidden FG="$B_FG"          # section text           (airline_b fg)
-
-# ---- airline section roles ----
-# Section A = mode/title (highlighted), B = middle, C = outer status fill.
-%hidden A_FG="$A_FG"
-%hidden A_BG="$A_BG"
-%hidden B_FG="\${FG}"
-%hidden B_BG="\${SEL}"
-%hidden C_FG="\${FG_DIM}"
-%hidden C_BG="\${BG_ALT}"
-EOF
-)"
-
-if [[ "$write" -eq 0 ]]; then
-  printf '%s\n' "$block"
-  exit 0
-fi
-
-# BSD awk rejects multiline -v strings; splice the file around the markers.
-{
-  awk '/^# >>> theme tokens/ { exit } { print }' "$CONF"
-  printf '# >>> theme tokens (airline: %s) >>>\n%s\n' "${theme:-current}" "$block"
-  awk '/^# <<< theme tokens/,0' "$CONF"
-} > "$CONF.tmp" && mv "$CONF.tmp" "$CONF"
-
-if tmux info >/dev/null 2>&1; then
-  tmux source-file "$CONF"
-  echo "updated $CONF and reloaded tmux (theme: ${theme:-current})"
-else
-  echo "updated $CONF (theme: ${theme:-current})"
-fi
+write_block "airline: ${theme:-current}" \
+  "$(emit_block "$C_BG" "$B_BG" "$IA_FG" "$B_FG" "$A_FG" "$A_BG")"

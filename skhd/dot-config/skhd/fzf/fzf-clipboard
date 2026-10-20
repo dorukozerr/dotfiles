@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+#
+# fzf-clipboard — fzf browser over fzf-clipboard's history
+#
+#   enter  copy the entry under the cursor back to the clipboard
+#
+# Reads the cache fzf-clipboard-watch writes, one "<unix ts>:<base64>" entry
+# per line. Runs from a terminal, from tmux (fzf-tmux popup) or from skhd,
+# see lib.sh for how it finds a terminal in that last case.
+#
+# Written for macOS' bash 3.2.
+
+set -eo pipefail
+
+. "$(dirname "$0")/lib.sh"
+fzf_ensure_terminal "$0" "$@"
+
+command -v fzf-tmux >/dev/null || { echo "fzf-clipboard: fzf-tmux not found" >&2; exit 1; }
+
+CACHE_FILE="${FZF_CB_HISTORY_DIR:-$HOME/.local/share/fzf-clipboard}/.cache"
+
+[ -s "$CACHE_FILE" ] || { echo "fzf-clipboard: no history in $CACHE_FILE" >&2; exit 1; }
+
+# ---------------------------------------------------------------- selection --
+
+# "<line number>\t<age> <first 200 bytes, newlines shown as ␤>"
+# One perl pass instead of a base64 process per entry.
+list_entries() {
+  perl -MMIME::Base64 -ne '
+    chomp;
+    my ($ts, $b64) = /^(\d{10,}):(.*)$/ ? ($1, $2) : (undef, $_);
+    my $age = defined $ts ? time - $ts : -1;
+    my $when = $age < 0     ? "new"
+             : $age < 60    ? "${age}s ago"
+             : $age < 3600  ? int($age / 60)    . "m ago"
+             : $age < 86400 ? int($age / 3600)  . "h ago"
+             :                int($age / 86400) . "d ago";
+    my $text = substr(decode_base64($b64), 0, 200);
+    $text =~ s/\n/\xe2\x90\xa4/g;
+    $text =~ s/\t/ /g;
+    print "$.\t$when $text\n";
+  ' "$CACHE_FILE"
+}
+
+# Line N of the cache, decoded.
+DECODE="sed -n {1}p '$CACHE_FILE' | sed -E 's/^[0-9]{10,}://' | base64 -d"
+
+LINE=$(
+  list_entries | fzf-tmux \
+    --delimiter='\t' \
+    --with-nth='2..' \
+    --accept-nth='1' \
+    --prompt='clipboard> ' \
+    --header='enter: copy' \
+    --preview="$DECODE" \
+    --preview-window='right,50%,wrap' \
+    --layout=reverse \
+    -p '100%,100%'
+) || exit 0
+
+[ -n "$LINE" ] || exit 0
+
+# ------------------------------------------------------------------ copying --
+
+sed -n "${LINE}p" "$CACHE_FILE" | sed -E 's/^[0-9]{10,}://' | base64 -d | pbcopy

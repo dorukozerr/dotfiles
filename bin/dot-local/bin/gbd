@@ -44,17 +44,16 @@ list_branches() {
 }
 
 SELECTION=$(
-  list_branches | fzf \
+  list_branches | fzf-tmux \
     --ansi \
     --multi \
-    --reverse \
-    --height=80% \
-    --border \
     --prompt='delete> ' \
     --header='tab: mark to delete   enter: confirm each one by one' \
     --preview='git log --oneline --graph --decorate --color=always -30 {} --' \
-    --preview-window='right,55%,border-left' \
-    --bind='enter:become(printf "%s\n" {+})'
+    --preview-window='right,50%' \
+    --bind='enter:become(printf "%s\n" {+})' \
+    --layout=reverse-list \
+    -p '100%,100%'
 ) || exit 0
 
 [ -n "$SELECTION" ] || exit 0

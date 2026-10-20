@@ -39,15 +39,13 @@ augroup END
 
 set background=dark
 
-colorscheme elflord
-
+" colorscheme elflord
 " colorscheme base24-solarized-dark-higher-contrast
 " colorscheme base24-wez
 " colorscheme base24-kanagawa-dragon
-" colorscheme base16-gruvbox-dark-hard
-" colorscheme base16-black-metal-burzum
+colorscheme base16-black-metal-venom
 
-" hi Normal guibg=NONE ctermbg=NONE
-" hi NonText guibg=NONE ctermbg=NONE
-" hi SignColumn guibg=NONE ctermbg=NONE
-" hi EndOfBuffer guibg=NONE ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE
+hi NonText guibg=NONE ctermbg=NONE
+hi SignColumn guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE

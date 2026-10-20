@@ -42,19 +42,19 @@ list_branches() {
 # {}  branch under the cursor      -> checkout target
 # {+} marked branches, or the cursor item when nothing is marked -> pull targets
 SELECTION=$(
-  list_branches | fzf \
+  list_branches | fzf-tmux \
     --ansi \
     --multi \
-    --reverse \
-    --height=80% \
-    --border \
     --prompt='branch> ' \
     --header='tab: mark to pull   enter: pull marked, switch to cursor' \
     --preview='git log --oneline --graph --decorate --color=always -30 {} --' \
-    --preview-window='right,55%,border-left' \
-    --bind='enter:become(printf "CHECKOUT\t%s\n" {}; printf "PULL\t%s\n" {+})'
+    --preview-window='right,50%' \
+    --bind='enter:become(printf "CHECKOUT\t%s\n" {}; printf "PULL\t%s\n" {+})' \
+    --layout=reverse-list \
+    -p '100%,100%'
 ) || exit 0
 
+    # --popup='center,100%,100%' \
 [ -n "$SELECTION" ] || exit 0
 
 CHECKOUT=""

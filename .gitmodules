@@ -75,3 +75,12 @@
 [submodule "tmux/dot-config/tmux/plugins/tmux-yank"]
 	path = tmux/dot-config/tmux/plugins/tmux-yank
 	url = https://github.com/tmux-plugins/tmux-yank.git
+[submodule "wezterm/dot-config/wezterm/plugins/tabline.wez"]
+	path = wezterm/dot-config/wezterm/plugins/tabline.wez
+	url = https://github.com/michaelbrusegard/tabline.wez.git
+[submodule "tmux/dot-config/tmux/plugins/tmux-fzf-complete"]
+	path = tmux/dot-config/tmux/plugins/tmux-fzf-complete
+	url = git@github.com:junegunn/tmux-fzf-complete.git
+[submodule "vim/dot-config/vim/pack/plugins/start/tinted-vim"]
+	path = vim/dot-config/vim/pack/plugins/start/tinted-vim
+	url = git@github.com:tinted-theming/tinted-vim.git
