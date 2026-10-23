@@ -6,8 +6,8 @@ let g:coc_node_path = "/Users/dumdum/.local/share/vite-plus/bin/node"
 let g:coc_global_extensions = [
       \ 'coc-vimls', 'coc-sh', 'coc-tsserver', 'coc-go', 'coc-html', 'coc-css',
       \ '@yaegassy/coc-tailwindcss3', 'coc-json', 'coc-yaml', 'coc-prettier',
-      \ 'coc-eslint', 'coc-lua', 'coc-toml', 'coc-zshell', 'coc-oxc',
-      \ 'coc-pyright', 'coc-rust-analyzer',
+      \ 'coc-eslint', 'coc-lua', 'coc-toml', 'coc-oxc', 'coc-pyright',
+      \ 'coc-rust-analyzer', 'coc-zshell',
       \ ]
 
 " Lua configs live in subfolders of the dotfiles repo, so the .git root would

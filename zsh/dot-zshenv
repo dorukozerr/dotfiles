@@ -1,5 +1,5 @@
 export ZDOTDIR="$HOME/.config/zsh"
 
-. "$HOME/.profile"
-. "$HOME/.config/vite-plus/env"
-. "$HOME/.config/cargo/env"
+source "$HOME/.profile"
+source "$HOME/.config/vite-plus/env"
+source "$HOME/.config/cargo/env"

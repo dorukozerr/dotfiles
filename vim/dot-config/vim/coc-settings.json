@@ -28,7 +28,7 @@
   "coc.preferences.formatOnSave": true,
   "inlayHint.enable": false,
 
-  // JS/TS/CSS
+  // JS/TS/CSS ...
   "tsserver.experimental.enableProjectDiagnostics": true,
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.updateImportsOnFileMove.enabled": "always",
@@ -37,13 +37,13 @@
   "eslint.alwaysShowStatus": true,
   "eslint.useFlatConfig": true,
   "prettier.enable": false,
-  "tailwindCSS.custom.serverPath": "/Users/dumdum/.local/share/vite-plus/bin/tailwindcss-language-serve",
+  "tailwindCSS.custom.serverPath": "/opt/homebrew/bin/tailwindcss-language-server",
   "css.lint.unknownAtRules": "ignore",
   "oxc.oxfmt.enable": true,
   "oxc.oxlint.enable": true,
-  "editor.codeActionsOnSave": { "source.fixAll.oxc": "always" },
-  "oxc.oxfmt.binPath": "/Users/dumdum/.local/share/vite-plus/bin/oxfmt",
-  "oxc.oxlint.binPath": "/Users/dumdum/.local/share/vite-plus/bin/oxlint",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "always"
+  },
 
   // rust-analyzer
   "rust-analyzer.check.command": "clippy",

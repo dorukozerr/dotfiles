@@ -6,3 +6,9 @@ zsh/dot-config/zsh/.zsh_history
 zsh/dot-config/zsh/.zcompdump*
 zsh/dot-config/zsh/.zcompcache*
 zsh/dot-config/zsh/.zsh_sessions
+
+vim/dot-config/vim/pack/plugins/start/**/doc/tags
+zsh/dot-config/zsh/.chpwd-recent-dirs
+
+
+htop/dot-config/htop/htop_history

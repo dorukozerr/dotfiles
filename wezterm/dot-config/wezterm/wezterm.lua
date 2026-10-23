@@ -10,7 +10,7 @@ helpers.apply_to_config(config)
 
 -- font
 config.font = wezterm.font('IosevkaTerm NF')
-config.font_size = 16
+config.font_size = 28
 config.adjust_window_size_when_changing_font_size = false
 config.allow_square_glyphs_to_overflow_width = 'Always'
 config.harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' }
@@ -20,27 +20,27 @@ config.underline_position = -1
 -- window
 config.window_decorations = 'RESIZE|MACOS_FORCE_SQUARE_CORNERS'
 -- native fullscreen needs a titled window, RESIZE-only windows can't enter it
-config.native_macos_fullscreen_mode = false
+config.native_macos_fullscreen_mode = true
 config.window_close_confirmation = 'NeverPrompt'
 config.hide_tab_bar_if_only_one_tab = true
 config.inactive_pane_hsb = { brightness = 0.25 }
-config.macos_window_background_blur = 50
 config.color_scheme = 'Black Metal (Venom) (base16)'
 config.background = {
   {
-    source = { File = helpers.background('/Users/dumdum/Pictures/backgrounds/02.png') },
+    source = { File = helpers.background('/Users/dumdum/Pictures/backgrounds/01.png') },
     opacity = 1,
-    hsb = { brightness = 0.0025 },
+    hsb = { brightness = 0.0125 },
     horizontal_align = "Center",
-    vertical_align = "Middle"
+    vertical_align = "Middle",
   },
 }
+-- config.macos_window_background_blur = 20
 -- after color_scheme, the bar resolves tmux colour names through its palette
 statusbar.apply_to_config(config)
 
 -- terminal
 config.term = 'wezterm'
-config.enable_kitty_keyboard = true
+-- config.enable_kitty_keyboard = true
 config.enable_kitty_graphics = true
 config.front_end = "WebGpu"
 config.scrollback_lines = 5000

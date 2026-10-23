@@ -1,4 +1,3 @@
-runtime! ftplugin/man.vim
 packadd! matchit
 packadd! netrw
 
@@ -25,8 +24,6 @@ set noswapfile
 set foldmethod=syntax
 set foldenable
 set foldlevelstart=99
-set title
-set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}
 set t_BE=
 set autoread
 set clipboard=unnamedplus
@@ -43,9 +40,15 @@ set background=dark
 " colorscheme base24-solarized-dark-higher-contrast
 " colorscheme base24-wez
 " colorscheme base24-kanagawa-dragon
-colorscheme base16-black-metal-venom
 
-hi Normal guibg=NONE ctermbg=NONE
-hi NonText guibg=NONE ctermbg=NONE
-hi SignColumn guibg=NONE ctermbg=NONE
-hi EndOfBuffer guibg=NONE ctermbg=NONE
+" Transparent background, reapplied whenever the colorscheme reloads
+" (e.g. :syntax on from +MANPAGER)
+augroup TransparentBg
+  autocmd!
+  autocmd ColorScheme * hi Normal guibg=NONE ctermbg=NONE
+        \ | hi NonText guibg=NONE ctermbg=NONE
+        \ | hi SignColumn guibg=NONE ctermbg=NONE
+        \ | hi EndOfBuffer guibg=NONE ctermbg=NONE
+augroup END
+
+colorscheme base16-black-metal-venom

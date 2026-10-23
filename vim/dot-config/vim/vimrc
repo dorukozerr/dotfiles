@@ -9,7 +9,8 @@ let g:config_files = [
       \ 'sneak.vim',
       \ 'mappings.vim',
       \ 'coc.vim',
-      \ 'startscreen.vim',
+      \ 'man.vim',
+      "\ 'startscreen.vim',
       \ ]
 
 for config_file in g:config_files

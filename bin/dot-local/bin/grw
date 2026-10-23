@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#
+# Name: Doruk Özer <dorukozer@protonmail.com>
+# grw: get random words
+
+get_random_words() {
+  dwc=3
+  [[ -n $1 && $1 -gt 0 ]] && dwc=$1
+
+  rwl=$(shuf -n $dwc /usr/share/dict/words | tr 'A-Z' 'a-z')
+  jrwl=""
+
+  for w in $rwl; do
+    jrwl+="${w^} "
+  done 
+
+  trwl="$(echo $(echo -e "${jrwl}" | sed -e 's/^[[:space:]]*//'))"
+  frwl="$(echo "${trwl//\ /-}")"
+
+  # echo $trwl
+
+  echo $frwl
+}
+
+get_random_words

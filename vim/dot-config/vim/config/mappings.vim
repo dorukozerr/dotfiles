@@ -48,7 +48,6 @@ nnoremap <Leader>f :RG<CR>
 nnoremap <Leader>bb :Buffers<CR>
 nnoremap <Leader>gl :Commits<CR>
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
-nnoremap <Leader>gpa :GitStage<CR>
 nnoremap <Leader>c :Commands<CR>
 
 " thank you AI
