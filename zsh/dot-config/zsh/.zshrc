@@ -32,7 +32,7 @@ zstyle ':completion:*' completions '#'
 zstyle ':completion:*' format '%d'
 zstyle ':completion:*' glob '!'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[]=** r:|=**'
+# zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[]=** r:|=**'
 zstyle ':completion:*' max-errors 3 numeric
 zstyle ':completion:*' substitute '$'
 zstyle ':completion:*' verbose true
