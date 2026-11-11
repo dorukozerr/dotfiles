@@ -65,7 +65,7 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-aheadbehind
 
 add-zsh-hook precmd vcs_info
 setopt PROMPT_SUBST
-PROMPT='%F{green}%2~%f${vcs_info_msg_0_} %F{green}%(1j.[%j] .)%(?..%F{red})%#%f '
+PROMPT='%F{red}%2~%f${vcs_info_msg_0_} %F{red}%(1j.[%j] .)%(?..%F{yellow})%#%f '
 
 HISTFILE=$XDG_STATE_HOME/zsh/history
 [[ -d ${HISTFILE:h} ]] || mkdir -p ${HISTFILE:h}
@@ -79,6 +79,7 @@ autoload -Uz chpwd_recent_dirs cdr
 add-zsh-hook chpwd chpwd_recent_dirs
 
 alias ls="ls -GFlah"
+alias pwgen="gpg --gen-random --armor 2 48"
 
 export FZF_DEFAULT_OPTS="
   --style=minimal
@@ -114,7 +115,3 @@ ssh-add --apple-load-keychain -q
 # zprof
 # # or
 # printf 'startup: %.1fms\n' $(( (EPOCHREALTIME - _zt) * 1000 ))
-
-# The following lines were added by compinstall
-
-# End of lines added by compinstall

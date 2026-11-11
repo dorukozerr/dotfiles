@@ -28,19 +28,19 @@ config.color_scheme = 'Black Metal (Venom) (base16)'
 config.background = {
   {
     source = { File = helpers.background('/Users/dumdum/Pictures/backgrounds/01.png') },
-    opacity = 1,
+    opacity = 0.8,
     hsb = { brightness = 0.0125 },
     horizontal_align = "Center",
     vertical_align = "Middle",
   },
 }
--- config.macos_window_background_blur = 20
+config.macos_window_background_blur = 20
 -- after color_scheme, the bar resolves tmux colour names through its palette
 statusbar.apply_to_config(config)
 
 -- terminal
 config.term = 'wezterm'
--- config.enable_kitty_keyboard = true
+config.enable_kitty_keyboard = true
 config.enable_kitty_graphics = true
 config.front_end = "WebGpu"
 config.scrollback_lines = 5000
