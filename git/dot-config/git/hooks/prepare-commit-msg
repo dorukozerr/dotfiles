@@ -8,7 +8,7 @@
 # NOTE: no `set -e` — every failure must degrade to "no suggestion", never block.
 set -u
 
-GEN_TIMEOUT=40
+GEN_TIMEOUT=120
 # Cheap + fast models, tried in order, lowest reasoning effort each supports
 # (flash-latest has no "off" variant; 4.7-flash can disable it entirely).
 MODELS='openrouter/~z-ai/glm-flash-latest#low openrouter/z-ai/glm-4.7-flash#none'
@@ -24,8 +24,22 @@ if grep -qvE '^\s*(#|$)' "$msg_file"; then exit 0; fi
 command -v opencode >/dev/null 2>&1 || exit 0
 [[ -z ${NO_AI_MSG:-} ]] || exit 0
 
-payload=$(git diff --cached | head -c 16384)
-[[ -n $payload ]] || exit 0 # nothing staged
+# Diffstat first (the model sees the scale/shape of the change), then the
+# diff capped so one huge file can't blow the context; the cut is marked.
+# Lock files are machine-generated noise; they stay in the diffstat (so the
+# model knows deps changed) but their hunks are excluded from the payload.
+locks=( ':(exclude)*.lock' ':(exclude)*lock.json' ':(exclude)*lock.yaml'
+  ':(exclude)*lockfile' )
+MAX_DIFF=65536
+diff=$(git diff --cached -- . "${locks[@]}")
+[[ -n $diff ]] || exit 0 # nothing staged
+payload="$(git diff --cached --stat)
+
+$diff"
+if (( ${#diff} > MAX_DIFF )); then
+  payload="${payload:0:$((${#payload} - ${#diff} + MAX_DIFF))}
+... [diff truncated at ${MAX_DIFF} chars; see diffstat above]"
+fi
 
 hook_dir=$(cd "$(dirname "$0")" && pwd)
 cd "$(git rev-parse --show-toplevel)" 2>/dev/null || true

@@ -16,6 +16,6 @@ Rules (strict):
 - type: one of feat|fix|docs|style|refactor|perf|test|build|ci|chore
 - scope: optional, short, lowercase
 - subject: imperative mood, lowercase, no trailing period; whole header line ≤ 50 chars
-- Trivial change: reply with the header line only, nothing else
-- Otherwise: one blank line, then 1-2 bullets starting with "- ", each ≤ 72 chars, terse, describing what changed and why
+- Scale the body to the change size: trivial (1-2 files) → header only; small → 1-3 bullets; large (many files or areas) → one bullet per logical area/package, 4-10 bullets total
+- Bullets start with "- ", each ≤ 72 chars; group by area/package, state what changed and why, terse but complete — never pad, never omit a whole changed area
 - Output ONLY the message: no quotes, no code fences, no explanations. Never emit ``` lines — the message is plain text, not markdown; bullets only, never code blocks
