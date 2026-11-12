@@ -12,8 +12,12 @@
 	pushDefault = origin
 [init]
   defaultBranch = main
+[core]
+  hooksPath = ~/.config/git/hooks
 [alias]
 	lg = log --graph --oneline --branches --remotes --all
+	nogen = "!git -c core.hooksPath=/dev/null commit"
+	amend-ai = "!env AI_MSG_FORCE=1 git commit --amend"
 [gpg]
   format = ssh
 [rerere]

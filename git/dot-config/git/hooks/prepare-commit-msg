@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# AI commit-message suggestion for plain `git commit`, shown in the editor.
+# Progress goes to stderr; tty input is swallowed while the model runs; the
+# run's cost is appended as a comment; COMMIT_MSG_MTIME snapshots the message
+# file's mtime so commit-msg can refuse unsaved (:q!) buffers.
+# Skipped for -m/-F/--amend/merge/squash/todos; bypass with `git nogen` or
+# NO_AI_MSG=1; force generation on --amend with `git amend-ai`.
+# NOTE: no `set -e` — every failure must degrade to "no suggestion", never block.
+set -u
+
+GEN_TIMEOUT=40
+# Cheap + fast models, tried in order, lowest reasoning effort each supports
+# (flash-latest has no "off" variant; 4.7-flash can disable it entirely).
+MODELS='openrouter/~z-ai/glm-flash-latest#low openrouter/z-ai/glm-4.7-flash#none'
+
+msg_file=$1 source=${2:-}
+
+# Only normal (optionally template-based) commits.
+case $source in '' | template) ;; *) [[ -n ${AI_MSG_FORCE:-} ]] || exit 0 ;; esac
+
+# Something non-comment already present — keep it, commit-msg validates.
+if grep -qvE '^\s*(#|$)' "$msg_file"; then exit 0; fi
+
+command -v opencode >/dev/null 2>&1 || exit 0
+[[ -z ${NO_AI_MSG:-} ]] || exit 0
+
+payload=$(git diff --cached | head -c 16384)
+[[ -n $payload ]] || exit 0 # nothing staged
+
+hook_dir=$(cd "$(dirname "$0")" && pwd)
+cd "$(git rev-parse --show-toplevel)" 2>/dev/null || true
+git_dir=$(git rev-parse --git-dir 2>/dev/null) || exit 0
+
+# Swallow typed keystrokes while the model runs (and hide the echo), so stray
+# input never leaks into vim or the shell after the commit finishes.
+if ( : < /dev/tty ) 2>/dev/null; then
+  ( while IFS= read -r _ < /dev/tty 2>/dev/null; do :; done ) 2>/dev/null &
+  drain_pid=$!
+  stty -echo 2>/dev/null < /dev/tty
+  trap 'stty echo 2>/dev/null < /dev/tty; kill "$drain_pid" 2>/dev/null' EXIT
+fi
+
+echo "prepare-commit-msg: generating commit message via opencode, please wait..." >&2
+
+suggestion=''
+for model in $MODELS; do
+  raw=$(
+    env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE -u GIT_OBJECT_DIRECTORY \
+      perl -e 'alarm shift; exec @ARGV' "$GEN_TIMEOUT" \
+      opencode run -m "$model" --agent commit-msg --format json --standalone "$payload" 2>&1 </dev/null
+  ) || raw=''
+
+  if [ -n "$raw" ]; then
+    suggestion=$("$hook_dir/commit-msg-parse" <<<"$raw")
+  fi
+  if [ -n "$suggestion" ]; then
+    cost_line=$(printf '%s\n' "$suggestion" | tail -n 1)
+    suggestion=$(printf '%s\n' "$suggestion" | sed '$d')
+    break
+  fi
+
+  if [ -n "$raw" ]; then
+    echo "prepare-commit-msg: no valid suggestion from $model, opencode output (last 3 lines):" >&2
+    printf '%s\n' "$raw" | tail -n 3 >&2
+  else
+    echo "prepare-commit-msg: $model failed or timed out (${GEN_TIMEOUT}s)" >&2
+  fi
+done
+
+# Restore the terminal before the editor starts.
+if [ -n "${drain_pid:-}" ]; then
+  stty echo 2>/dev/null < /dev/tty
+  kill "$drain_pid" 2>/dev/null
+  wait "$drain_pid" 2>/dev/null
+  trap - EXIT
+fi
+
+if [ -z "$suggestion" ]; then
+  echo "prepare-commit-msg: no valid suggestion generated (write the message manually)" >&2
+  exit 0
+fi
+
+# oxfmt keeps bullets/spacing tidy (best effort).
+if command -v oxfmt >/dev/null 2>&1; then
+  formatted=$(printf '%s\n' "$suggestion" | oxfmt --stdin-filepath=commit-msg.md 2>/dev/null) &&
+    [ -n "$formatted" ] && suggestion=$formatted
+fi
+
+# Suggestion first, cost comment right below it, then the template comments
+# (blank lines between them get eaten by git's cleanup).
+comments=$(grep '^#' "$msg_file" || true)
+printf '%s\n%s\n\n%s\n' "$suggestion" "${cost_line:-# ai: cost unavailable}" "$comments" >"$msg_file"
+
+# Snapshot mtime for commit-msg's "buffer was not saved" check.
+perl -MTime::HiRes=stat -e 'printf "%.9f", (stat($ARGV[0]))[9]' "$msg_file" \
+  >"$git_dir/COMMIT_MSG_MTIME" 2>/dev/null || true
+exit 0

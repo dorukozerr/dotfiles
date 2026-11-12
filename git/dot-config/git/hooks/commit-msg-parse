@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Parse `opencode run --format json` output (stdin) into a suggestion + cost.
+# Prints the model's generated message as-is (body lines word-wrapped at 72
+# columns), then a final "# ai: ..." cost comment from the session export.
+# Prints nothing at all when the model produced no usable suggestion.
+set -u
+
+raw=$(cat)
+
+# Assistant text: concatenate .part.text of NDJSON "text" events. -R reads
+# raw lines and `fromjson?` silently skips non-JSON junk (stderr noise etc).
+text=$(printf '%s\n' "$raw" | jq -jR 'fromjson? | objects
+  | select(.type == "text") | .part.text // empty' 2>/dev/null)
+[[ -n $text ]] || exit 0
+
+# Models occasionally wrap the whole message in ``` fences (or emit stray
+# fence lines). Drop bare ``` lines (wrappers/stray markers); a language-tagged
+# fence still opens a real code block, which is kept intact including fences.
+text=$(printf '%s\n' "$text" | awk '
+  incode {
+    if ($0 ~ /^```[[:space:]]*$/) incode=0
+    print; next
+  }
+  /^```[[:space:]]*$/ { next }              # bare fence: wrapper or stray
+  /^```/ { incode=1 }                       # language-tagged: real block
+  { print }
+')
+
+# No validation, no truncation: keep the full generated message. The header
+# line is exempt; each body line longer than 72 columns word-wraps with a
+# two-space hanging indent, so bullets stay readable and git's message
+# conventions stay satisfied.
+suggestion=$(printf '%s\n' "$text" | {
+  IFS= read -r header || exit 0
+  printf '%s\n' "$header"
+  while IFS= read -r line; do
+    if (( ${#line} <= 72 )); then
+      printf '%s\n' "$line"
+    else
+      fold -s -w 72 <<<"$line" | sed '2,$s/^/  /' | sed 's/[[:space:]]*$//'
+    fi
+  done
+})
+[[ -n $suggestion ]] || exit 0
+
+# Cost comment: session export has info.cost/info.tokens; fall back to the
+# sum of every cost node in the export when the session node has none.
+cost_line='# ai: cost unavailable'
+session=$(printf '%s\n' "$raw" | grep -o 'ses_[A-Za-z0-9]*' | head -n 1)
+stats=$(opencode session export "$session" 2>/dev/null | jq -r '
+  .info as $i
+  | (if ($i.cost? // 0) > 0
+     then $i.cost
+     else ([.. | objects | .cost? // empty] | add) // 0
+     end) as $cost
+  | select($cost > 0)
+  | [$cost,
+     ($i.tokens.input? // 0),
+     ($i.tokens.output? // 0),
+     ($i.tokens.reasoning? // 0),
+     ($i.tokens.cache.read? // 0)]
+  | @tsv' 2>/dev/null)
+if [[ -n $stats ]]; then
+  IFS=$'\t' read -r cost in_tok out_tok reason_tok cache_tok <<<"$stats"
+  cost_line=$(printf '# ai: $%.6f — %d in / %d out / %d reasoning / %d cache read' \
+    "$cost" "$in_tok" "$out_tok" "$reason_tok" "$cache_tok")
+fi
+
+printf '%s\n%s\n' "$suggestion" "$cost_line"
+exit 0
