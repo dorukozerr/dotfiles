@@ -51,4 +51,6 @@ augroup TransparentBg
         \ | hi EndOfBuffer guibg=NONE ctermbg=NONE
 augroup END
 
+command! -nargs=+ -complete=shellcmd Scratch enew | setlocal buftype=nofile bufhidden=wipe noswapfile | r !<args>
+
 colorscheme base16-black-metal-venom

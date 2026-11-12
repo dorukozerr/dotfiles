@@ -74,6 +74,8 @@
   // JSON autocompletions
   "json.schemaDownload.trustedDomains": {
     "https://www.schemastore.org": true,
-    "https://json.schemastore.org": true
+    "https://json.schemastore.org": true,
+    "https://opencode.ai": true,
+    "https://models.dev": true
   }
 }
