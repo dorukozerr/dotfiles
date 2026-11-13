@@ -2,5 +2,37 @@
   "$schema": "https://opencode.ai/v2/cli.json",
   "theme": {
     "name": "system"
+  },
+  "session": {
+    "verbosity": "low",
+    "image_preview": true,
+    "grouping": "none",
+    "markdown": "rendered",
+    "thinking": "show",
+    "scrollbar": true,
+    "sidebar": "auto"
+  },
+  "animations": true,
+  "attention": {
+    "notifications": true,
+    "sound": true,
+    "volume": 0.8999999999999999
+  },
+  "terminal": {
+    "copy": "select",
+    "title": true
+  },
+  "debug": {
+    "devtools": true
+  },
+  "experimental": {
+    "new-designs": true,
+    "client-mcp": true
+  },
+  "prompt": {
+    "editor": true
+  },
+  "scroll": {
+    "acceleration": true
   }
 }
