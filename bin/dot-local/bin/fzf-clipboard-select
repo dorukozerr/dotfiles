@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -eu
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+FZF_CB_HISTORY_DIR="${FZF_CB_HISTORY_DIR:-$HOME/.local/share/fzf-clipboard}"
+CACHE_FILE="$FZF_CB_HISTORY_DIR/.cache"
+
+mkdir -p "$FZF_CB_HISTORY_DIR"
+
+human_time() {
+  local s=$1
+
+  if [[ $s -lt 60 ]]; then
+    echo "${s}s ago"
+  elif [[ $s -lt 3600 ]]; then
+    echo "$((s/60))m ago"
+  elif [[ $s -lt 86400 ]]; then
+    echo "$((s/3600))h ago"
+  else
+    echo "$((s/86400))d ago"
+  fi
+}
+
+if [[ ! -f "$CACHE_FILE" ]] || [[ ! -s "$CACHE_FILE" ]]; then
+  echo "No clipboard history found" >&2
+  exit 1
+fi
+
+selected=$(
+  nl -ba "$CACHE_FILE" |
+  while read -r num line; do
+    if [[ $line =~ ^[0-9]{10,}: ]]; then
+      ts="${line%%:*}"
+      encoded="${line#*:}"
+      age_sec=$(( $(date -u +%s) - ts ))
+      pretty_age=$(human_time "$age_sec")
+    else
+      encoded="$line"
+      pretty_age="new"
+    fi
+    decoded=$(echo "$encoded" | base64 -d 2>/dev/null || echo "[decode error]")
+    preview=$(echo -n "$decoded" | tr '\n' '␤' | head -c 200)
+    printf "%s\t%s\n" "$num" "$pretty_age $preview"
+  done |
+fzf --with-nth=2.. --delimiter=$'\t' \
+    --preview="awk 'NR=={1}' '$CACHE_FILE' | sed 's/^[0-9]*://' | base64 -d" \
+    --preview-window=wrap:50% --reverse \
+    --border=none --color=border:0
+)
+
+[[ -z "$selected" ]] && exit 0
+
+line_num=$(echo "$selected" | cut -f1)
+sed -n "${line_num}p" "$CACHE_FILE" | cut -d: -f2- | base64 -d | pbcopy

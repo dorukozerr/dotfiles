@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+set -eu
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+FZF_CB_HISTORY_DIR="${FZF_CB_HISTORY_DIR:-$HOME/.local/share/fzf-clipboard}"
+CACHE_FILE="$FZF_CB_HISTORY_DIR/.cache"
+PIDFILE="$FZF_CB_HISTORY_DIR/watch.pid"
+FZF_CB_HISTORY_LIMIT=${FZF_CB_HISTORY_LIMIT:-100}
+FZF_CB_DAEMON_POLL_INTERVAL=${FZF_CB_DAEMON_POLL_INTERVAL:-1}
+
+mkdir -p "$FZF_CB_HISTORY_DIR"
+
+touch "$CACHE_FILE"
+
+if [[ -f "$PIDFILE" ]] && pgrep -F "$PIDFILE" > /dev/null; then
+  exit 0
+fi
+
+echo $$ > "$PIDFILE"
+trap 'rm -f "$PIDFILE"' EXIT INT TERM
+
+last_hash=""
+
+while true; do
+  content=$(pbpaste 2>/dev/null || true)
+
+  if [[ -n "$content" ]]; then
+    current_hash=$(echo -n "$content" | md5 -q)
+
+    if [[ "$current_hash" != "$last_hash" ]]; then
+      encoded=$(echo -n "$content" | base64)
+      {
+        echo "$(date -u +%s):$encoded"
+        head -n $((FZF_CB_HISTORY_LIMIT - 1)) "$CACHE_FILE"
+      } > "$CACHE_FILE.tmp"
+      mv "$CACHE_FILE.tmp" "$CACHE_FILE"
+
+      last_hash="$current_hash"
+    fi
+  fi
+
+  sleep "$FZF_CB_DAEMON_POLL_INTERVAL"
+done
