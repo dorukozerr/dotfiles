@@ -111,7 +111,8 @@ zvm_bindkey() {
 }
 
 # https://apple.stackexchange.com/questions/48502/how-can-i-permanently-add-my-ssh-private-key-to-keychain-so-it-is-automatically
-ssh-add --apple-load-keychain -q
+# Backgrounded + disowned so shell startup never blocks on it; output suppressed.
+{ ssh-add --apple-load-keychain -q } >/dev/null 2>&1 &!
 
 # zprof
 # # or
