@@ -8,6 +8,7 @@ eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 
 path=(
   $HOMEBREW_PREFIX/opt/ffmpeg-full/bin
+  $HOMEBREW_PREFIX/opt/make/libexec/gnubin
   $CARGO_HOME/bin
   $HOME/.local/bin
   $path

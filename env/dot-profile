@@ -1,0 +1,15 @@
+export EDITOR="vim"
+export VISUAL="$EDITOR"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+export CARGO_HOME="$XDG_CONFIG_HOME/cargo"
+export RUSTUP_HOME="$XDG_CONFIG_HOME/rustup"
+
+export npm_config_prefix="$XDG_CONFIG_HOME/npm"
+export npm_config_cache="$XDG_CACHE_HOME/npm"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/.npmrc"
+export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn"
