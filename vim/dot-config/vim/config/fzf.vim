@@ -1,6 +1,6 @@
 set runtimepath+=/opt/homebrew/opt/fzf
 
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow'
+""let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob \"!.git/*"'
 
 if exists('$TMUX')
   let g:fzf_layout = { 'tmux': '-p100%,100%' }

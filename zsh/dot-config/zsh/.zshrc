@@ -94,6 +94,7 @@ export FZF_DEFAULT_OPTS="
   --marker='! '
   --color=base16
 "
+export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob \"!.git/*\""
 export FZF_ALT_C_COMMAND="fd --type d --hidden --follow"
 source <(fzf --zsh)
 

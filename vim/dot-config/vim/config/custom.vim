@@ -303,3 +303,8 @@ func! ResizeV(direction, amount) abort
     execute 'resize ' . (l:at_bottom_edge ? '-' . a:amount : '+' . a:amount)
   endif
 endfunc
+
+func! ScratchCMD(cmd) abort
+  exe 'ene! | setlocal buftype=nofile bufhidden=wipe noswapfile | r  !' . a:cmd
+endfunc
+command! -nargs=+ -bang -complete=shellcmd Scratch call ScratchCMD(<q-args>)

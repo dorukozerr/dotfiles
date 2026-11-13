@@ -25,7 +25,7 @@ set foldmethod=syntax
 set foldenable
 set foldlevelstart=99
 set t_BE=
-set autoread
+set autoread<
 set clipboard=unnamedplus
 " set diffopt+=internal,algorithm:patience,indent-heuristic
 
@@ -41,16 +41,15 @@ set background=dark
 " colorscheme base24-wez
 " colorscheme base24-kanagawa-dragon
 
-" Transparent background, reapplied whenever the colorscheme reloads
-" (e.g. :syntax on from +MANPAGER)
+func! ApplyTransparentBg() abort
+  hi Normal guibg=NONE ctermbg=NONE
+  hi NonText guibg=NONE ctermbg=NONE
+  hi SignColumn guibg=NONE ctermbg=NONE
+  hi EndOfBuffer guibg=NONE ctermbg=NONE
+endfunc
 augroup TransparentBg
   autocmd!
-  autocmd ColorScheme * hi Normal guibg=NONE ctermbg=NONE
-        \ | hi NonText guibg=NONE ctermbg=NONE
-        \ | hi SignColumn guibg=NONE ctermbg=NONE
-        \ | hi EndOfBuffer guibg=NONE ctermbg=NONE
+  autocmd ColorScheme * call ApplyTransparentBg()
 augroup END
-
-command! -nargs=+ -complete=shellcmd Scratch enew | setlocal buftype=nofile bufhidden=wipe noswapfile | r !<args>
 
 colorscheme base16-black-metal-venom

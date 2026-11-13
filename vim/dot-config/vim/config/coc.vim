@@ -110,10 +110,8 @@ func! s:InlayHintColors() abort
   highlight CocInlayHintType      guifg=#3a3f4b guibg=NONE gui=italic ctermfg=238 cterm=italic
   highlight CocInlayHintParameter guifg=#32363f guibg=NONE gui=italic ctermfg=237 cterm=italic
 endfunc
-
+call s:InlayHintColors()
 augroup InlayHintColors
   autocmd!
   autocmd ColorScheme * call s:InlayHintColors()
 augroup END
-
-call s:InlayHintColors()
