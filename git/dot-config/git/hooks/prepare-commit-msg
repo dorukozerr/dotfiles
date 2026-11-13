@@ -3,8 +3,9 @@
 # Progress goes to stderr; tty input is swallowed while the model runs; the
 # run's cost is appended as a comment; COMMIT_MSG_MTIME snapshots the message
 # file's mtime so commit-msg can refuse unsaved (:q!) buffers.
-# Skipped for -m/-F/--amend/merge/squash/todos; bypass with `git nogen` or
-# NO_AI_MSG=1; force generation on --amend with `git amend-ai`.
+# Skipped for -m/-F/--amend/merge/squash/todos; disable with GIT_AI_MSG=0;
+# bypass with `git nogen` or NO_AI_MSG=1; force generation on --amend with
+# `git amend-ai`.
 # NOTE: no `set -e` — every failure must degrade to "no suggestion", never block.
 set -u
 
@@ -18,28 +19,26 @@ msg_file=$1 source=${2:-}
 # Only normal (optionally template-based) commits.
 case $source in '' | template) ;; *) [[ -n ${AI_MSG_FORCE:-} ]] || exit 0 ;; esac
 
-# Something non-comment already present — keep it, commit-msg validates.
+# Non-comment content already in the buffer (e.g. template) — keep it untouched.
 if grep -qvE '^\s*(#|$)' "$msg_file"; then exit 0; fi
 
 command -v opencode >/dev/null 2>&1 || exit 0
-[[ -z ${NO_AI_MSG:-} ]] || exit 0
+# Master toggle (GIT_AI_MSG: unset/1 = on, anything else = off, see
+# ~/.profile) disables generation; NO_AI_MSG=1 remains a one-off bypass.
+[[ ${GIT_AI_MSG:-1} == 1 && -z ${NO_AI_MSG:-} ]] || exit 0
 
 # Diffstat first (the model sees the scale/shape of the change), then the
-# diff capped so one huge file can't blow the context; the cut is marked.
-# Lock files are machine-generated noise; they stay in the diffstat (so the
-# model knows deps changed) but their hunks are excluded from the payload.
+# full diff — never capped; the only thing stripped is lock-file content.
+# Lock files are machine-generated noise (json/yaml/whatever); they stay in
+# the diffstat (so the model knows deps changed) but their hunks are
+# excluded from the payload.
 locks=( ':(exclude)*.lock' ':(exclude)*lock.json' ':(exclude)*lock.yaml'
   ':(exclude)*lockfile' )
-MAX_DIFF=65536
 diff=$(git diff --cached -- . "${locks[@]}")
 [[ -n $diff ]] || exit 0 # nothing staged
 payload="$(git diff --cached --stat)
 
 $diff"
-if (( ${#diff} > MAX_DIFF )); then
-  payload="${payload:0:$((${#payload} - ${#diff} + MAX_DIFF))}
-... [diff truncated at ${MAX_DIFF} chars; see diffstat above]"
-fi
 
 hook_dir=$(cd "$(dirname "$0")" && pwd)
 cd "$(git rev-parse --show-toplevel)" 2>/dev/null || true

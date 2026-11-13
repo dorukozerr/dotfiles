@@ -13,3 +13,5 @@ export npm_config_prefix="$XDG_CONFIG_HOME/npm"
 export npm_config_cache="$XDG_CACHE_HOME/npm"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/.npmrc"
 export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn"
+
+export GIT_AI_MSG=0

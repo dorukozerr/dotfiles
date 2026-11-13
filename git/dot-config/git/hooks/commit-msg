@@ -2,7 +2,7 @@
 # Abort commits whose message buffer was never saved (:q!), so a generated
 # suggestion is never committed without being seen. Relies on the
 # COMMIT_MSG_MTIME snapshot prepare-commit-msg leaves behind; -m, --amend,
-# merges, and bypassed generation (no snapshot) always pass.
+# merges, and disabled/bypassed generation (no snapshot) always pass.
 set -u
 
 msg_file=$1
