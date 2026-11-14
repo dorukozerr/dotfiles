@@ -78,6 +78,7 @@
     "https://opencode.ai": true,
     "https://models.dev": true,
     "https://www.unpkg.com": true,
-    "https://developers.cloudflare.com": true
+    "https://developers.cloudflare.com": true,
+    "https://raw.githubusercontent.com": true
   }
 }

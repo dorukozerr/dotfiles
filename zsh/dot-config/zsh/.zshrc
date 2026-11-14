@@ -26,23 +26,16 @@ fpath=(
   $fpath
 )
 
-zmodload zsh/complist
-
-zstyle ':completion:*' auto-description '%d'
-zstyle ':completion:*' completions '#'
-zstyle ':completion:*' format '%d'
-zstyle ':completion:*' glob '!'
-zstyle ':completion:*' group-name ''
-# zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[]=** r:|=**'
-zstyle ':completion:*' max-errors 3 numeric
-zstyle ':completion:*' substitute '$'
-zstyle ':completion:*' verbose true
-zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':completion:*:expand:*' tag-order all-expansions
+zstyle ':completion:*' list-packed off
 zstyle ':completion:*' file-list all
 zstyle ':completion:*' list-colors '=(#b)d* ([^ ]##)=0=34' '=(#b)-??x* ([^ ]##)=0=31'
+zstyle ':completion:*' extra-verbose true
 
-autoload -Uz compinit && compinit
-autoload -Uz bashcompinit && bashcompinit
+autoload -Uz compinit bashcompinit
+compinit
+bashcompinit
 
 source "$XDG_CONFIG_HOME/vite-plus/env"
 
