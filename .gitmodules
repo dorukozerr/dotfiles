@@ -1,10 +1,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/FastFold"]
 	path = vim/dot-config/vim/pack/plugins/start/FastFold
 	url = https://github.com/Konfekt/FastFold.git
-[submodule "vim/dot-config/vim/pack/plugins/start/coc.nvim"]
-	path = vim/dot-config/vim/pack/plugins/start/coc.nvim
-	url = https://github.com/neoclide/coc.nvim.git
-	branch = release
 [submodule "vim/dot-config/vim/pack/plugins/start/fzf.vim"]
 	path = vim/dot-config/vim/pack/plugins/start/fzf.vim
 	url = https://github.com/junegunn/fzf.vim.git

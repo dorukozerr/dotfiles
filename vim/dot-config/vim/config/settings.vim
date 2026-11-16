@@ -53,3 +53,6 @@ augroup TransparentBg
 augroup END
 
 colorscheme base16-black-metal-venom
+
+let g:tsc_watcher_command="vpx tsc --noEmit --watch --pretty false --preserveWatchOutput"
+let g:tsc_watcher_shell=["/usr/bin/env", "zsh", "-c"]
