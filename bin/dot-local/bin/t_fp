@@ -92,9 +92,9 @@ tmux_file_picker() {
 
 	local fd_cmd
 	if command -v fd >/dev/null 2>&1; then
-		fd_cmd="fd"
+		fd_cmd="fd --follow"
 	elif command -v fdfind >/dev/null 2>&1; then
-		fd_cmd="fdfind"
+		fd_cmd="fdfind --follow"
 	else
 		echo "Error: Required command 'fd' or 'fdfind' not found. Please install it." >&2
 

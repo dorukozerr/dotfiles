@@ -1,13 +1,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/FastFold"]
 	path = vim/dot-config/vim/pack/plugins/start/FastFold
 	url = https://github.com/Konfekt/FastFold.git
-[submodule "vim/dot-config/vim/pack/plugins/start/coc.nvim"]
-	path = vim/dot-config/vim/pack/plugins/start/coc.nvim
-	url = https://github.com/neoclide/coc.nvim.git
-	branch = release
-[submodule "vim/dot-config/vim/pack/plugins/start/fzf.vim"]
-	path = vim/dot-config/vim/pack/plugins/start/fzf.vim
-	url = https://github.com/junegunn/fzf.vim.git
 [submodule "vim/dot-config/vim/pack/plugins/start/killersheep"]
 	path = vim/dot-config/vim/pack/plugins/start/killersheep
 	url = https://github.com/vim/killersheep.git
@@ -37,9 +30,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/vim-jsx-pretty"]
 	path = vim/dot-config/vim/pack/plugins/start/vim-jsx-pretty
 	url = https://github.com/MaxMEllon/vim-jsx-pretty.git
-[submodule "vim/dot-config/vim/pack/plugins/start/vim-matchit"]
-	path = vim/dot-config/vim/pack/plugins/start/vim-matchit
-	url = https://github.com/adelarsq/vim-matchit.git
 [submodule "vim/dot-config/vim/pack/plugins/start/vim-sneak"]
 	path = vim/dot-config/vim/pack/plugins/start/vim-sneak
 	url = https://github.com/justinmk/vim-sneak.git
@@ -76,12 +66,24 @@
 [submodule "tmux/dot-config/tmux/plugins/tmux-yank"]
 	path = tmux/dot-config/tmux/plugins/tmux-yank
 	url = https://github.com/tmux-plugins/tmux-yank.git
-[submodule "wezterm/dot-config/wezterm/plugins/tabline.wez"]
-	path = wezterm/dot-config/wezterm/plugins/tabline.wez
-	url = https://github.com/michaelbrusegard/tabline.wez.git
 [submodule "vim/dot-config/vim/pack/plugins/start/tinted-vim"]
 	path = vim/dot-config/vim/pack/plugins/start/tinted-vim
 	url = git@github.com:tinted-theming/tinted-vim.git
 [submodule "vim/dot-config/vim/pack/plugins/start/zig.vim"]
 	path = vim/dot-config/vim/pack/plugins/start/zig.vim
 	url = ssh://git@codeberg.org/ziglang/zig.vim.git
+[submodule "vim/dot-config/vim/pack/plugins/start/lsp"]
+	path = vim/dot-config/vim/pack/plugins/start/lsp
+        url = https://github.com/dorukozerr/lsp
+[submodule "vim/dot-config/vim/pack/plugins/start/fzf.git"]
+	path = vim/dot-config/vim/pack/plugins/start/fzf.git
+	url = git@github.com:junegunn/fzf.git
+[submodule "vim/dot-config/vim/pack/plugins/start/fzf.vim"]
+	path = vim/dot-config/vim/pack/plugins/start/fzf.vim
+	url = git@github.com:junegunn/fzf.vim.git
+[submodule "vim/dot-config/vim/pack/plugins/start/fzf"]
+	path = vim/dot-config/vim/pack/plugins/start/fzf
+	url = git@github.com:junegunn/fzf.git
+[submodule "vim/dot-config/vim/pack/plugins/start/ultisnip"]
+	path = vim/dot-config/vim/pack/plugins/start/ultisnip
+	url = git@github.com:SirVer/ultisnips.git
