@@ -82,3 +82,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/tinted-vim"]
 	path = vim/dot-config/vim/pack/plugins/start/tinted-vim
 	url = git@github.com:tinted-theming/tinted-vim.git
+[submodule "vim/dot-config/vim/pack/plugins/start/zig.vim"]
+	path = vim/dot-config/vim/pack/plugins/start/zig.vim
+	url = ssh://git@codeberg.org/ziglang/zig.vim.git
