@@ -1,44 +1,44 @@
 vim9script
 
-var git_stats_throttle = 0
+# var git_stats_throttle = 0
 
 # Git +/-/~ stats for the airline status line, throttled to once per 2s.
-export def g:GitStats(): string
-  if localtime() - git_stats_throttle < 2
-    return get(g:, 'GitStats', '')
-  endif
-  git_stats_throttle = localtime()
-
-  var status = systemlist('git status --porcelain 2>/dev/null')
-  if v:shell_error
-    return ''
-  endif
-
-  var files = status->filter((_, l) => l !~ '^!')->len()
-  var additions = 0
-  var deletions = 0
-
-  for line in systemlist('git diff HEAD --numstat 2>/dev/null')
-        + systemlist('git diff --cached --numstat 2>/dev/null')
-    var stats = split(line)
-    if stats->len() >= 2
-      additions += str2nr(stats[0])
-      deletions += str2nr(stats[1])
-    endif
-  endfor
-
-  for status_line in status
-    if status_line =~ '^??'
-      var file = substitute(status_line, '^??\s\+', '', '')
-      var file_content = systemlist('wc -l ' .. shellescape(file) .. ' 2>/dev/null')
-      if !empty(file_content)
-        additions += str2nr(split(file_content[0])[0])
-      endif
-    endif
-  endfor
-
-  return printf('  +%d -%d 󱁻 %d', additions, deletions, files)
-enddef
+# export def g:GitStats(): string
+#   if localtime() - git_stats_throttle < 2
+#     return get(g:, 'GitStats', '')
+#   endif
+#   git_stats_throttle = localtime()
+# 
+#   var status = systemlist('git status --porcelain 2>/dev/null')
+#   if v:shell_error
+#     return ''
+#   endif
+# 
+#   var files = status->filter((_, l) => l !~ '^!')->len()
+#   var additions = 0
+#   var deletions = 0
+# 
+#   for line in systemlist('git diff HEAD --numstat 2>/dev/null')
+#         + systemlist('git diff --cached --numstat 2>/dev/null')
+#     var stats = split(line)
+#     if stats->len() >= 2
+#       additions += str2nr(stats[0])
+#       deletions += str2nr(stats[1])
+#     endif
+#   endfor
+# 
+#   for status_line in status
+#     if status_line =~ '^??'
+#       var file = substitute(status_line, '^??\s\+', '', '')
+#       var file_content = systemlist('wc -l ' .. shellescape(file) .. ' 2>/dev/null')
+#       if !empty(file_content)
+#         additions += str2nr(split(file_content[0])[0])
+#       endif
+#     endif
+#   endfor
+# 
+#   return printf('  +%d -%d 󱁻 %d', additions, deletions, files)
+# enddef
 
 export def GenerateLoremIpsum(count: number)
   const lorem_words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur',
@@ -227,8 +227,8 @@ enddef
 
 augroup _update_git_stats
   autocmd!
-  autocmd BufWritePost * g:GitStats = GitStats()
-  autocmd VimEnter * g:GitStats = GitStats()
+  # autocmd BufWritePost * g:GitStats = GitStats()
+  # autocmd VimEnter * g:GitStats = GitStats()
 augroup END
 
 command! -nargs=1 Lorem GenerateLoremIpsum(<args>)

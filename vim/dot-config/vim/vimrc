@@ -1,5 +1,8 @@
 vim9script
 
+filetype plugin indent on
+syntax enable
+
 packadd! lsp
 packadd! matchit
 packadd! netrw
@@ -11,11 +14,7 @@ set termguicolors
 set encoding=utf-8
 scriptencoding utf-8
 
-
-filetype plugin indent on
-syntax enable
-
-set updatetime=100
+set updatetime=300
 set signcolumn=auto
 set backspace=indent,eol,start
 set fillchars=eob:\ ,vert:\|
@@ -34,4 +33,4 @@ set noswapfile
 set clipboard=unnamedplus
 
 # let g:tsc_watcher_command="vpx tsc --noEmit --watch --pretty false --preserveWatchOutput"
-# let g:tsc_watcher_shell=["/usr/bin/env", "zsh", "-c"]
+# let g:tsc_watcher_shell=["/usr/bin/env", \"zsh", \"-c"]

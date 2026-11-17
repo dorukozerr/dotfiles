@@ -1,6 +1,6 @@
 vim9script
 
-import autoload '../../autoload/helper_fns.vim' 
+import autoload 'fns.vim'  as fns
 
 # reset leader key
 g:mapleader = "\<Space>"
@@ -29,8 +29,6 @@ nnoremap <Leader>ga :G add .<CR>
 nnoremap <Leader>gc :vertical G commit<CR>
 nnoremap <Leader>gp :G push<CR>
 nnoremap <Leader>gd :vertical G diff<CR>
-nnoremap <Leader>gr <ScriptCmd>helper_fns.GitRestoreCurrent()<CR>
-
 # open netrw
 nnoremap <Leader>t :Explore %:p:h<CR>
 
@@ -79,13 +77,13 @@ nnoremap <expr> <M-k> winnr('k') == winnr() ? "999\<C-w>j" : "\<C-w>k"
 
 nnoremap <silent> <M-n> :bnext<CR>
 nnoremap <silent> <M-p> :bprevious<CR>
-nnoremap <silent> <M-q> <ScriptCmd>hf.BufferDeleteCurrent()<CR>
-# nnoremap <silent> <M-z> <ScriptCmd>hf.BufferToggle()<CR>
+nnoremap <silent> <M-q> <ScriptCmd>fns.BufferDeleteCurrent()<CR>
+# nnoremap <silent> <M-z> <ScriptCmd>fns.BufferToggle()<CR>
 
-nnoremap <silent> <M-Left>  <ScriptCmd>hf.ResizeH('left', 5)<CR>
-nnoremap <silent> <M-Right> <ScriptCmd>hf.ResizeH('right', 5)<CR>
-nnoremap <silent> <M-Up>    <ScriptCmd>hf.ResizeV('up', 5)<CR>
-nnoremap <silent> <M-Down>  <ScriptCmd>hf.ResizeV('down', 5)<CR>
+nnoremap <silent> <M-Left>  <ScriptCmd>fns.ResizeH('left', 5)<CR>
+nnoremap <silent> <M-Right> <ScriptCmd>fns.ResizeH('right', 5)<CR>
+nnoremap <silent> <M-Up>    <ScriptCmd>fns.ResizeV('up', 5)<CR>
+nnoremap <silent> <M-Down>  <ScriptCmd>fns.ResizeV('down', 5)<CR>
 
 nnoremap <silent> <M-,> :tabprevious<CR>
 nnoremap <silent> <M-.> :tabnext<CR>
