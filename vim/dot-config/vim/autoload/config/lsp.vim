@@ -132,18 +132,18 @@ def SetMappings()
 enddef
 
 def SetAutocmds()
-  augroup lspattach
+  augroup _lspattach
     autocmd!
     autocmd User LspAttached g:LspEchoAttached()
   augroup END
 
-  augroup lspformatonsave
+  augroup _lspformatonsave
     autocmd!
     autocmd BufWritePre *.{js,jsx,ts,tsx,mjs,mts,cjs} g:LspSaveFixAll()
     autocmd BufWritePre * g:LspSaveFormat()
   augroup END
 
-  augroup lspatrigger
+  augroup _lspatrigger
     autocmd!
     autocmd FileType javascript,typescript,javascriptreact,typescriptreact
           \ inoremap <buffer> @ @

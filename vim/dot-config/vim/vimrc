@@ -1,11 +1,20 @@
 vim9script
 
-packadd! lsp
+packadd lsp
 packadd! matchit
 packadd! netrw
 packadd! cfilter
 packadd! justify
 packadd! comment
+
+import './autoload/helper_fns.vim' as hf
+import './autoload/config/theming.vim' as theming
+import './autoload/config/airline.vim' as airlineconf
+import './autoload/config/fzf.vim' as fzfconf
+import './autoload/config/fastfold.vim' as fastfoldconf
+import './autoload/config/sneak.vim' as sneakconf
+import './autoload/config/maps.vim' as maps
+import './autoload/config/lsp.vim' as lspconf
 
 set encoding=utf-8
 scriptencoding utf-8
@@ -36,3 +45,12 @@ set background=dark
 
 # let g:tsc_watcher_command="vpx tsc --noEmit --watch --pretty false --preserveWatchOutput"
 # let g:tsc_watcher_shell=["/usr/bin/env", "zsh", "-c"]
+
+hf.Init()
+theming.AddConf()
+airlineconf.Setup()
+fzfconf.Setup()
+fastfoldconf.Setup()
+sneakconf.Setup()
+maps.Init()
+lspconf.Setup()

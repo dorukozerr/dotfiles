@@ -1,5 +1,7 @@
 vim9script
 
+import '../helper_fns.vim' as hf
+
 export def Init()
     # reset leader key
     g:mapleader = "\<Space>"
@@ -28,7 +30,7 @@ export def Init()
     nnoremap <Leader>gc :vertical G commit<CR>
     nnoremap <Leader>gp :G push<CR>
     nnoremap <Leader>gd :vertical G diff<CR>
-    nnoremap <Leader>gr :call GitRestoreCurrent()<CR>
+    nnoremap <Leader>gr <ScriptCmd>hf.GitRestoreCurrent()<CR>
 
     # open netrw
     nnoremap <Leader>t :Explore %:p:h<CR>
@@ -78,13 +80,13 @@ export def Init()
 
     nnoremap <silent> <M-n> :bnext<CR>
     nnoremap <silent> <M-p> :bprevious<CR>
-    nnoremap <silent> <M-q> :call BufferDeleteCurrent()<CR>
-    nnoremap <silent> <M-z> :call BufferToggle()<CR>
+    nnoremap <silent> <M-q> <ScriptCmd>hf.BufferDeleteCurrent()<CR>
+    nnoremap <silent> <M-z> <ScriptCmd>hf.BufferToggle()<CR>
 
-    nnoremap <silent> <M-Left>  :call ResizeH('left', '5')<CR>
-    nnoremap <silent> <M-Right> :call ResizeH('right', '5')<CR>
-    nnoremap <silent> <M-Up>    :call ResizeV('up', '5')<CR>
-    nnoremap <silent> <M-Down>  :call ResizeV('down', '5')<CR>
+    nnoremap <silent> <M-Left>  <ScriptCmd>hf.ResizeH('left', 5)<CR>
+    nnoremap <silent> <M-Right> <ScriptCmd>hf.ResizeH('right', 5)<CR>
+    nnoremap <silent> <M-Up>    <ScriptCmd>hf.ResizeV('up', 5)<CR>
+    nnoremap <silent> <M-Down>  <ScriptCmd>hf.ResizeV('down', 5)<CR>
 
     nnoremap <silent> <M-,> :tabprevious<CR>
     nnoremap <silent> <M-.> :tabnext<CR>
@@ -107,7 +109,7 @@ export def Init()
 
     # This one is really weird, I'm not saying something but I'm paranoid person
     # this was SUS - Clear/Reset file
-    nnoremap <leader>cfe :call CleanFileLineEndings()<CR>
+    nnoremap <leader>cfe <ScriptCmd>hf.CleanFileLineEndings()<CR>
 
     # Start interactive EasyAlign in visual mode (e.g. vipga)
     xmap ga <Plug>(EasyAlign)
