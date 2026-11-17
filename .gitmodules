@@ -1,9 +1,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/FastFold"]
 	path = vim/dot-config/vim/pack/plugins/start/FastFold
 	url = https://github.com/Konfekt/FastFold.git
-[submodule "vim/dot-config/vim/pack/plugins/start/fzf.vim"]
-	path = vim/dot-config/vim/pack/plugins/start/fzf.vim
-	url = https://github.com/junegunn/fzf.vim.git
 [submodule "vim/dot-config/vim/pack/plugins/start/killersheep"]
 	path = vim/dot-config/vim/pack/plugins/start/killersheep
 	url = https://github.com/vim/killersheep.git
@@ -84,3 +81,12 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/lsp"]
 	path = vim/dot-config/vim/pack/plugins/start/lsp
 	url = git@github.com:yegappan/lsp.git
+[submodule "vim/dot-config/vim/pack/plugins/start/fzf.git"]
+	path = vim/dot-config/vim/pack/plugins/start/fzf.git
+	url = git@github.com:junegunn/fzf.git
+[submodule "vim/dot-config/vim/pack/plugins/start/fzf.vim"]
+	path = vim/dot-config/vim/pack/plugins/start/fzf.vim
+	url = git@github.com:junegunn/fzf.vim.git
+[submodule "vim/dot-config/vim/pack/plugins/start/fzf"]
+	path = vim/dot-config/vim/pack/plugins/start/fzf
+	url = git@github.com:junegunn/fzf.git
