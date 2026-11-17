@@ -3,19 +3,44 @@ vim9script
 def SetOptions()
   g:LspOptionsSet({
     autoHighlightDiags: true,
-
     completionMatcher: 'fuzzy',
     filterCompletionDuplicates: true,
     noNewlineInCompletion: true,
-    ignoreCompleteItemsIsIncomplete: ['vimls-go'],
     incrementalSync: true,
-    condensedCompletionMenu: true,
     customCompletionKinds: true,
+    completionTextEdit: true,
+    completionInPreview: true,
+    condensedCompletionMenu: true,
     completionKinds: {
-      "Method": "method()"
+      Text: 'txt',
+      Method: 'meth',
+      Function: 'fn',
+      Constructor: 'ctor',
+      Field: 'fld',
+      Variable: 'var',
+      Class: 'class',
+      Interface: 'intf',
+      Module: 'mod',
+      Property: 'prop',
+      Unit: 'unit',
+      Value: 'val',
+      Enum: 'enum',
+      Keyword: 'kw',
+      Snippet: 'snip',
+      Color: 'color',
+      File: 'file',
+      Reference: 'ref',
+      Folder: 'dir',
+      EnumMember: 'enm',
+      Constant: 'const',
+      Struct: 'struct',
+      Event: 'event',
+      Operator: 'op',
+      TypeParameter: 'type',
+      Buffer: 'buf'
     },
-
     showDiagInPopup: true,
+    showDiagOnStatusLine: true,
     popupBorder: true,
     popupBorderChars: ['-', '|', '-', '|', '┌', '┐', '┘', '└'],
     popupBorderHighlightHover: 'ModeMsg',
@@ -23,8 +48,7 @@ def SetOptions()
     popupHighlightCompletion: 'Pmenu',
     popupBorderHighlightSymbolMenuInput: 'Title',
     popupBorderHighlightSymbolMenu: 'Directory',
-
-    codeActionPopupDetails: 'full'
+    codeActionPopupDetails: 'full',
   })
 enddef
 
@@ -34,6 +58,23 @@ def VimVersion(): string
     ? printf('%d.%d.%04d', v:versionlong / 1000000, (v:versionlong % 1000000) / 10000, v:versionlong % 10000)
     : ''
 enddef
+
+# def LspProgressStatus(): string
+#     if empty(g:LspProgress)
+#         return ''
+#     endif
+#     for info in values(g:LspProgress)
+#         var parts = []
+#         if !empty(info.title)
+#             parts->add(info.title)
+#         endif
+#         if info.percentage >= 0
+#             parts->add(info.percentage .. '%')
+#         endif
+#         return parts->join(' ')
+#     endfor
+#     return ''
+# enddef
 
 def AddServers()
   g:LspAddServer([
@@ -55,21 +96,19 @@ def AddServers()
       name: 'typescript-language-server',
       filetype: ['javascript', 'typescript', 'javascriptreact', 'typescriptreact'],
       path: 'typescript-language-server',
-      args: ['--stdio', '--log-level', '4'],
+      # args: ['--stdio', '--log-level', '4'],
+      args: ['--stdio' ],
       debug: true,
       traceLevel: 'verbose',
       features: { documentFormatting: false, documentRangeFormatting: false },
       initializationOptions: {
-        preferences: {
-          importModuleSpecifier: 'non-relative',
-        },
+        preferences: { importModuleSpecifier: 'non-relative' },
         fileOperations: { willRename: true },
-      },
+      }
     },
   ])
 enddef
 
-# keybindings
 def SetMappings()
   nnoremap gd <Cmd>LspGotoDefinition<CR>
   nnoremap gy <Cmd>LspGotoTypeDef<CR>
@@ -92,20 +131,19 @@ def SetMappings()
   inoremap <silent> <C-@> <Cmd>call lsp#completion#LspComplete(v:true)<CR>
 enddef
 
-# autocmds 
 def SetAutocmds()
   augroup lspattach
     autocmd!
     autocmd User LspAttached g:LspEchoAttached()
   augroup END
 
-  augroup lsp_format_onsave
+  augroup lspformatonsave
     autocmd!
     autocmd BufWritePre *.{js,jsx,ts,tsx,mjs,mts,cjs} g:LspSaveFixAll()
     autocmd BufWritePre * g:LspSaveFormat()
   augroup END
 
-  augroup lsp_attrigger
+  augroup lspatrigger
     autocmd!
     autocmd FileType javascript,typescript,javascriptreact,typescriptreact
           \ inoremap <buffer> @ @

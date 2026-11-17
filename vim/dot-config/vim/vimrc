@@ -1,27 +1,38 @@
-let g:config_dir = '$HOME/.config/vim/config/'
-
+vim9script
 
 packadd! lsp
+packadd! matchit
+packadd! netrw
+packadd! cfilter
+packadd! justify
+packadd! comment
 
-let g:config_files = [
-      \ 'fzf.vim',
-      \ 'custom.vim',
-      \ 'settings.vim',
-      \ 'airline.vim',
-      \ 'lsp-style.vim',
-      \ 'fastfold.vim',
-      \ 'sneak.vim',
-      \ 'mappings.vim',
-      \ 'man.vim',
-      "\ 'startscreen.vim',
-      \ ]
+set encoding=utf-8
+scriptencoding utf-8
 
-for config_file in g:config_files
-  let full_path = expand(g:config_dir . config_file)
+filetype plugin indent on
+syntax enable
 
-  if filereadable(full_path)
-    execute 'source ' . full_path
-  else
-    echo "Warning: Configuration file " . full_path . " not found"
-  endif
-endfor
+set termguicolors
+set updatetime=300
+set signcolumn=auto
+set backspace=indent,eol,start
+set fillchars=eob:\ ,vert:\|
+set hlsearch
+set wrap
+set number relativenumber
+set expandtab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set incsearch
+set noswapfile
+set foldmethod=syntax
+set foldenable
+set foldlevelstart=99
+set clipboard=unnamedplus
+
+set background=dark
+
+# let g:tsc_watcher_command="vpx tsc --noEmit --watch --pretty false --preserveWatchOutput"
+# let g:tsc_watcher_shell=["/usr/bin/env", "zsh", "-c"]
