@@ -81,3 +81,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/zig.vim"]
 	path = vim/dot-config/vim/pack/plugins/start/zig.vim
 	url = ssh://git@codeberg.org/ziglang/zig.vim.git
+[submodule "vim/dot-config/vim/pack/plugins/start/lsp"]
+	path = vim/dot-config/vim/pack/plugins/start/lsp
+	url = git@github.com:yegappan/lsp.git

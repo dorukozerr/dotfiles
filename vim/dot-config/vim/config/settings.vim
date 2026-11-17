@@ -24,15 +24,9 @@ set noswapfile
 set foldmethod=syntax
 set foldenable
 set foldlevelstart=99
-set t_BE=
-set autoread<
 set clipboard=unnamedplus
 " set diffopt+=internal,algorithm:patience,indent-heuristic
 
-augroup fg
-  au!
-  autocmd FocusGained,BufEnter * checktime
-augroup END
 
 set background=dark
 

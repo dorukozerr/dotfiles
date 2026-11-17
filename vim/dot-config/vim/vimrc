@@ -1,14 +1,17 @@
 let g:config_dir = '$HOME/.config/vim/config/'
 
+
+packadd! lsp
+
 let g:config_files = [
       \ 'fzf.vim',
       \ 'custom.vim',
       \ 'settings.vim',
       \ 'airline.vim',
+      \ 'lsp-style.vim',
       \ 'fastfold.vim',
       \ 'sneak.vim',
       \ 'mappings.vim',
-      \ 'coc.vim',
       \ 'man.vim',
       "\ 'startscreen.vim',
       \ ]
