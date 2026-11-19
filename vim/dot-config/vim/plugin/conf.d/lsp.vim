@@ -53,7 +53,7 @@ enddef
 
 const LogDir = expand('~/.sandbox/AHMET_IKIZ')
 
-def g:LspLinkLogs()
+export def LspLinkLogs()
   if !isdirectory(LogDir)
     mkdir(LogDir, 'p')
   endif
@@ -64,19 +64,19 @@ def g:LspLinkLogs()
   endfor
 enddef
 
-def g:LspSaveFixAll()
+export def LspSaveFixAll()
   if g:LspServerReady()
     silent! LspFixAll
   endif
 enddef
 
-def g:LspSaveFormat()
+export def LspSaveFormat()
   if g:LspServerReady()
     silent! LspFormat
   endif
 enddef
 
-def g:LspProfStart()
+export def LspProfStart()
   var f = $'/tmp/lsp-prof-{strftime("%H%M%S")}.txt'
   execute 'profile start ' .. f
   for name in ['completion.vim', 'diag.vim', 'lspserver.vim', 'lsp.vim',
@@ -89,7 +89,7 @@ def g:LspProfStart()
   echom $'Profiling to {f} — reproduce the lag, then :LspProfStop'
 enddef
 
-export def LspProfStop()
+export  def LspProfStop()
   execute 'profile stop'
   g:LspLinkLogs()
   echom 'Profile written to /tmp/lsp-prof-*.txt'

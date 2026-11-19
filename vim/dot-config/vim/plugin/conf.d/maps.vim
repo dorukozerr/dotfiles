@@ -46,7 +46,7 @@ nnoremap <Leader>t :Explore %:p:h<CR>
 
 # fzf
 nnoremap <Leader>p  :Files<CR>
-nnoremap <Leader>f  :RG<CR>
+# nnoremap <Leader>f  :RG<CR>
 nnoremap <Leader>bb :Buffers<CR>
 nnoremap <Leader>gl :Commits<CR>
 inoremap <expr>     <c-x><c-f> :Files
@@ -106,3 +106,17 @@ vnoremap gp "_c<C-r><C-o>+<Esc>
 
 # Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
+
+nmap gc  <Plug>(comment-toggle)
+xmap gc  <Plug>(comment-toggle)
+nmap gcc <Plug>(comment-toggle-line)
+nmap gC  <Plug>(comment-toggle-end)
+
+omap ic  <Plug>(comment-text-object-inner)
+omap ac  <Plug>(comment-text-object-outer)
+xmap ic  <Plug>(comment-text-object-inner)
+xmap ac  <Plug>(comment-text-object-outer)
+
+command! -nargs=1 Lorem fns.GenerateLoremIpsum(<args>)
+command! -bang AirlineThemes fns.AirlineThemes(<bang>0)
+command! -nargs=+ -bang -complete=shellcmd Scratch fns.Scratch(<q-args>)

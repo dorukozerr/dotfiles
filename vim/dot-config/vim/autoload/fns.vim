@@ -199,6 +199,11 @@ export def Scratch(cmd: string)
   execute 'ene! | setlocal buftype=nofile bufhidden=wipe noswapfile | r  !' .. cmd
 enddef
 
+export def ParseVimScript(cmd: string)
+  execute 'ene! | setlocal buftype=nofile bufhidden=wipe noswapfile | r  !vimparse' .. %
+enddef
+
+
 # export def GitRestoreCurrent()
 #   var current_file = expand('%:p')
 # 
@@ -225,12 +230,8 @@ enddef
 #   echo 'File cleaned and reloaded.'
 # enddef
 
-augroup _update_git_stats
-  autocmd!
-  # autocmd BufWritePost * g:GitStats = GitStats()
-  # autocmd VimEnter * g:GitStats = GitStats()
-augroup END
-
-command! -nargs=1 Lorem GenerateLoremIpsum(<args>)
-command! -bang AirlineThemes AirlineThemes(<bang>0)
-command! -nargs=+ -bang -complete=shellcmd Scratch Scratch(<q-args>)
+# augroup _update_git_stats
+#   autocmd!
+#   # autocmd BufWritePost * g:GitStats = GitStats()
+#   # autocmd VimEnter * g:GitStats = GitStats()
+# augroup END

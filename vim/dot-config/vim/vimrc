@@ -1,8 +1,5 @@
 vim9script
 
-filetype plugin indent on
-syntax enable
-
 packadd! lsp
 packadd! matchit
 packadd! netrw
@@ -10,26 +7,22 @@ packadd! cfilter
 packadd! justify
 packadd! comment
 
-set termguicolors
 set encoding=utf-8
 scriptencoding utf-8
 
+filetype plugin indent on
+syntax enable
+
+set termguicolors
 set updatetime=300
-set signcolumn=auto
 set backspace=indent,eol,start
-set fillchars=eob:\ ,vert:\|
+# set fillchars=eob:\ ,vert:\|
 set hlsearch
 set wrap
 set number relativenumber
 set expandtab
-# set tabstop=2
-# set softtabstop=2
-# set shiftwidth=2
 set incsearch
 set noswapfile
-# set foldmethod=syntax
-# set foldenable
-# set foldlevelstart=99
 set clipboard=unnamedplus
 
 # let g:tsc_watcher_command="vpx tsc --noEmit --watch --pretty false --preserveWatchOutput"
