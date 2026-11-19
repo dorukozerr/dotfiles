@@ -30,9 +30,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/vim-jsx-pretty"]
 	path = vim/dot-config/vim/pack/plugins/start/vim-jsx-pretty
 	url = https://github.com/MaxMEllon/vim-jsx-pretty.git
-[submodule "vim/dot-config/vim/pack/plugins/start/vim-matchit"]
-	path = vim/dot-config/vim/pack/plugins/start/vim-matchit
-	url = https://github.com/adelarsq/vim-matchit.git
 [submodule "vim/dot-config/vim/pack/plugins/start/vim-sneak"]
 	path = vim/dot-config/vim/pack/plugins/start/vim-sneak
 	url = https://github.com/justinmk/vim-sneak.git
