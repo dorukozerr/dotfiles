@@ -88,8 +88,8 @@ export FZF_DEFAULT_OPTS="
   --color=base16
 "
 export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob \"!.git/*\""
-export FZF_ALT_C_COMMAND="fd --type d --hidden --follow"
-source <(fzf --zsh)
+# export FZF_ALT_C_COMMAND="fd --type d --hidden --follow"
+# source <(fzf --zsh)
 
 source "$ZDOTDIR/plugins/zsh-autopair/autopair.zsh"
 source "$ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
@@ -108,6 +108,9 @@ zvm_bindkey() {
 # Backgrounded + disowned so shell startup never blocks on it; output suppressed.
 { ssh-add --apple-load-keychain -q } >/dev/null 2>&1 &!
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # zprof
 # # or
 # printf 'startup: %.1fms\n' $(( (EPOCHREALTIME - _zt) * 1000 ))
+
