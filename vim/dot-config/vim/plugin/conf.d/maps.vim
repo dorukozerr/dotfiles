@@ -32,6 +32,19 @@ nnoremap <Leader>gd :vertical G diff<CR>
 # open netrw
 nnoremap <Leader>t :Explore %:p:h<CR>
 
+# lsp
+nnoremap gd <Cmd>LspGotoDefinition<CR>
+nnoremap gy <Cmd>LspGotoTypeDef<CR>
+nnoremap gi <Cmd>LspGotoImpl<CR>
+nnoremap gr <Cmd>LspShowReferences<CR>
+nnoremap [g <Cmd>LspDiagPrev<CR>
+nnoremap ]g <Cmd>LspDiagNext<CR>
+nnoremap K <Cmd>LspHover<CR>
+nnoremap <leader>rns <Cmd>LspRename<CR>
+nnoremap <leader>a  <Cmd>LspCodeAction<CR>
+xnoremap <leader>a  <Cmd>LspCodeAction<CR>
+nnoremap <leader>qf <Cmd>LspAutoFix<CR>
+
 # kisuke
 # nnoremap <Leader>ko  :KisukeOpen<CR>
 # nnoremap <Leader>krs :KisukeResumeLastSession<CR>
@@ -46,10 +59,9 @@ nnoremap <Leader>t :Explore %:p:h<CR>
 
 # fzf
 nnoremap <Leader>p  :Files<CR>
-# nnoremap <Leader>f  :RG<CR>
+nnoremap <Leader>f  :RGFollow<CR>
 nnoremap <Leader>bb :Buffers<CR>
 nnoremap <Leader>gl :Commits<CR>
-inoremap <expr>     <c-x><c-f> :Files
 nnoremap <Leader>c  :Commands<CR>
 
 # thank you AI

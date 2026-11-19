@@ -23,28 +23,6 @@ enddef
 #     return ''
 # enddef
 
-def SetMappings()
-
-  nnoremap gd <Cmd>LspGotoDefinition<CR>
-  nnoremap gy <Cmd>LspGotoTypeDef<CR>
-  nnoremap gi <Cmd>LspGotoImpl<CR>
-  nnoremap gr <Cmd>LspShowReferences<CR>
-
-  nnoremap [g <Cmd>LspDiagPrev<CR>
-  nnoremap ]g <Cmd>LspDiagNext<CR>
-
-  nnoremap K <Cmd>LspHover<CR>
-
-  nnoremap <leader>rns <Cmd>LspRename<CR>
-
-  nnoremap <leader>a  <Cmd>LspCodeAction<CR>
-  xnoremap <leader>a  <Cmd>LspCodeAction<CR>
-  nnoremap <leader>qf <Cmd>LspAutoFix<CR>
-  inoremap <silent><expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-  inoremap @ @<Cmd>call lsp#completion#LspComplete(v:true)<CR>
-  inoremap <silent> <C-@> <Cmd>call lsp#completion#LspComplete(v:true)<CR>
-enddef
-
 # def g:LspEchoAttached()
 #   var ctx = get(g:, 'LspAttachedContext', {})
 #   echom $'Attached {ctx->get("file", "")} ' .. $'(buf {ctx->get("bufnr", -1)})'
@@ -89,12 +67,11 @@ export def LspProfStart()
   echom $'Profiling to {f} — reproduce the lag, then :LspProfStop'
 enddef
 
-export  def LspProfStop()
+export def LspProfStop()
   execute 'profile stop'
   g:LspLinkLogs()
   echom 'Profile written to /tmp/lsp-prof-*.txt'
 enddef
-
 
 # An autocmd "{ ... }" block cannot contain a line starting with "}" (it would
 # end the block), so the setup runs from this function instead.
@@ -182,30 +159,10 @@ def LspSetup()
   ])
 enddef
 
-def OnLspAttached()
-  # g:LspEchoAttached()
-
-  nnoremap gd <Cmd>LspGotoDefinition<CR>
-  nnoremap gy <Cmd>LspGotoTypeDef<CR>
-  nnoremap gi <Cmd>LspGotoImpl<CR>
-  nnoremap gr <Cmd>LspShowReferences<CR>
-
-  nnoremap [g <Cmd>LspDiagPrev<CR>
-  nnoremap ]g <Cmd>LspDiagNext<CR>
-
-  nnoremap K <Cmd>LspHover<CR>
-
-  nnoremap <leader>rns <Cmd>LspRename<CR>
-
-  nnoremap <leader>a  <Cmd>LspCodeAction<CR>
-  xnoremap <leader>a  <Cmd>LspCodeAction<CR>
-  nnoremap <leader>qf <Cmd>LspAutoFix<CR>
-enddef
-
 aug _lsp_conf
   au!
   au User LspSetup LspSetup()
-  au User LspAttached OnLspAttached()
+  # au User LspAttached OnLspAttached()
   # au BufWritePre *.{js,jsx,ts,tsx,mjs,mts,cjs} g:LspSaveFixAll()
   # au BufWritePre * g:LspSaveFormat()
 aug END

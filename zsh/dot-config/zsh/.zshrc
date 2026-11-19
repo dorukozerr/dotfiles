@@ -87,9 +87,10 @@ export FZF_DEFAULT_OPTS="
   --marker='! '
   --color=base16
 "
-export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob \"!.git/*\""
+
+# export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob \"!.git/*\""
 # export FZF_ALT_C_COMMAND="fd --type d --hidden --follow"
-# source <(fzf --zsh)
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
 source "$ZDOTDIR/plugins/zsh-autopair/autopair.zsh"
 source "$ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
