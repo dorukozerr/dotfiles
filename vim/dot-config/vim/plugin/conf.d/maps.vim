@@ -93,7 +93,7 @@ nnoremap <expr> <M-k> winnr('k') == winnr() ? "999\<C-w>j" : "\<C-w>k"
 nnoremap <silent> <M-n> :bnext<CR>
 nnoremap <silent> <M-p> :bprevious<CR>
 nnoremap <silent> <M-q> <ScriptCmd>fns.BufferDeleteCurrent()<CR>
-# nnoremap <silent> <M-z> <ScriptCmd>fns.BufferToggle()<CR>
+nnoremap <silent> <M-z> <ScriptCmd>fns.BufferToggle()<CR>
 
 nnoremap <silent> <M-Left>  <ScriptCmd>fns.ResizeH('left', 5)<CR>
 nnoremap <silent> <M-Right> <ScriptCmd>fns.ResizeH('right', 5)<CR>
