@@ -74,7 +74,7 @@
 	url = ssh://git@codeberg.org/ziglang/zig.vim.git
 [submodule "vim/dot-config/vim/pack/plugins/start/lsp"]
 	path = vim/dot-config/vim/pack/plugins/start/lsp
-	url = git@github.com:yegappan/lsp.git
+        url = https://github.com/dorukozerr/lsp
 [submodule "vim/dot-config/vim/pack/plugins/start/fzf.git"]
 	path = vim/dot-config/vim/pack/plugins/start/fzf.git
 	url = git@github.com:junegunn/fzf.git
