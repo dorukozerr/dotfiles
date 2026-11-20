@@ -10,29 +10,6 @@ def VimVersion(): string
                 : ''
 enddef
 
-# def LspProgressStatus(): string
-#     if empty(g:LspProgress)
-#         return ''
-#     endif
-#     for info in values(g:LspProgress)
-#         var parts = []
-#         if !empty(info.title)
-#             parts->add(info.title)
-#         endif
-#         if info.percentage >= 0
-#             parts->add(info.percentage .. '%')
-#         endif
-#         return parts->join(' ')
-#     endfor
-#     return ''
-# enddef
-
-# def g:LspEchoAttached()
-#   var ctx = get(g:, 'LspAttachedContext', {})
-#   echom $'Attached {ctx->get("file", "")} ' .. $'(buf {ctx->get("bufnr", -1)})'
-#   g:LspLinkLogs()
-# enddef
-
 const LogDir = expand('~/.sandbox/AHMET_IKIZ')
 
 export def LspLinkLogs()
@@ -100,37 +77,17 @@ def LspSetup()
                 popupBorderCompletion: true,
                 omniComplete: true,
                 omniCompleteAllowBare: true,
-                # Matching + ordering of the completion menu:
-                #   'case'  - prefix match, case sensitive (plugin default)
-                #   'icase' - prefix match, ignore case
-                #   'fuzzy' - fuzzy match; NOTE: skips the sortText sort, so the menu
-                #             order is whatever raw order the server returned
-                # 'icase' keeps the server's own ranking (sortText) and drops loosely
-                # related fuzzy hits.
                 completionMatcher: 'icase',
-                # Query every attached server that supports completion and merge
-                # the results (typescript-language-server + tailwindcss).
                 completionFromAllServers: true,
-                # Only servers that explicitly set features.completion = true
-                # are queried.  oxlint/oxfmt are not.
                 completionRequireOptIn: true,
                 ignoreCompleteItemsIsIncomplete: ['vimls-go'],
                 filterCompletionDuplicates: true,
                 noNewlineInCompletion: true,
                 incrementalSync: true,
-                # Makes the completionKinds map below actually apply (default: single
-                # letters like t/m/f/k in the kind column).
                 customCompletionKinds: true,
-                # Apply the LSP server's extra text edits after accepting a completion
-                # (auto-imports etc.).
                 completionTextEdit: true,
-                # Docs in the preview window instead of a popup next to the menu.
-                # completionInPreview: true,
-                # Moves labelDetails/detail out of the menu row into the info popup.
                 condensedCompletionMenu: false,
                 showSignatureDocs: true,
-                # Snippet expansion is off unless you enable a snippet plugin
-                # (vsnipSupport / ultisnipsSupport / snippetSupport).
                 ultisnipsSupport: true,
                 snippetSupport: true,
                 completionKinds: {
@@ -177,13 +134,11 @@ def LspSetup()
                                 completion: true
                         },
                         initializationOptions: {
-                                runtimepath: globpath(&runtimepath, '', 0, 1),
-                                # ->filter((_, p) => p !~# '/pack/plugins/start/' || p =~# '/lsp/\?$'),
+                                runtimepath: globpath(&runtimepath, '', 0, 1)->filter((_, p) => p !~# '/pack/plugins/start/' || p =~# '/lsp/\?$'),
                                 vimVersion: VimVersion(),
                         },
                         syncInit: true,
                         processDiagHandler: (diags: list<dict<any>>) => {
-                                # echom diags 
                                 return diags->map((ix, diag) => {
                                         var new = diag
                                         new.message = diag.source .. ' - ' .. diag.message
@@ -215,11 +170,10 @@ def LspSetup()
                                 },
                         },
                         processDiagHandler: (diags: list<dict<any>>) => {
-                                # echom diags 
-                return diags->map((ix, diag) => {
-                        var new = diag
-                        new.message = diag.source .. ' - ' .. diag.message
-                        return new
+                                return diags->map((ix, diag) => {
+                                        var new = diag
+                                        new.message = diag.source .. ' - ' .. diag.message
+                                        return new
                                 })
                         },
                 },
@@ -253,6 +207,9 @@ aug _lsp_conf
         au User LspSetup LspSetup()
 aug END
 
+# Note: resolve lsp path from shell script that does all this cwd checks and
+# resolves to the vp or oxc files. So so so much reduction available for
+# current oxc setup
 # ---------------------------------------------------------------------------
 # oxlint / oxfmt (migrated from coc-oxc)
 #
@@ -293,8 +250,8 @@ const OxRootMarkers = ['.git/', '.git', '.hg/', 'pnpm-workspace.yaml']
 
 # Set to true to format with oxfmt and/or run oxlint fix-all on BufWritePre
 # (coc-oxc's formatOnSave / codeActionsOnSave).
-g:LspOxFormatOnSave = get(g:, 'LspOxFormatOnSave', false)
-g:LspOxFixOnSave = get(g:, 'LspOxFixOnSave', false)
+g:LspOxFormatOnSave = get(g:, 'LspOxFormatOnSave', true)
+g:LspOxFixOnSave = get(g:, 'LspOxFixOnSave', true)
 
 # Extra workspace options, e.g.:
 # g:LspOxlintOptions = {configPath: '.oxlintrc.json', typeAware: true, fixKind: 'all'}
