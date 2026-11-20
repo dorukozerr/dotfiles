@@ -6,7 +6,7 @@ packadd! netrw
 packadd! cfilter
 packadd! justify
 packadd! comment
-packadd! termdebug
+packadd! helptoc
 
 set encoding=utf-8
 scriptencoding utf-8
@@ -25,6 +25,7 @@ set expandtab
 set incsearch
 set noswapfile
 set clipboard=unnamedplus
+set pumheight=15
 
 # let g:tsc_watcher_command="vpx tsc --noEmit --watch --pretty false --preserveWatchOutput"
 # let g:tsc_watcher_shell=["/usr/bin/env", \"zsh", \"-c"]

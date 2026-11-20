@@ -44,6 +44,9 @@ nnoremap <leader>rns <Cmd>LspRename<CR>
 nnoremap <leader>a  <Cmd>LspCodeAction<CR>
 xnoremap <leader>a  <Cmd>LspCodeAction<CR>
 nnoremap <leader>qf <Cmd>LspAutoFix<CR>
+inoremap <silent><expr> <C-n> pumvisible() ? "\<C-n>" : (g:LspServerReady() ? "\<Cmd>call lsp#completion#LspComplete(v:true)\<CR>" : "\<C-n>")
+inoremap @ @<Cmd>call lsp#completion#LspComplete(v:true)<CR>
+inoremap <silent> <C-@> <Cmd>call lsp#completion#LspComplete(v:true)<CR>
 
 # kisuke
 # nnoremap <Leader>ko  :KisukeOpen<CR>

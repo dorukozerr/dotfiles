@@ -84,3 +84,6 @@
 [submodule "vim/dot-config/vim/pack/plugins/start/fzf"]
 	path = vim/dot-config/vim/pack/plugins/start/fzf
 	url = git@github.com:junegunn/fzf.git
+[submodule "vim/dot-config/vim/pack/plugins/start/ultisnip"]
+	path = vim/dot-config/vim/pack/plugins/start/ultisnip
+	url = git@github.com:SirVer/ultisnips.git
